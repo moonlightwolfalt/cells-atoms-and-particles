@@ -39,8 +39,8 @@ ANTHROPIC_API_KEY=sk-ant-... npm start
 |---|---|---|
 | **Claude (Anthropic)** — default | `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`, `claude-fable-5-1` | `ANTHROPIC_API_KEY` |
 | **Claude Code** (Claude Agent SDK, local only) | `default` (Claude Code's default), `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5` | `ANTHROPIC_API_KEY`, or Claude Code's Bedrock / Vertex / Foundry settings. Runs Claude through Claude Code's agent runtime with all tools off. Anthropic doesn't allow apps to use a Claude subscription login, so this needs an API key; it's isolated so it never picks up your Claude Code login. It's an optional ~325 MB install and is turned off on public servers. |
-| **ChatGPT (OpenAI)** | `gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `gpt-4.1`, `gpt-4o` | `OPENAI_API_KEY` |
-| **Google Gemini** | `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite` | `GEMINI_API_KEY` |
+| **ChatGPT (OpenAI)** | **All** chat models on your account — click **Load all models** (built-in list: GPT-5, GPT-5 mini/nano, GPT-4.1 family, GPT-4o family, o3, o3-mini, o4-mini, o1, and more) | `OPENAI_API_KEY` |
+| **Google Gemini** | **All** text models on your key — click **Load all models** (built-in list: Gemini 2.5 Pro/Flash/Flash-Lite, the `-latest` aliases, Gemini 2.0, Gemma 3) | `GEMINI_API_KEY` |
 | **DeepSeek** | `deepseek-chat`, `deepseek-reasoner` | `DEEPSEEK_API_KEY` |
 | **Grok (xAI)** | `grok-4`, `grok-4-fast`, `grok-3`, `grok-3-mini` | `XAI_API_KEY` |
 | **Mistral** | `mistral-large-latest`, `mistral-medium-latest`, `mistral-small-latest`, `magistral-medium-latest`, `codestral-latest` | `MISTRAL_API_KEY` |
@@ -51,7 +51,7 @@ ANTHROPIC_API_KEY=sk-ant-... npm start
 | Ollama (local) | any local model, e.g. `llama3.1` to run Llama on your own machine | none |
 | Offline generator | — | none |
 
-Set keys as environment variables before `npm start`, or paste them in the app (kept only in your browser if you tick *Remember key*). Model lists change often — if a provider has a newer model, just type its name.
+Set keys as environment variables before `npm start`, or paste them in the app (kept only in your browser if you tick *Remember key*). For ChatGPT and Gemini, **Load all models** asks the provider for every text model your key can use (embedding, speech, image and video models are left out). Model families that need different requests are handled automatically: models without system messages or JSON mode, OpenAI's Responses-only models, newer token-limit settings, and Gemma. For other providers, type any model name.
 
 ## Fortnite Creative catalog
 
@@ -158,6 +158,7 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 | `GET /api/catalog` | Island types, devices, Verse modules, Creative catalog |
 | `GET /api/schema` | JSON schema the AI answers in |
 | `POST /api/generate` | `{prompt, mode, provider, model?, apiKey?, baseUrl?}` → `{spec}` (one request; add header `x-island-forge-keepalive: 1` for keep-alive spaces) |
+| `POST /api/models` | `{provider: openai \| gemini, apiKey?}` → `{models}`: every text model the key can use |
 | `POST /api/jobs` | Same body → `{id}`: starts generation in the background (what the web app uses, so slow models never hit gateway time limits) |
 | `GET /api/jobs/:id` | `{status: running \| done \| error, spec?, error?, elapsed_ms}` |
 | `POST /api/verse` | `{spec}` → `{files}` |

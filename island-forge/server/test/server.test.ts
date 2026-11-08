@@ -307,3 +307,89 @@ test('background jobs: start, poll to completion, report errors, refuse unknown 
   assert.equal(missing.status, 404);
   assert.match((await missing.json()).error, /not found/);
 });
+
+test('all OpenAI and Gemini models: live lists are filtered, and quirky model families are retried until they work', async () => {
+  const http = await import('node:http');
+  const { listModels } = await import('../providers.ts');
+  const layout = JSON.stringify({ name: 'Any Model Isle', pois: [{ name: 'Port', kind: 'docks', x: 0.4, y: 0.5 }] });
+  const calls: { url: string; body: any }[] = [];
+  const err = (res: any, msg: string) => { res.statusCode = 400; res.end(JSON.stringify({ error: { message: msg } })); };
+  const ok = (res: any) => res.end(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: layout } }] }));
+  const fake = http.createServer(async (req, res) => {
+    let raw = '';
+    for await (const c of req) raw += c;
+    const body = raw ? JSON.parse(raw) : null;
+    calls.push({ url: req.url || '', body });
+    res.setHeader('content-type', 'application/json');
+    const url = req.url || '';
+    if (url === '/models') {
+      return res.end(JSON.stringify({ data: [
+        { id: 'gpt-5', created: 300 }, { id: 'text-embedding-3-large', created: 400 }, { id: 'o4-mini', created: 250 },
+        { id: 'whisper-1', created: 100 }, { id: 'gpt-4o-realtime-preview', created: 350 }, { id: 'dall-e-3', created: 90 },
+        { id: 'gpt-image-1', created: 380 }, { id: 'chatgpt-4o-latest', created: 200 }, { id: 'tts-1', created: 80 },
+      ] }));
+    }
+    if (url.startsWith('/models?')) {
+      const page2 = url.includes('pageToken=p2');
+      return res.end(JSON.stringify(page2
+        ? { models: [{ name: 'models/gemma-3-27b-it', supportedGenerationMethods: ['generateContent'] }, { name: 'models/imagen-4.0-generate', supportedGenerationMethods: ['predict'] }] }
+        : { nextPageToken: 'p2', models: [
+            { name: 'models/gemini-2.5-flash', displayName: 'Gemini 2.5 Flash', supportedGenerationMethods: ['generateContent', 'countTokens'] },
+            { name: 'models/text-embedding-004', supportedGenerationMethods: ['embedContent'] },
+            { name: 'models/gemini-2.5-flash-preview-tts', supportedGenerationMethods: ['generateContent'] },
+            { name: 'models/gemini-2.5-pro', displayName: 'Gemini 2.5 Pro', supportedGenerationMethods: ['generateContent'] },
+          ] }));
+    }
+    if (url === '/chat/completions') {
+      if (body.model === 'o1-pro') return err(res, 'This model is only supported in v1/responses and not in v1/chat/completions.');
+      if (body.model === 'o1-mini' && body.messages[0].role === 'system') return err(res, "Unsupported value: 'messages[0].role' does not support 'system' with this model.");
+      if (body.model === 'o1-preview' && body.response_format) return err(res, "Invalid parameter: 'response_format' of type 'json_object' is not supported with this model.");
+      return ok(res);
+    }
+    if (url === '/responses') {
+      return res.end(JSON.stringify({ status: 'completed', output: [{ type: 'reasoning' }, { type: 'message', content: [{ type: 'output_text', text: layout }] }] }));
+    }
+    if (url.includes(':generateContent')) {
+      if (url.includes('gemini-old') && body.generationConfig.responseMimeType) return err(res, 'JSON mode is not enabled for models/gemini-old');
+      if (url.includes('gemini-small') && body.generationConfig.maxOutputTokens > 8192) return err(res, 'The requested maxOutputTokens exceeds the model limit');
+      if (url.includes('gemma') && body.systemInstruction) return err(res, 'Developer instruction is not enabled for models/gemma-3-27b-it');
+      return res.end(JSON.stringify({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'thinking…', thought: true }, { text: layout }] } }] }));
+    }
+    res.statusCode = 404;
+    res.end('{}');
+  });
+  await new Promise<void>((r) => fake.listen(0, '127.0.0.1', r));
+  const base = `http://127.0.0.1:${(fake.address() as AddressInfo).port}`;
+  const gen = (provider: string, model: string) => generateMap({ provider, model, apiKey: 'k', baseUrl: base, prompt: 'x', mode: 'blitz' });
+  try {
+    const openai = await listModels({ provider: 'openai', apiKey: 'k', baseUrl: base });
+    assert.deepEqual(openai.models.map((m) => m.id), ['gpt-5', 'o4-mini', 'chatgpt-4o-latest'], 'only text models, newest first');
+    const gemini = await listModels({ provider: 'gemini', apiKey: 'k', baseUrl: base });
+    assert.deepEqual(gemini.models.map((m) => m.id), ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemma-3-27b-it'], 'both pages, text models only, Gemini before Gemma');
+    assert.equal(gemini.models[0].label, 'Gemini 2.5 Pro');
+    await assert.rejects(listModels({ provider: 'deepseek', apiKey: 'k' }), /available for ChatGPT \(OpenAI\) and Gemini/);
+    await assert.rejects(listModels({ provider: 'openai', baseUrl: base }), /Add your ChatGPT \(OpenAI\) API key/);
+
+    assert.equal((await gen('openai', 'o1-pro')).name, 'Any Model Isle');
+    assert.ok(calls.some((c) => c.url === '/responses' && c.body.model === 'o1-pro'), 'Responses-only model retried on /responses');
+    calls.length = 0;
+    await gen('openai', 'o1-mini');
+    assert.equal(calls.at(-1)!.body.messages.length, 1, 'system prompt merged into the user message');
+    calls.length = 0;
+    await gen('openai', 'o1-preview');
+    assert.equal(calls.at(-1)!.body.response_format, undefined, 'JSON mode dropped for models without it');
+
+    calls.length = 0;
+    assert.equal((await gen('gemini', 'gemma-3-27b-it')).name, 'Any Model Isle');
+    assert.equal(calls.length, 1, 'Gemma gets the merged prompt on the first try');
+    assert.equal(calls[0].body.systemInstruction, undefined);
+    calls.length = 0;
+    await gen('gemini', 'gemini-old');
+    assert.equal(calls.at(-1)!.body.generationConfig.responseMimeType, undefined);
+    calls.length = 0;
+    await gen('gemini', 'gemini-small');
+    assert.equal(calls.at(-1)!.body.generationConfig.maxOutputTokens, 8192);
+  } finally {
+    fake.close();
+  }
+});

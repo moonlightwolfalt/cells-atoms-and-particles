@@ -10,6 +10,7 @@ export interface ProviderInfo {
   needsKey: boolean;
   keyHint?: string;
   baseUrl?: string;
+  liveModels?: boolean;
 }
 
 export interface Access {
@@ -41,6 +42,26 @@ export interface GenerateArgs {
   prompt: string;
   mode: string;
   passcode?: string;
+}
+
+export interface ModelInfo {
+  id: string;
+  label?: string;
+}
+
+/** Every text model the key can use, loaded live from the provider through the server. */
+export async function loadModels(args: { provider: string; apiKey: string; baseUrl: string; passcode?: string }): Promise<ModelInfo[]> {
+  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  if (args.passcode) headers['x-island-forge-passcode'] = args.passcode;
+  let res: Response;
+  try {
+    res = await fetch('/api/models', { method: 'POST', headers, body: JSON.stringify({ provider: args.provider, apiKey: args.apiKey, baseUrl: args.baseUrl }) });
+  } catch {
+    throw new Error('Could not reach the Island Forge server.');
+  }
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !Array.isArray(data?.models)) throw new Error(data?.error || `Could not load models (${res.status}).`);
+  return data.models;
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
