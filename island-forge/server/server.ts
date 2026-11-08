@@ -13,6 +13,7 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'web', 'dist');
 const PORT = Number(process.env.PORT) || 5173;
+const KEEPALIVE_MS = Number(process.env.KEEPALIVE_MS) || 5000;
 const HOST = process.env.HOST || '127.0.0.1';
 
 const TYPES: Record<string, string> = {
@@ -71,7 +72,7 @@ export const server = http.createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   try {
     if (req.method === 'OPTIONS') {
-      return send(res, 204, '', 'text/plain', { 'access-control-allow-methods': 'GET, POST', 'access-control-allow-headers': 'content-type, x-island-forge-passcode' });
+      return send(res, 204, '', 'text/plain', { 'access-control-allow-methods': 'GET, POST', 'access-control-allow-headers': 'content-type, x-island-forge-passcode, x-island-forge-keepalive' });
     }
     if (url.pathname === '/api/health') return send(res, 200, { ok: true });
     if (url.pathname === '/api/providers') {
@@ -96,7 +97,40 @@ export const server = http.createServer(async (req, res) => {
       const body = await readJson(req);
       if (body?.provider !== 'offline' && rateLimited(req)) throw httpError(429, 'Too many AI requests from you this hour. Try again later, or use the offline generator.');
       const passcode = req.headers['x-island-forge-passcode'];
-      return send(res, 200, { spec: await generateMap(body, undefined, { passcode: typeof passcode === 'string' ? passcode : undefined }) });
+      const run = () => generateMap(body, undefined, { passcode: typeof passcode === 'string' ? passcode : undefined });
+      const started = Date.now();
+      const tag = `[generate] ${String(body?.provider || 'anthropic')}/${String(body?.model || 'default').slice(0, 60)} ${String(body?.mode || '')}`;
+      // Keep-alive mode (the web app asks for it): start the response now and send a space every
+      // few seconds while the AI works, so gateways and load balancers with idle/first-byte
+      // timeouts don't cut a slow model off with a bare 502. Leading whitespace is valid JSON.
+      if (req.headers['x-island-forge-keepalive'] === '1') {
+        res.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-accel-buffering': 'no', 'access-control-allow-origin': '*' });
+        res.write(' ');
+        const beat = setInterval(() => res.write(' '), KEEPALIVE_MS);
+        let closed = false;
+        res.on('close', () => (closed = true));
+        try {
+          const spec = await run();
+          console.log(`${tag} ok in ${Date.now() - started}ms`);
+          if (!closed) res.end(JSON.stringify({ spec }));
+        } catch (err: any) {
+          const status = err.status || 500;
+          console.error(`${tag} failed in ${Date.now() - started}ms: ${status} ${err.message}`);
+          if (status >= 500 && !err.status) console.error(err);
+          if (!closed) res.end(JSON.stringify({ error: err.message || 'Something went wrong', status }));
+        } finally {
+          clearInterval(beat);
+        }
+        return;
+      }
+      try {
+        const spec = await run();
+        console.log(`${tag} ok in ${Date.now() - started}ms`);
+        return send(res, 200, { spec });
+      } catch (err: any) {
+        console.error(`${tag} failed in ${Date.now() - started}ms: ${err.status || 500} ${err.message}`);
+        throw err;
+      }
     }
     if (req.method === 'POST' && url.pathname === '/api/verse') {
       const spec = specFrom(await readJson(req));

@@ -46,10 +46,29 @@ export interface GenerateArgs {
 export async function generate(args: GenerateArgs, online: boolean): Promise<MapSpec> {
   if (args.provider === 'offline' || !online) return generateProcedural(args.prompt, args.mode);
   const { passcode, ...body } = args;
-  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  const headers: Record<string, string> = { 'content-type': 'application/json', 'x-island-forge-keepalive': '1' };
   if (passcode) headers['x-island-forge-passcode'] = passcode;
-  const res = await fetch('/api/generate', { method: 'POST', headers, body: JSON.stringify(body) });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
-  return data.spec;
+  let res: Response;
+  try {
+    res = await fetch('/api/generate', { method: 'POST', headers, body: JSON.stringify(body) });
+  } catch {
+    throw new Error('Lost connection to the Island Forge server. Check it is still running, then try again.');
+  }
+  const text = await res.text();
+  let data: any = null;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    /* not JSON: an error page from a gateway or proxy in front of the server */
+  }
+  if (data?.error) throw new Error(data.error);
+  if (res.ok && data?.spec) return data.spec;
+  if (!data) {
+    throw new Error(
+      res.ok
+        ? 'The server closed the connection before the island was ready. The AI may have taken too long — try again, or pick a faster model.'
+        : `The server's gateway answered ${res.status}${res.statusText ? ` ${res.statusText}` : ''} instead of Island Forge — usually the AI took too long or the server restarted. Try again; if it keeps happening, check the server logs.`,
+    );
+  }
+  throw new Error(`Request failed (${res.status})`);
 }

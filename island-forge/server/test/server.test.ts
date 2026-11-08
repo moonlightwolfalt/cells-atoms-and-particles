@@ -2,7 +2,7 @@ import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import { server } from '../server.ts';
-import { extractJson, generateMap } from '../providers.ts';
+import { extractJson, generateMap, claudeCodeEnv } from '../providers.ts';
 import { MODES, readZip } from '../../core/src/index.ts';
 
 let base = '';
@@ -195,4 +195,48 @@ test('public mode: server keys need the passcode, custom base URLs are blocked, 
   } finally {
     restore();
   }
+});
+
+test('Claude Code gets an isolated environment: only the given key, never a login or parent session', async () => {
+  const parent = {
+    PATH: '/usr/bin', HOME: '/home/me', HTTPS_PROXY: 'http://proxy:8080', NODE_EXTRA_CA_CERTS: '/ca.pem',
+    ANTHROPIC_API_KEY: 'sk-ant-owner', ANTHROPIC_BASE_URL: 'https://somewhere-else', ANTHROPIC_AUTH_TOKEN: 'bearer',
+    CLAUDE_CODE_OAUTH_TOKEN: 'subscription-token', CLAUDECODE: '1', CLAUDE_CODE_SESSION_ID: 'abc', CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST: '1',
+    CLAUDE_CODE_USE_BEDROCK: '1', AWS_REGION: 'us-east-1', AWS_ACCESS_KEY_ID: 'AKIA', OPENAI_API_KEY: 'sk-other',
+  };
+  const env = claudeCodeEnv('sk-ant-visitor', false, parent);
+  assert.equal(env.ANTHROPIC_API_KEY, 'sk-ant-visitor');
+  assert.equal(env.PATH, '/usr/bin');
+  assert.equal(env.HTTPS_PROXY, 'http://proxy:8080');
+  for (const k of ['ANTHROPIC_BASE_URL', 'ANTHROPIC_AUTH_TOKEN', 'CLAUDE_CODE_OAUTH_TOKEN', 'CLAUDECODE', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST', 'CLAUDE_CODE_USE_BEDROCK', 'AWS_ACCESS_KEY_ID', 'OPENAI_API_KEY']) {
+    assert.equal(env[k], undefined, `${k} must not reach Claude Code`);
+  }
+  const cloudEnv = claudeCodeEnv('', true, parent);
+  assert.equal(cloudEnv.CLAUDE_CODE_USE_BEDROCK, '1');
+  assert.equal(cloudEnv.AWS_REGION, 'us-east-1');
+  assert.equal(cloudEnv.ANTHROPIC_API_KEY, undefined);
+  assert.equal(cloudEnv.CLAUDE_CODE_OAUTH_TOKEN, undefined);
+
+  // No key and no cloud setup: refused before anything starts.
+  const saved = process.env.ANTHROPIC_API_KEY;
+  delete process.env.ANTHROPIC_API_KEY;
+  await assert.rejects(generateMap({ provider: 'claude_code', prompt: 'x' }), /needs an Anthropic API key/);
+  // Off on public servers.
+  process.env.ISLAND_FORGE_PUBLIC = '1';
+  await assert.rejects(generateMap({ provider: 'claude_code', apiKey: 'sk-ant-x', prompt: 'x' }), /turned off on this public server/);
+  delete process.env.ISLAND_FORGE_PUBLIC;
+  if (saved) process.env.ANTHROPIC_API_KEY = saved;
+});
+
+test('keep-alive generation starts the response at once and still returns the spec or a readable error', async () => {
+  const res = await fetch(`${base}/api/generate`, { method: 'POST', headers: { 'x-island-forge-keepalive': '1' }, body: JSON.stringify({ provider: 'offline', prompt: 'x', mode: 'blitz' }) });
+  assert.equal(res.status, 200);
+  const text = await res.text();
+  assert.match(text, /^ +\{/, 'body starts with keep-alive spaces');
+  assert.equal(JSON.parse(text).spec.mode, 'blitz');
+
+  const bad = await fetch(`${base}/api/generate`, { method: 'POST', headers: { 'x-island-forge-keepalive': '1' }, body: JSON.stringify({ provider: 'compatible', prompt: 'x' }) });
+  const err = JSON.parse(await bad.text());
+  assert.match(err.error, /Type a model name/);
+  assert.equal(err.status, 400);
 });
