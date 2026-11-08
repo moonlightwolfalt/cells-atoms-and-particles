@@ -97,13 +97,15 @@ export default function App() {
     const label = providers.find((p) => p.id === ai.provider)?.label.replace(/ —.*/, '') || ai.provider;
     if (ai.provider !== 'offline' && online) setStatus(`Asking ${label} (${ai.model}) to design your ${MODES[mode].label} island…`);
     try {
-      const next = await generate({ ...ai, prompt, mode }, online);
+      const next = await generate({ ...ai, prompt, mode }, online, (s) => {
+        if (s >= 3) setStatus(`Asking ${label} (${ai.model}) to design your ${MODES[mode].label} island… ${s}s${s > 45 ? ' — slower models can take a few minutes' : ''}`);
+      });
       island.replace(next);
       const secs = ((performance.now() - started) / 1000).toFixed(1);
       setStatus(
         ai.provider === 'offline' || !online
           ? 'Generated offline. Pick an AI provider for richer, prompt-aware layouts.'
-          : `Done in ${secs}s — ${next.pois.length} locations, ${next.features.length} features, ${next.devices.length} devices.`,
+          : `Done in ${secs}s — ${next.pois.length} locations, ${next.features.length} features, ${next.devices.length} devices.${next.generator.includes('cut short') ? ' The AI ran out of room, so Island Forge filled in the rest.' : ''}`,
         'success',
       );
     } catch (e: any) {

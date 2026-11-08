@@ -47,6 +47,8 @@ Mark the API keys and the passcode as secrets in Sevalla. You don't need any key
 
 ## 4. Deploy
 
+Keep the app at **one instance** (Sevalla's default). Generation runs as a background job held in that instance's memory, which is what lets slow AI models take minutes without hitting any gateway time limit.
+
 Click **Deploy now**. When it finishes, open the URL Sevalla gives you, for example `https://island-forge-xxxx.sevalla.app`. To check that it's up, open `/api/health` on that URL. It should return `{"ok":true}`.
 
 ## What's turned off on the public server

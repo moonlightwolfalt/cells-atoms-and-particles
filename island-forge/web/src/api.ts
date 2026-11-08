@@ -43,8 +43,68 @@ export interface GenerateArgs {
   passcode?: string;
 }
 
-export async function generate(args: GenerateArgs, online: boolean): Promise<MapSpec> {
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const MAX_WAIT_MS = 20 * 60 * 1000;
+
+async function readJson(res: Response): Promise<any> {
+  try {
+    return JSON.parse(await res.text());
+  } catch {
+    return null;
+  }
+}
+
+function gatewayError(res: Response): Error {
+  return new Error(`The server's gateway answered ${res.status}${res.statusText ? ` ${res.statusText}` : ''} instead of Island Forge — the server may be restarting. Try again in a moment; if it keeps happening, check the server logs.`);
+}
+
+/**
+ * Generate with an AI. Starts a background job on the server and checks on it every 1.5 s, so a
+ * slow model never holds one request open long enough for a gateway time limit to cut it off.
+ */
+export async function generate(args: GenerateArgs, online: boolean, onProgress?: (seconds: number) => void): Promise<MapSpec> {
   if (args.provider === 'offline' || !online) return generateProcedural(args.prompt, args.mode);
+  const { passcode, ...body } = args;
+  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  if (passcode) headers['x-island-forge-passcode'] = passcode;
+  let start: Response;
+  try {
+    start = await fetch('/api/jobs', { method: 'POST', headers, body: JSON.stringify(body) });
+  } catch {
+    throw new Error('Could not reach the Island Forge server. Check it is running, then try again.');
+  }
+  const started = await readJson(start);
+  if (start.status === 404 && started?.error === 'Unknown API route') return generateKeepAlive(args); // older server
+  if (started?.error) throw new Error(started.error);
+  if (!start.ok || !started?.id) throw gatewayError(start);
+
+  const t0 = Date.now();
+  let misses = 0;
+  while (Date.now() - t0 < MAX_WAIT_MS) {
+    await sleep(1500);
+    onProgress?.(Math.round((Date.now() - t0) / 1000));
+    let res: Response;
+    try {
+      res = await fetch(`/api/jobs/${started.id}`, { headers: { 'cache-control': 'no-store' } });
+    } catch {
+      if (++misses > 10) throw new Error('Lost connection to the Island Forge server while the island was being made.');
+      continue;
+    }
+    const job = await readJson(res);
+    if (!job) {
+      // A gateway hiccup on one check is fine; keep checking for a while.
+      if (++misses > 10) throw gatewayError(res);
+      continue;
+    }
+    misses = 0;
+    if (job.status === 'done') return job.spec;
+    if (job.error) throw new Error(job.error);
+  }
+  throw new Error('Gave up waiting after 20 minutes. Try a faster model or a smaller island type.');
+}
+
+/** Single long request with keep-alive spaces (used with servers that predate jobs). */
+async function generateKeepAlive(args: GenerateArgs): Promise<MapSpec> {
   const { passcode, ...body } = args;
   const headers: Record<string, string> = { 'content-type': 'application/json', 'x-island-forge-keepalive': '1' };
   if (passcode) headers['x-island-forge-passcode'] = passcode;

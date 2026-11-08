@@ -196,6 +196,64 @@ export function extractJson(text: unknown): unknown {
   }
 }
 
+/**
+ * Rescue an answer that was cut off mid-JSON (the model hit its output limit): keep every
+ * element that was finished, drop the one being written, and close the open brackets. The
+ * normalizer fills in whatever is missing. Returns null when nothing usable is left.
+ */
+export function salvageJson(text: unknown): Record<string, unknown> | null {
+  if (typeof text !== 'string') return null;
+  const s = text.replace(/^[\s\S]*?```(?:json)?\s*/i, (m) => (m.includes('```') ? '' : m));
+  const start = s.indexOf('{');
+  if (start < 0) return null;
+  const stack: string[] = [];
+  const cuts: { at: number; closers: string }[] = [];
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < s.length; i++) {
+    const c = s[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (c === '\\') escaped = true;
+      else if (c === '"') inString = false;
+      continue;
+    }
+    if (c === '"') inString = true;
+    else if (c === '{' || c === '[') stack.push(c === '{' ? '}' : ']');
+    else if (c === '}' || c === ']') {
+      stack.pop();
+      if (stack.length === 0) {
+        try {
+          return JSON.parse(s.slice(start, i + 1));
+        } catch {
+          return null;
+        }
+      }
+      cuts.push({ at: i + 1, closers: [...stack].reverse().join('') });
+    } else if (c === ',') cuts.push({ at: i, closers: [...stack].reverse().join('') });
+  }
+  // Prefer cutting between list items or top-level fields, so a half-written location or feature
+  // is dropped rather than kept without its position. Latest cut first; a few attempts is enough.
+  const recent = cuts.slice(-60).reverse();
+  const clean = recent.filter((c) => c.closers === '}' || c.closers.startsWith(']'));
+  for (const cut of [...clean, ...recent]) {
+    try {
+      const value = JSON.parse(s.slice(start, cut.at) + cut.closers);
+      if (value && typeof value === 'object' && !Array.isArray(value)) return value as Record<string, unknown>;
+    } catch {
+      /* try an earlier cut */
+    }
+  }
+  return null;
+}
+
+/** For answers that hit the output limit: salvage them if enough of the island made it. */
+function salvageOrThrow(text: unknown, label: string): Record<string, unknown> {
+  const value = salvageJson(text);
+  if (value && Array.isArray(value.pois) && value.pois.length > 0) return { ...value, __truncated: true };
+  throw httpError(502, `${label} ran out of output tokens before finishing the island. Try a smaller island type or a model with a bigger output limit.`);
+}
+
 interface CallArgs {
   apiKey: string;
   /** Whether keys set on the server (environment variables) may be used for this request. */
@@ -238,7 +296,7 @@ async function callClaude({ apiKey, useEnvKeys, model, idea, mode }: CallArgs): 
     throw httpError(502, `Could not reach Anthropic: ${err?.message}`);
   }
   if (message.stop_reason === 'refusal') throw httpError(422, 'Claude declined this prompt. Try rewording your island idea.');
-  if (message.stop_reason === 'max_tokens') throw httpError(502, 'The answer was cut off. Try a shorter idea or another model.');
+  if (message.stop_reason === 'max_tokens') return salvageOrThrow(message.content.filter((b) => b.type === 'text').map((b) => b.text).join(''), 'Claude');
   return extractJson(message.content.filter((b) => b.type === 'text').map((b) => b.text).join(''));
 }
 
@@ -366,7 +424,7 @@ function openAICompatible(opts: { label: string; env: string; defaultBase: strin
       opts.label,
     );
     const choice = data?.choices?.[0];
-    if (choice?.finish_reason === 'length') throw httpError(502, `${opts.label} ran out of output tokens. Try a shorter idea or another model.`);
+    if (choice?.finish_reason === 'length') return salvageOrThrow(choice?.message?.content, opts.label);
     return extractJson(choice?.message?.content);
   };
 }
@@ -441,7 +499,7 @@ async function callGemini({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: Ca
     'Gemini',
   );
   const candidate = data?.candidates?.[0];
-  if (candidate?.finishReason === 'MAX_TOKENS') throw httpError(502, 'Gemini ran out of output tokens. Try a shorter idea or another model.');
+  if (candidate?.finishReason === 'MAX_TOKENS') return salvageOrThrow(candidate?.content?.parts?.map((p: any) => p.text).join(''), 'Gemini');
   if (candidate?.finishReason === 'SAFETY') throw httpError(422, 'Gemini declined this prompt. Try rewording your island idea.');
   return extractJson(candidate?.content?.parts?.map((p: any) => p.text).join(''));
 }
@@ -509,5 +567,7 @@ export async function generateMap(body: Record<string, any> = {}, callers: Recor
     idea,
     mode,
   })) as Record<string, unknown>;
-  return normalizeSpec({ ...raw, mode }, mode, { prompt: idea, generator: `${providerId}/${model}` });
+  const truncated = Boolean(raw?.__truncated);
+  if (raw) delete raw.__truncated;
+  return normalizeSpec({ ...raw, mode }, mode, { prompt: idea, generator: `${providerId}/${model}${truncated ? ' (answer was cut short; the rest was filled in)' : ''}` });
 }

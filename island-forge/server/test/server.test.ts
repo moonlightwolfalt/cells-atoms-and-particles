@@ -240,3 +240,70 @@ test('keep-alive generation starts the response at once and still returns the sp
   assert.match(err.error, /Type a model name/);
   assert.equal(err.status, 400);
 });
+
+test('salvageJson rescues answers cut off mid-JSON', async () => {
+  const { salvageJson } = await import('../providers.ts');
+  const full = { name: 'Cut Isle', pois: [{ name: 'A', x: 0.3, y: 0.3 }, { name: 'B', x: 0.6, y: 0.6 }], roads: [{ points: [{ x: 0.1, y: 0.2 }] }] };
+  const text = JSON.stringify(full);
+  assert.deepEqual(salvageJson(text), full);
+  assert.deepEqual(salvageJson('```json\n' + text + '\n```'), full);
+  const cut = salvageJson(text.slice(0, text.indexOf('"B"') + 6)) as any;
+  assert.equal(cut.name, 'Cut Isle');
+  assert.deepEqual(cut.pois.map((p: any) => p.name), ['A'], 'the half-written location is dropped');
+  const cutInString = salvageJson('{"name":"Long \\"quoted\\" na') as any;
+  assert.equal(cutInString, null);
+  const deep = salvageJson('```json\n{"name":"X","pois":[{"name":"A","x":0.1,"y":0.2}],"features":[{"type":"vault","x":0.') as any;
+  assert.equal(deep.pois.length, 1);
+  assert.ok(!deep.features?.length, 'the half-written feature list is dropped');
+  assert.equal(salvageJson('no json here'), null);
+});
+
+test('a DeepSeek answer that hits the output limit is salvaged, not a 502', async () => {
+  const http = await import('node:http');
+  const layout = JSON.stringify({ name: 'Long Isle', pois: [{ name: 'One', kind: 'town', x: 0.3, y: 0.4 }, { name: 'Two', kind: 'city', x: 0.6, y: 0.5 }], features: [{ type: 'vault', x: 0.3, y: 0.4, note: '', team: 0, order: 0 }] });
+  const fake = http.createServer((req, res) => {
+    req.resume();
+    res.setHeader('content-type', 'application/json');
+    res.end(JSON.stringify({ choices: [{ finish_reason: 'length', message: { content: layout.slice(0, layout.indexOf('"features"') + 40) } }] }));
+  });
+  await new Promise<void>((r) => fake.listen(0, '127.0.0.1', r));
+  const url = `http://127.0.0.1:${(fake.address() as AddressInfo).port}`;
+  try {
+    const spec = await generateMap({ provider: 'deepseek', apiKey: 'sk', baseUrl: url, prompt: 'x', mode: 'battle_royale' });
+    assert.equal(spec.name, 'Long Isle');
+    assert.deepEqual(spec.pois.map((p) => p.name), ['One', 'Two']);
+    assert.match(spec.generator, /cut short/);
+    assert.ok(spec.storm.phases.length > 0, 'missing parts are filled from the mode defaults');
+  } finally {
+    fake.close();
+  }
+});
+
+test('background jobs: start, poll to completion, report errors, refuse unknown ids', async () => {
+  const start = async (body: unknown, ip = '198.51.100.7') =>
+    fetch(`${base}/api/jobs`, { method: 'POST', headers: { 'x-forwarded-for': ip }, body: JSON.stringify(body) });
+  const poll = async (id: string) => {
+    for (let i = 0; i < 50; i++) {
+      const job = await (await fetch(`${base}/api/jobs/${id}`)).json();
+      if (job.status !== 'running') return job;
+      await new Promise((r) => setTimeout(r, 50));
+    }
+    throw new Error('job never finished');
+  };
+  const ok = await start({ provider: 'offline', prompt: 'x', mode: 'racing' });
+  assert.equal(ok.status, 202);
+  const done = await poll((await ok.json()).id);
+  assert.equal(done.status, 'done');
+  assert.equal(done.spec.mode, 'racing');
+  assert.ok(done.elapsed_ms >= 0);
+
+  const bad = await start({ provider: 'compatible', prompt: 'x' });
+  const failed = await poll((await bad.json()).id);
+  assert.equal(failed.status, 'error');
+  assert.match(failed.error, /Type a model name/);
+  assert.equal(failed.http_status, 400);
+
+  const missing = await fetch(`${base}/api/jobs/00000000-0000-0000-0000-000000000000`);
+  assert.equal(missing.status, 404);
+  assert.match((await missing.json()).error, /not found/);
+});
