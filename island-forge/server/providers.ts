@@ -2,6 +2,9 @@
 // generator) can be picked. Every provider's answer goes through the same normalizer.
 import Anthropic from '@anthropic-ai/sdk';
 import { timingSafeEqual } from 'node:crypto';
+import { tmpdir } from 'node:os';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { join } from 'node:path';
 import { MAP_SCHEMA, MODES, normalizeSpec, generateProcedural, buildSystemPrompt, buildUserPrompt, schemaInstructions, type MapSpec } from '../core/src/index.ts';
 
 export interface ProviderInfo {
@@ -24,6 +27,15 @@ export const PROVIDERS: ProviderInfo[] = [
     needsKey: true,
     env: 'ANTHROPIC_API_KEY',
     keyHint: 'sk-ant-...',
+  },
+  {
+    id: 'claude_code',
+    label: 'Claude Code (Agent SDK, runs on this computer)',
+    defaultModel: 'default',
+    models: ['default', 'claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'],
+    needsKey: true,
+    env: 'ANTHROPIC_API_KEY',
+    keyHint: 'sk-ant-... (Anthropic API key)',
   },
   {
     id: 'openai',
@@ -157,8 +169,9 @@ export function providerStatus(): Record<string, { envKey: boolean; available: b
   const out: Record<string, { envKey: boolean; available: boolean }> = {};
   for (const p of PROVIDERS) {
     const envKey = Boolean(p.env && process.env[p.env]) && policy.serverKeys !== 'off';
-    // On a public server Ollama (localhost) only works if its address is allow-listed.
-    const available = !policy.public || p.id !== 'ollama' || Boolean(policy.allowedBaseUrls?.length);
+    // On a public server Ollama (localhost) only works if its address is allow-listed, and
+    // Claude Code (a local agent runtime) is off.
+    const available = !policy.public || (p.id === 'ollama' ? Boolean(policy.allowedBaseUrls?.length) : p.id !== 'claude_code');
     out[p.id] = { envKey, available };
   }
   return out;
@@ -227,6 +240,84 @@ async function callClaude({ apiKey, useEnvKeys, model, idea, mode }: CallArgs): 
   if (message.stop_reason === 'refusal') throw httpError(422, 'Claude declined this prompt. Try rewording your island idea.');
   if (message.stop_reason === 'max_tokens') throw httpError(502, 'The answer was cut off. Try a shorter idea or another model.');
   return extractJson(message.content.filter((b) => b.type === 'text').map((b) => b.text).join(''));
+}
+
+// ---------------------------------------------------------------- Claude Code (Agent SDK)
+// Runs Claude through Claude Code's agent runtime on this machine, with every tool turned off
+// so it only writes the layout. Auth is an Anthropic API key (or Bedrock / Vertex / Foundry via
+// Claude Code's CLAUDE_CODE_USE_* variables). Anthropic doesn't allow third-party apps to use a
+// claude.ai / Claude subscription login, so subscription tokens are stripped from its environment.
+const CLOUD_FLAGS = ['CLAUDE_CODE_USE_BEDROCK', 'CLAUDE_CODE_USE_VERTEX', 'CLAUDE_CODE_USE_FOUNDRY', 'CLAUDE_CODE_USE_ANTHROPIC_AWS'];
+
+async function callClaudeCode({ apiKey, useEnvKeys, model, idea, mode }: CallArgs): Promise<unknown> {
+  const key = apiKey || (useEnvKeys ? process.env.ANTHROPIC_API_KEY : '');
+  const cloud = useEnvKeys && CLOUD_FLAGS.some((k) => process.env[k]);
+  if (!key && !cloud) {
+    throw httpError(400, 'Claude Code needs an Anthropic API key (or Bedrock/Vertex set up for Claude Code). Anthropic does not allow apps to use a Claude subscription login.');
+  }
+  let sdk: any;
+  try {
+    sdk = await import('@anthropic-ai/claude-agent-sdk');
+  } catch {
+    throw httpError(501, 'Claude Code is not installed here. Run "npm install" in island-forge (it is an optional dependency).');
+  }
+  const env = claudeCodeEnv(key || '', Boolean(cloud));
+  const configDir = await mkdtemp(join(tmpdir(), 'island-forge-cc-'));
+  env.CLAUDE_CONFIG_DIR = configDir;
+
+  const abort = new AbortController();
+  const timer = setTimeout(() => abort.abort(), 10 * 60 * 1000);
+  try {
+    const run = sdk.query({
+      prompt: buildUserPrompt(idea, mode),
+      options: {
+        systemPrompt: `${buildSystemPrompt()}\n\n${schemaInstructions()}`,
+        tools: [],
+        maxTurns: 1,
+        ...(model && model !== 'default' ? { model } : {}),
+        settingSources: [],
+        persistSession: false,
+        cwd: tmpdir(),
+        env,
+        abortController: abort,
+      },
+    });
+    for await (const msg of run) {
+      if (msg?.type !== 'result') continue;
+      if (msg.subtype === 'success' && !msg.is_error) return extractJson(msg.result);
+      const detail = String(msg.result || msg.errors?.join?.(' ') || msg.subtype || 'unknown error');
+      const status = msg.api_error_status === 401 || /api key|authenticat|not logged in/i.test(detail) ? 401 : 502;
+      throw httpError(status, `Claude Code error: ${detail.slice(0, 300)}`);
+    }
+    throw httpError(502, 'Claude Code finished without an answer.');
+  } catch (err: any) {
+    if (err?.status) throw err;
+    if (abort.signal.aborted) throw httpError(504, 'Claude Code took too long.');
+    throw httpError(502, `Claude Code failed: ${String(err?.message || err).slice(0, 300)}`);
+  } finally {
+    clearTimeout(timer);
+    await rm(configDir, { recursive: true, force: true }).catch(() => {});
+  }
+}
+
+/**
+ * The Claude Code child process gets a minimal, allow-listed environment and an empty config
+ * folder, so the only credential it can see is the one passed here. It never inherits a
+ * claude.ai / subscription login, a parent Claude Code session, or a custom ANTHROPIC_BASE_URL.
+ */
+export function claudeCodeEnv(key: string, cloud: boolean, source: NodeJS.ProcessEnv = process.env): Record<string, string> {
+  const pass = ['PATH', 'HOME', 'TMPDIR', 'TEMP', 'TMP', 'LANG', 'LC_ALL', 'SYSTEMROOT', 'USERPROFILE', 'APPDATA', 'LOCALAPPDATA',
+    'HTTPS_PROXY', 'HTTP_PROXY', 'NO_PROXY', 'https_proxy', 'http_proxy', 'no_proxy', 'NODE_EXTRA_CA_CERTS', 'SSL_CERT_FILE', 'SSL_CERT_DIR'];
+  // Cloud-provider setups (Bedrock / Vertex / Foundry) need their own credentials and settings.
+  const cloudPrefixes = ['AWS_', 'GOOGLE_', 'GCLOUD_', 'CLOUDSDK_', 'AZURE_', 'ANTHROPIC_VERTEX_', 'ANTHROPIC_AWS_', 'ANTHROPIC_FOUNDRY_', 'VERTEX_', 'CLOUD_ML_REGION'];
+  const env: Record<string, string> = { CLAUDE_AGENT_SDK_CLIENT_APP: 'island-forge/2.0' };
+  for (const [k, v] of Object.entries(source)) {
+    if (v === undefined) continue;
+    if (pass.includes(k)) env[k] = v;
+    else if (cloud && (CLOUD_FLAGS.includes(k) || cloudPrefixes.some((p) => k.startsWith(p)))) env[k] = v;
+  }
+  if (key) env.ANTHROPIC_API_KEY = key;
+  return env;
 }
 
 async function fetchJson(url: string, init: RequestInit, label: string): Promise<any> {
@@ -378,7 +469,7 @@ async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unk
 }
 
 export type Caller = (args: CallArgs) => Promise<unknown>;
-const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, qwen: callQwen, kimi: callKimi, compatible: callCompatible, ollama: callOllama };
+const CALLERS: Record<string, Caller> = { anthropic: callClaude, claude_code: callClaudeCode, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, qwen: callQwen, kimi: callKimi, compatible: callCompatible, ollama: callOllama };
 
 export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS, request: { passcode?: string } = {}): Promise<MapSpec> {
   const policy = accessPolicy();
@@ -403,6 +494,7 @@ export async function generateMap(body: Record<string, any> = {}, callers: Recor
         : 'Custom base URLs are turned off on this server. Clear the Base URL field, or ask the owner to add it to ALLOWED_BASE_URLS.');
     }
     baseUrl = target === fallback ? '' : target;
+    if (providerId === 'claude_code') throw httpError(403, 'Claude Code runs on your own computer, so it is turned off on this public server. Run Island Forge locally to use it.');
   }
   const useEnvKeys = policy.serverKeys === 'open' || (policy.serverKeys === 'passcode' && passcodeMatches(request.passcode));
   if (!apiKey && policy.serverKeys === 'passcode' && !useEnvKeys && provider.env && process.env[provider.env]) {

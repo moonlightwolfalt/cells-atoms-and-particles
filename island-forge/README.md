@@ -1,6 +1,6 @@
 # Island Forge
 
-Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI (Claude, ChatGPT, Gemini, DeepSeek, Grok, Mistral, Llama, Qwen, Kimi and more) designs the whole thing. You get the layout, terrain, the prefab and galleries to drop at every location, the loot plan and chests, every UEFN device it needs with settings, the Verse code for the game mode, a 3D preview, the island image and the publish text. Then you export all of it for UEFN.
+Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI (Claude, Claude Code, ChatGPT, Gemini, DeepSeek, Grok, Mistral, Llama, Qwen, Kimi and more) designs the whole thing. You get the layout, terrain, the prefab and galleries to drop at every location, the loot plan and chests, every UEFN device it needs with settings, the Verse code for the game mode, a 3D preview, the island image and the publish text. Then you export all of it for UEFN.
 
 | Part | Tech | Folder |
 |---|---|---|
@@ -38,6 +38,7 @@ ANTHROPIC_API_KEY=sk-ant-... npm start
 | Provider | Models offered (type any other) | Key |
 |---|---|---|
 | **Claude (Anthropic)** — default | `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`, `claude-fable-5-1` | `ANTHROPIC_API_KEY` |
+| **Claude Code** (Claude Agent SDK, local only) | `default` (Claude Code's default), `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5` | `ANTHROPIC_API_KEY`, or Claude Code's Bedrock / Vertex / Foundry settings. Runs Claude through Claude Code's agent runtime with all tools off. Anthropic doesn't allow apps to use a Claude subscription login, so this needs an API key; it's isolated so it never picks up your Claude Code login. It's an optional ~325 MB install and is turned off on public servers. |
 | **ChatGPT (OpenAI)** | `gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `gpt-4.1`, `gpt-4o` | `OPENAI_API_KEY` |
 | **Google Gemini** | `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite` | `GEMINI_API_KEY` |
 | **DeepSeek** | `deepseek-chat`, `deepseek-reasoner` | `DEEPSEEK_API_KEY` |

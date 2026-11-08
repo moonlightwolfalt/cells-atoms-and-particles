@@ -52,6 +52,7 @@ Click **Deploy now**. When it finishes, open the URL Sevalla gives you, for exam
 ## What's turned off on the public server
 
 - **Ollama:** it runs on your own computer, so the server can't reach it. Run Island Forge locally to use it.
+- **Claude Code:** it runs Claude Code's agent runtime on the machine, so it's off on public servers and not included in the image. Use the regular **Claude** option instead (same models, same API key).
 - **Custom base URLs:** blocked unless they're listed in `ALLOWED_BASE_URLS`.
 
 ## Running the same image yourself

@@ -17,6 +17,7 @@ const BIOME: Record<string, string> = {
 const PROVIDERS = [
   { id: 'offline', label: 'Offline (on phone)' },
   { id: 'anthropic', label: 'Claude' },
+  { id: 'claude_code', label: 'Claude Code' },
   { id: 'openai', label: 'ChatGPT' },
   { id: 'gemini', label: 'Gemini' },
   { id: 'deepseek', label: 'DeepSeek' },
