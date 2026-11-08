@@ -8,7 +8,7 @@ import json
 import sys
 from pathlib import Path
 
-from .catalog import DEVICES, MODES
+from .catalog import CATALOG, DEVICES, MODES, search_catalog
 from .client import IslandForgeClient, IslandForgeError
 from .spec import load_spec, markers, save_spec, summarize, validate_spec
 
@@ -32,6 +32,16 @@ def cmd_devices(args: argparse.Namespace) -> int:
     rows = [d for d in DEVICES.values() if not args.category or d["category"].lower() == args.category.lower()]
     for d in rows:
         print(f"{d['id']:<26} {d['category']:<18} {d['name']}")
+    return 0
+
+
+def cmd_catalog(args: argparse.Namespace) -> int:
+    if not args.kind:
+        for kind, entries in CATALOG.items():
+            print(f"{kind:<10} {len(entries):>4} entries")
+        return 0
+    for e in search_catalog(args.kind, args.search or ""):
+        print(f"{e['id']:<34} {e['category']:<26} {e['name']}")
     return 0
 
 
@@ -138,10 +148,15 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("--category")
     d.set_defaults(func=cmd_devices)
 
+    c = sub.add_parser("catalog", help="browse the Fortnite Creative catalog (prefabs, galleries, chests, items, vehicles, creatures)")
+    c.add_argument("kind", nargs="?", choices=list(CATALOG))
+    c.add_argument("--search")
+    c.set_defaults(func=cmd_catalog)
+
     g = sub.add_parser("generate", help="generate an island from a prompt")
     g.add_argument("prompt")
     g.add_argument("--mode", default="reload")
-    g.add_argument("--provider", default="anthropic", choices=["anthropic", "openai", "gemini", "ollama", "offline"])
+    g.add_argument("--provider", default="anthropic", choices=["anthropic", "openai", "gemini", "deepseek", "compatible", "ollama", "offline"], help="anthropic (Claude), openai (ChatGPT), gemini, deepseek, compatible, ollama or offline")
     g.add_argument("--model")
     g.add_argument("--direct", action="store_true", help="call Claude directly with the Anthropic Python SDK (no server)")
     g.add_argument("-o", "--out")

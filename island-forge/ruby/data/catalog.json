@@ -1,0 +1,3878 @@
+{
+  "prefabs": [
+    {
+      "id": "br_pleasant_park",
+      "name": "Pleasant Park",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "grassland",
+        "suburban"
+      ],
+      "description": "Suburban houses around a park and soccer pitch.",
+      "size": "large"
+    },
+    {
+      "id": "br_retail_row",
+      "name": "Retail Row",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "city",
+        "grassland",
+        "shops"
+      ],
+      "description": "Shops, a water tower and a market street.",
+      "size": "large"
+    },
+    {
+      "id": "br_salty_springs",
+      "name": "Salty Springs",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "grassland"
+      ],
+      "description": "Small residential town with a gas station.",
+      "size": "medium"
+    },
+    {
+      "id": "br_tilted_towers",
+      "name": "Tilted Towers",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "city",
+        "urban"
+      ],
+      "description": "Dense city block with tall buildings and a clock tower.",
+      "size": "large"
+    },
+    {
+      "id": "br_lazy_links",
+      "name": "Lazy Links",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "resort",
+        "grassland",
+        "golf"
+      ],
+      "description": "Golf course clubhouse and mansion.",
+      "size": "large"
+    },
+    {
+      "id": "br_lucky_landing",
+      "name": "Lucky Landing",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "temple",
+        "grassland",
+        "oriental"
+      ],
+      "description": "East-Asian themed village with a pagoda.",
+      "size": "medium"
+    },
+    {
+      "id": "br_loot_lake",
+      "name": "Loot Lake",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "landmark",
+        "lake",
+        "grassland"
+      ],
+      "description": "Lake with a central island house.",
+      "size": "medium"
+    },
+    {
+      "id": "br_lonely_lodge",
+      "name": "Lonely Lodge",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "resort",
+        "forest",
+        "cabin"
+      ],
+      "description": "Forest cabins around a tall lookout tower.",
+      "size": "medium"
+    },
+    {
+      "id": "br_paradise_palms",
+      "name": "Paradise Palms",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "resort",
+        "desert",
+        "city"
+      ],
+      "description": "Desert resort town with a hotel and racetrack.",
+      "size": "large"
+    },
+    {
+      "id": "br_snobby_shores",
+      "name": "Snobby Shores",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "resort",
+        "beach",
+        "mansion"
+      ],
+      "description": "Cliff-side luxury mansions.",
+      "size": "medium"
+    },
+    {
+      "id": "br_fatal_fields",
+      "name": "Fatal Fields",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "farm",
+        "grassland"
+      ],
+      "description": "Farm with barns, silos and fields.",
+      "size": "large"
+    },
+    {
+      "id": "br_junk_junction",
+      "name": "Junk Junction",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "industrial",
+        "junkyard"
+      ],
+      "description": "Scrapyard with stacked cars and a crusher.",
+      "size": "medium"
+    },
+    {
+      "id": "br_haunted_hills",
+      "name": "Haunted Hills",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "ruins",
+        "swamp",
+        "spooky",
+        "castle"
+      ],
+      "description": "Graveyard and spooky church on a hill.",
+      "size": "medium"
+    },
+    {
+      "id": "br_wailing_woods",
+      "name": "Wailing Woods",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "forest",
+        "landmark",
+        "maze"
+      ],
+      "description": "Dense forest with a hedge maze and bunker.",
+      "size": "medium"
+    },
+    {
+      "id": "br_dusty_divot",
+      "name": "Dusty Divot",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "lab",
+        "crater",
+        "desert"
+      ],
+      "description": "Crater with research labs.",
+      "size": "medium"
+    },
+    {
+      "id": "br_shifty_shafts",
+      "name": "Shifty Shafts",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "cave",
+        "industrial",
+        "mine"
+      ],
+      "description": "Mine tunnels and industrial buildings.",
+      "size": "medium"
+    },
+    {
+      "id": "br_tomato_temple",
+      "name": "Tomato Temple",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "temple",
+        "town",
+        "restaurant"
+      ],
+      "description": "Temple on a hill above a restaurant.",
+      "size": "small"
+    },
+    {
+      "id": "br_greasy_grove",
+      "name": "Greasy Grove",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "restaurant",
+        "grassland"
+      ],
+      "description": "Small town with a burger restaurant.",
+      "size": "medium"
+    },
+    {
+      "id": "br_risky_reels",
+      "name": "Risky Reels",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "landmark",
+        "cinema",
+        "grassland"
+      ],
+      "description": "Drive-in movie theatre.",
+      "size": "small"
+    },
+    {
+      "id": "br_moisty_mire",
+      "name": "Moisty Mire",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "swamp",
+        "ruins"
+      ],
+      "description": "Swampland with a film set.",
+      "size": "medium"
+    },
+    {
+      "id": "br_leaky_lake",
+      "name": "Leaky Lake",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "landmark",
+        "lake",
+        "grassland"
+      ],
+      "description": "Lake with a central house.",
+      "size": "small"
+    },
+    {
+      "id": "br_frosty_flights",
+      "name": "Frosty Flights",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "military",
+        "snow",
+        "airfield"
+      ],
+      "description": "Snowy airfield with hangars.",
+      "size": "medium"
+    },
+    {
+      "id": "br_happy_hamlet",
+      "name": "Happy Hamlet",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "snow"
+      ],
+      "description": "Snowy village.",
+      "size": "medium"
+    },
+    {
+      "id": "br_polar_peak",
+      "name": "Polar Peak",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "castle",
+        "snow",
+        "mountain"
+      ],
+      "description": "Castle on a snowy mountain.",
+      "size": "medium"
+    },
+    {
+      "id": "br_sunny_steps",
+      "name": "Sunny Steps",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "temple",
+        "desert"
+      ],
+      "description": "Desert temple ruins on terraces.",
+      "size": "medium"
+    },
+    {
+      "id": "br_neo_tilted",
+      "name": "Neo Tilted",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "city",
+        "urban",
+        "neon",
+        "futuristic"
+      ],
+      "description": "Futuristic neon city.",
+      "size": "large"
+    },
+    {
+      "id": "br_mega_mall",
+      "name": "Mega Mall",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "city",
+        "shops"
+      ],
+      "description": "Large shopping mall.",
+      "size": "large"
+    },
+    {
+      "id": "br_pressure_plant",
+      "name": "Pressure Plant",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "industrial",
+        "lab"
+      ],
+      "description": "Industrial plant with a big pressure vessel.",
+      "size": "medium"
+    },
+    {
+      "id": "br_lazy_lagoon",
+      "name": "Lazy Lagoon",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "docks",
+        "beach",
+        "pirate"
+      ],
+      "description": "Pirate-themed lagoon town.",
+      "size": "medium"
+    },
+    {
+      "id": "br_viking_village",
+      "name": "Viking Village",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "castle",
+        "snow",
+        "mountain",
+        "viking"
+      ],
+      "description": "Viking longhouses on a mountain.",
+      "size": "medium"
+    },
+    {
+      "id": "br_pirate_camp",
+      "name": "Pirate Camp",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "docks",
+        "beach",
+        "pirate"
+      ],
+      "description": "Small pirate encampment.",
+      "size": "small"
+    },
+    {
+      "id": "br_sweaty_sands",
+      "name": "Sweaty Sands",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "resort",
+        "beach",
+        "town"
+      ],
+      "description": "Beach town with a boardwalk.",
+      "size": "medium"
+    },
+    {
+      "id": "br_holly_hedges",
+      "name": "Holly Hedges",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "grassland",
+        "garden"
+      ],
+      "description": "Garden centre and suburban houses.",
+      "size": "medium"
+    },
+    {
+      "id": "br_misty_meadows",
+      "name": "Misty Meadows",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "grassland",
+        "harbor"
+      ],
+      "description": "Village with a church and harbor.",
+      "size": "medium"
+    },
+    {
+      "id": "br_slurpy_swamp",
+      "name": "Slurpy Swamp",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "industrial",
+        "swamp",
+        "factory"
+      ],
+      "description": "Juice factory in a swamp.",
+      "size": "medium"
+    },
+    {
+      "id": "br_frenzy_farm",
+      "name": "Frenzy Farm",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "farm",
+        "grassland"
+      ],
+      "description": "Farm with barns and fields.",
+      "size": "medium"
+    },
+    {
+      "id": "br_steamy_stacks",
+      "name": "Steamy Stacks",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "industrial",
+        "power"
+      ],
+      "description": "Power plant with cooling towers.",
+      "size": "large"
+    },
+    {
+      "id": "br_craggy_cliffs",
+      "name": "Craggy Cliffs",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "docks",
+        "town",
+        "cliff"
+      ],
+      "description": "Fishing town on cliffs.",
+      "size": "medium"
+    },
+    {
+      "id": "br_dirty_docks",
+      "name": "Dirty Docks",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "docks",
+        "industrial"
+      ],
+      "description": "Shipping docks and warehouses.",
+      "size": "medium"
+    },
+    {
+      "id": "br_weeping_woods",
+      "name": "Weeping Woods",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "forest",
+        "cabin"
+      ],
+      "description": "Woods with a ranger station.",
+      "size": "medium"
+    },
+    {
+      "id": "br_catty_corner",
+      "name": "Catty Corner",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "desert"
+      ],
+      "description": "Small desert town.",
+      "size": "small"
+    },
+    {
+      "id": "br_coral_castle",
+      "name": "Coral Castle",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "ruins",
+        "beach",
+        "castle"
+      ],
+      "description": "Sunken-island ruins.",
+      "size": "medium"
+    },
+    {
+      "id": "br_stealthy_stronghold",
+      "name": "Stealthy Stronghold",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "castle",
+        "jungle",
+        "fort"
+      ],
+      "description": "Jungle fortress.",
+      "size": "medium"
+    },
+    {
+      "id": "br_colossal_coliseum",
+      "name": "Colossal Coliseum",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "arena",
+        "ruins"
+      ],
+      "description": "Large coliseum arena.",
+      "size": "large"
+    },
+    {
+      "id": "br_hunters_haven",
+      "name": "Hunters Haven",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "castle",
+        "temple",
+        "jungle"
+      ],
+      "description": "Ornate jungle palace.",
+      "size": "medium"
+    },
+    {
+      "id": "br_boney_burbs",
+      "name": "Boney Burbs",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "town",
+        "grassland"
+      ],
+      "description": "Suburban houses on a hill.",
+      "size": "medium"
+    },
+    {
+      "id": "br_logjam_lumberyard",
+      "name": "Logjam Lumberyard",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "industrial",
+        "forest"
+      ],
+      "description": "Lumber mill and log piles.",
+      "size": "medium"
+    },
+    {
+      "id": "br_chonkers_speedway",
+      "name": "Chonkers Speedway",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "course",
+        "arena",
+        "racing"
+      ],
+      "description": "Racetrack with stands.",
+      "size": "large"
+    },
+    {
+      "id": "br_sanctuary",
+      "name": "Sanctuary",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "temple",
+        "futuristic"
+      ],
+      "description": "Futuristic sanctuary.",
+      "size": "medium"
+    },
+    {
+      "id": "br_shuffled_shrines",
+      "name": "Shuffled Shrines",
+      "category": "Battle Royale Locations",
+      "tags": [
+        "temple",
+        "jungle"
+      ],
+      "description": "Shrines with a sacred tree.",
+      "size": "medium"
+    },
+    {
+      "id": "th_medieval_castle",
+      "name": "Medieval Castle",
+      "category": "Themed Locations",
+      "tags": [
+        "castle",
+        "fort",
+        "medieval",
+        "forest",
+        "grassland"
+      ],
+      "description": "Stone castle with towers and walls.",
+      "size": "large"
+    },
+    {
+      "id": "th_medieval_village",
+      "name": "Medieval Village",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "medieval",
+        "grassland"
+      ],
+      "description": "Timber houses and a market.",
+      "size": "medium"
+    },
+    {
+      "id": "th_western_town",
+      "name": "Western Town",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "western",
+        "desert"
+      ],
+      "description": "Saloon, sheriff office and main street.",
+      "size": "medium"
+    },
+    {
+      "id": "th_haunted_mansion",
+      "name": "Haunted Mansion",
+      "category": "Themed Locations",
+      "tags": [
+        "castle",
+        "spooky",
+        "swamp",
+        "ruins"
+      ],
+      "description": "Creepy mansion with a graveyard.",
+      "size": "medium"
+    },
+    {
+      "id": "th_pirate_ship",
+      "name": "Pirate Ship",
+      "category": "Themed Locations",
+      "tags": [
+        "docks",
+        "pirate",
+        "beach"
+      ],
+      "description": "Full-size pirate ship.",
+      "size": "medium"
+    },
+    {
+      "id": "th_viking_longship",
+      "name": "Viking Longship",
+      "category": "Themed Locations",
+      "tags": [
+        "docks",
+        "viking",
+        "snow"
+      ],
+      "description": "Viking ship.",
+      "size": "small"
+    },
+    {
+      "id": "th_desert_temple",
+      "name": "Desert Temple",
+      "category": "Themed Locations",
+      "tags": [
+        "temple",
+        "desert",
+        "ruins"
+      ],
+      "description": "Sandstone temple.",
+      "size": "medium"
+    },
+    {
+      "id": "th_jungle_temple",
+      "name": "Jungle Temple",
+      "category": "Themed Locations",
+      "tags": [
+        "temple",
+        "jungle",
+        "ruins"
+      ],
+      "description": "Mossy stepped temple.",
+      "size": "medium"
+    },
+    {
+      "id": "th_ice_castle",
+      "name": "Ice Castle",
+      "category": "Themed Locations",
+      "tags": [
+        "castle",
+        "snow"
+      ],
+      "description": "Castle made of ice.",
+      "size": "medium"
+    },
+    {
+      "id": "th_volcano_lair",
+      "name": "Volcano Lair",
+      "category": "Themed Locations",
+      "tags": [
+        "lab",
+        "volcanic",
+        "base"
+      ],
+      "description": "Villain lair inside a volcano.",
+      "size": "large"
+    },
+    {
+      "id": "th_space_base",
+      "name": "Space Base",
+      "category": "Themed Locations",
+      "tags": [
+        "lab",
+        "base",
+        "futuristic"
+      ],
+      "description": "Sci-fi base modules.",
+      "size": "medium"
+    },
+    {
+      "id": "th_agency_headquarters",
+      "name": "Agency Headquarters",
+      "category": "Themed Locations",
+      "tags": [
+        "base",
+        "military",
+        "lab",
+        "spy"
+      ],
+      "description": "Spy agency headquarters.",
+      "size": "large"
+    },
+    {
+      "id": "th_secret_bunker",
+      "name": "Secret Bunker",
+      "category": "Themed Locations",
+      "tags": [
+        "military",
+        "base",
+        "cave",
+        "spy"
+      ],
+      "description": "Underground bunker.",
+      "size": "small"
+    },
+    {
+      "id": "th_ski_lodge",
+      "name": "Ski Lodge",
+      "category": "Themed Locations",
+      "tags": [
+        "resort",
+        "snow",
+        "cabin"
+      ],
+      "description": "Mountain lodge with lifts.",
+      "size": "medium"
+    },
+    {
+      "id": "th_lighthouse",
+      "name": "Lighthouse",
+      "category": "Themed Locations",
+      "tags": [
+        "landmark",
+        "docks",
+        "beach"
+      ],
+      "description": "Coastal lighthouse.",
+      "size": "small"
+    },
+    {
+      "id": "th_beach_resort",
+      "name": "Beach Resort",
+      "category": "Themed Locations",
+      "tags": [
+        "resort",
+        "beach"
+      ],
+      "description": "Hotel and pool by the beach.",
+      "size": "medium"
+    },
+    {
+      "id": "th_candy_factory",
+      "name": "Candy Factory",
+      "category": "Themed Locations",
+      "tags": [
+        "industrial",
+        "candy"
+      ],
+      "description": "Colourful sweets factory.",
+      "size": "medium"
+    },
+    {
+      "id": "th_toy_store",
+      "name": "Toy Store",
+      "category": "Themed Locations",
+      "tags": [
+        "city",
+        "shops",
+        "candy"
+      ],
+      "description": "Toy shop interior.",
+      "size": "small"
+    },
+    {
+      "id": "th_junkyard",
+      "name": "Junkyard",
+      "category": "Themed Locations",
+      "tags": [
+        "industrial",
+        "junkyard"
+      ],
+      "description": "Stacked wrecks and scrap.",
+      "size": "medium"
+    },
+    {
+      "id": "th_racetrack_pit_lane",
+      "name": "Racetrack Pit Lane",
+      "category": "Themed Locations",
+      "tags": [
+        "course",
+        "racing"
+      ],
+      "description": "Pits, garages and grandstand.",
+      "size": "medium"
+    },
+    {
+      "id": "th_stadium",
+      "name": "Stadium",
+      "category": "Themed Locations",
+      "tags": [
+        "arena",
+        "city"
+      ],
+      "description": "Sports stadium.",
+      "size": "large"
+    },
+    {
+      "id": "th_skate_park",
+      "name": "Skate Park",
+      "category": "Themed Locations",
+      "tags": [
+        "arena",
+        "city"
+      ],
+      "description": "Ramps, rails and bowls.",
+      "size": "small"
+    },
+    {
+      "id": "th_prison_block",
+      "name": "Prison Block",
+      "category": "Themed Locations",
+      "tags": [
+        "military",
+        "base"
+      ],
+      "description": "Cells, yard and watchtowers.",
+      "size": "large"
+    },
+    {
+      "id": "th_hospital",
+      "name": "Hospital",
+      "category": "Themed Locations",
+      "tags": [
+        "city",
+        "lab",
+        "spooky"
+      ],
+      "description": "Hospital wards and corridors.",
+      "size": "medium"
+    },
+    {
+      "id": "th_school",
+      "name": "School",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": "Classrooms, gym and yard.",
+      "size": "medium"
+    },
+    {
+      "id": "th_museum",
+      "name": "Museum",
+      "category": "Themed Locations",
+      "tags": [
+        "city",
+        "landmark"
+      ],
+      "description": "Galleries and exhibits.",
+      "size": "medium"
+    },
+    {
+      "id": "th_train_station",
+      "name": "Train Station",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "industrial"
+      ],
+      "description": "Platforms and a station hall.",
+      "size": "medium"
+    },
+    {
+      "id": "th_airport_hangar",
+      "name": "Airport Hangar",
+      "category": "Themed Locations",
+      "tags": [
+        "military",
+        "industrial",
+        "airfield"
+      ],
+      "description": "Hangar and runway.",
+      "size": "medium"
+    },
+    {
+      "id": "th_oil_rig",
+      "name": "Oil Rig",
+      "category": "Themed Locations",
+      "tags": [
+        "industrial",
+        "docks"
+      ],
+      "description": "Offshore oil platform.",
+      "size": "medium"
+    },
+    {
+      "id": "th_military_outpost",
+      "name": "Military Outpost",
+      "category": "Themed Locations",
+      "tags": [
+        "military",
+        "base",
+        "fort"
+      ],
+      "description": "Sandbags, tents and watchtowers.",
+      "size": "medium"
+    },
+    {
+      "id": "th_wild_west_fort",
+      "name": "Wild West Fort",
+      "category": "Themed Locations",
+      "tags": [
+        "fort",
+        "western",
+        "desert"
+      ],
+      "description": "Wooden stockade fort.",
+      "size": "medium"
+    },
+    {
+      "id": "th_samurai_village",
+      "name": "Samurai Village",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "temple",
+        "oriental"
+      ],
+      "description": "Japanese-style village and shrine.",
+      "size": "medium"
+    },
+    {
+      "id": "th_pyramid",
+      "name": "Pyramid",
+      "category": "Themed Locations",
+      "tags": [
+        "temple",
+        "desert",
+        "landmark"
+      ],
+      "description": "Giant pyramid.",
+      "size": "large"
+    },
+    {
+      "id": "th_treehouse_village",
+      "name": "Treehouse Village",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "forest",
+        "jungle"
+      ],
+      "description": "Houses built in the trees.",
+      "size": "medium"
+    },
+    {
+      "id": "th_underwater_base",
+      "name": "Underwater Base",
+      "category": "Themed Locations",
+      "tags": [
+        "lab",
+        "base",
+        "docks"
+      ],
+      "description": "Sub-sea research base.",
+      "size": "medium"
+    },
+    {
+      "id": "th_neon_arcade",
+      "name": "Neon Arcade",
+      "category": "Themed Locations",
+      "tags": [
+        "city",
+        "neon",
+        "urban"
+      ],
+      "description": "Arcade hall with neon signs.",
+      "size": "small"
+    },
+    {
+      "id": "th_nightclub",
+      "name": "Nightclub",
+      "category": "Themed Locations",
+      "tags": [
+        "city",
+        "neon",
+        "urban",
+        "party"
+      ],
+      "description": "Dance floor and DJ booth.",
+      "size": "small"
+    },
+    {
+      "id": "th_farmhouse_and_barn",
+      "name": "Farmhouse & Barn",
+      "category": "Themed Locations",
+      "tags": [
+        "farm",
+        "grassland",
+        "autumn"
+      ],
+      "description": "Farmhouse, barn and silo.",
+      "size": "medium"
+    },
+    {
+      "id": "th_pumpkin_patch",
+      "name": "Pumpkin Patch",
+      "category": "Themed Locations",
+      "tags": [
+        "farm",
+        "autumn",
+        "spooky"
+      ],
+      "description": "Harvest field with pumpkins.",
+      "size": "small"
+    },
+    {
+      "id": "th_gas_station",
+      "name": "Gas Station",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": "Roadside gas station.",
+      "size": "small"
+    },
+    {
+      "id": "th_diner",
+      "name": "Diner",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "restaurant"
+      ],
+      "description": "Roadside diner.",
+      "size": "small"
+    },
+    {
+      "id": "th_pizza_restaurant",
+      "name": "Pizza Restaurant",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "restaurant",
+        "city"
+      ],
+      "description": "Pizza parlour.",
+      "size": "small"
+    },
+    {
+      "id": "th_burger_restaurant",
+      "name": "Burger Restaurant",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "restaurant",
+        "city"
+      ],
+      "description": "Burger joint.",
+      "size": "small"
+    },
+    {
+      "id": "th_motel",
+      "name": "Motel",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "desert"
+      ],
+      "description": "Two-storey roadside motel.",
+      "size": "small"
+    },
+    {
+      "id": "th_office_tower",
+      "name": "Office Tower",
+      "category": "Themed Locations",
+      "tags": [
+        "city",
+        "urban"
+      ],
+      "description": "Multi-floor office building.",
+      "size": "medium"
+    },
+    {
+      "id": "th_apartment_block",
+      "name": "Apartment Block",
+      "category": "Themed Locations",
+      "tags": [
+        "city",
+        "urban"
+      ],
+      "description": "Apartments with balconies.",
+      "size": "medium"
+    },
+    {
+      "id": "th_suburban_house",
+      "name": "Suburban House",
+      "category": "Themed Locations",
+      "tags": [
+        "town",
+        "grassland"
+      ],
+      "description": "Two-storey family house.",
+      "size": "small"
+    },
+    {
+      "id": "th_warehouse",
+      "name": "Warehouse",
+      "category": "Themed Locations",
+      "tags": [
+        "industrial",
+        "docks"
+      ],
+      "description": "Large storage warehouse.",
+      "size": "medium"
+    },
+    {
+      "id": "th_factory",
+      "name": "Factory",
+      "category": "Themed Locations",
+      "tags": [
+        "industrial"
+      ],
+      "description": "Factory floor with machinery.",
+      "size": "medium"
+    },
+    {
+      "id": "th_water_treatment_plant",
+      "name": "Water Treatment Plant",
+      "category": "Themed Locations",
+      "tags": [
+        "industrial",
+        "lab"
+      ],
+      "description": "Tanks and pipes.",
+      "size": "medium"
+    },
+    {
+      "id": "th_wind_farm",
+      "name": "Wind Farm",
+      "category": "Themed Locations",
+      "tags": [
+        "industrial",
+        "grassland",
+        "landmark"
+      ],
+      "description": "Wind turbines on a ridge.",
+      "size": "medium"
+    },
+    {
+      "id": "th_radio_tower",
+      "name": "Radio Tower",
+      "category": "Themed Locations",
+      "tags": [
+        "landmark",
+        "military"
+      ],
+      "description": "Tall radio mast.",
+      "size": "small"
+    },
+    {
+      "id": "th_observatory",
+      "name": "Observatory",
+      "category": "Themed Locations",
+      "tags": [
+        "landmark",
+        "lab",
+        "mountain"
+      ],
+      "description": "Telescope dome on a hill.",
+      "size": "small"
+    },
+    {
+      "id": "th_ancient_ruins",
+      "name": "Ancient Ruins",
+      "category": "Themed Locations",
+      "tags": [
+        "ruins",
+        "temple"
+      ],
+      "description": "Broken columns and arches.",
+      "size": "medium"
+    },
+    {
+      "id": "th_cave_network",
+      "name": "Cave Network",
+      "category": "Themed Locations",
+      "tags": [
+        "cave",
+        "mountain"
+      ],
+      "description": "Natural cave system.",
+      "size": "medium"
+    },
+    {
+      "id": "th_crystal_cave",
+      "name": "Crystal Cave",
+      "category": "Themed Locations",
+      "tags": [
+        "cave",
+        "candy"
+      ],
+      "description": "Glowing crystal cavern.",
+      "size": "small"
+    },
+    {
+      "id": "ar_box_fight_arena",
+      "name": "Box Fight Arena",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "arena",
+        "base"
+      ],
+      "description": "Square arena with spawn boxes.",
+      "size": "small"
+    },
+    {
+      "id": "ar_1v1_build_arena",
+      "name": "1v1 Build Arena",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "arena"
+      ],
+      "description": "Flat duel platform.",
+      "size": "small"
+    },
+    {
+      "id": "ar_zone_wars_island",
+      "name": "Zone Wars Island",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "arena",
+        "landmark"
+      ],
+      "description": "Compact island for moving zones.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_team_bases_red_and_blue",
+      "name": "Team Bases (Red & Blue)",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "base",
+        "arena",
+        "team"
+      ],
+      "description": "Mirrored team bases.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_capture_point_plaza",
+      "name": "Capture Point Plaza",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "plaza",
+        "arena"
+      ],
+      "description": "Open plaza for a capture zone.",
+      "size": "small"
+    },
+    {
+      "id": "ar_lobby_hub",
+      "name": "Lobby Hub",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "plaza",
+        "hub"
+      ],
+      "description": "Spawn hub with portals.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_parkour_start_platform",
+      "name": "Parkour Start Platform",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "plaza",
+        "start"
+      ],
+      "description": "Start area with timer board.",
+      "size": "small"
+    },
+    {
+      "id": "ar_obstacle_course_section",
+      "name": "Obstacle Course Section",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "grassland"
+      ],
+      "description": "Jumps, gaps and rails.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_lava_jump_section",
+      "name": "Lava Jump Section",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "volcanic",
+        "temple"
+      ],
+      "description": "Floating platforms over lava.",
+      "size": "small"
+    },
+    {
+      "id": "ar_ice_slide_section",
+      "name": "Ice Slide Section",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "snow"
+      ],
+      "description": "Slippery slides and ice blocks.",
+      "size": "small"
+    },
+    {
+      "id": "ar_swinging_axe_hall",
+      "name": "Swinging Axe Hall",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "castle",
+        "spooky",
+        "swamp"
+      ],
+      "description": "Corridor of swinging blades.",
+      "size": "small"
+    },
+    {
+      "id": "ar_rooftop_run",
+      "name": "Rooftop Run",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "city",
+        "urban",
+        "neon"
+      ],
+      "description": "Jumps between rooftops.",
+      "size": "small"
+    },
+    {
+      "id": "ar_jungle_vine_swing",
+      "name": "Jungle Vine Swing",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "jungle"
+      ],
+      "description": "Vines, logs and river jumps.",
+      "size": "small"
+    },
+    {
+      "id": "ar_candy_bounce_section",
+      "name": "Candy Bounce Section",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "candy"
+      ],
+      "description": "Jelly bouncers and gumdrop hops.",
+      "size": "small"
+    },
+    {
+      "id": "ar_pirate_plank_run",
+      "name": "Pirate Plank Run",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "pirate",
+        "beach",
+        "docks"
+      ],
+      "description": "Planks, barrels and cannons.",
+      "size": "small"
+    },
+    {
+      "id": "ar_desert_ruins_run",
+      "name": "Desert Ruins Run",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "course",
+        "desert",
+        "ruins"
+      ],
+      "description": "Crumbling pillars and sand traps.",
+      "size": "small"
+    },
+    {
+      "id": "ar_finish_podium",
+      "name": "Finish Podium",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "finish",
+        "plaza"
+      ],
+      "description": "Winners podium and confetti.",
+      "size": "small"
+    },
+    {
+      "id": "ar_tycoon_plot",
+      "name": "Tycoon Plot",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "base",
+        "plaza",
+        "tycoon"
+      ],
+      "description": "Empty plot with claim pad.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_shop_strip",
+      "name": "Shop Strip",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "plaza",
+        "town",
+        "shops"
+      ],
+      "description": "Row of shops for a hub.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_horror_corridor",
+      "name": "Horror Corridor",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "spooky",
+        "lab"
+      ],
+      "description": "Dark corridors and rooms.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_escape_room_set",
+      "name": "Escape Room Set",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "lab",
+        "castle"
+      ],
+      "description": "Linked puzzle rooms.",
+      "size": "medium"
+    },
+    {
+      "id": "ar_wave_defense_fort",
+      "name": "Wave Defense Fort",
+      "category": "Arenas & Game Spaces",
+      "tags": [
+        "fort",
+        "base"
+      ],
+      "description": "Walls and choke points.",
+      "size": "medium"
+    }
+  ],
+  "galleries": [
+    {
+      "id": "gb_suburban_gallery",
+      "name": "Suburban Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town",
+        "grassland"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_tilted_town_gallery",
+      "name": "Tilted Town Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "city",
+        "urban"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_office_gallery",
+      "name": "Office Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "city",
+        "urban"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_retail_gallery",
+      "name": "Retail Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "city",
+        "shops",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_industrial_gallery",
+      "name": "Industrial Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "industrial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_factory_gallery",
+      "name": "Factory Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "industrial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_farm_gallery",
+      "name": "Farm Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "farm",
+        "grassland",
+        "autumn"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_barn_gallery",
+      "name": "Barn Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "farm"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_cabin_gallery",
+      "name": "Cabin Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "forest",
+        "snow",
+        "cabin"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_medieval_gallery",
+      "name": "Medieval Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "castle",
+        "medieval"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_castle_gallery",
+      "name": "Castle Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "castle",
+        "fort"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_haunted_gallery",
+      "name": "Haunted Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "spooky",
+        "swamp",
+        "castle"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_western_gallery",
+      "name": "Western Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "western",
+        "desert",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_desert_gallery",
+      "name": "Desert Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "desert",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_viking_gallery",
+      "name": "Viking Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "viking",
+        "snow"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_pirate_gallery",
+      "name": "Pirate Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "pirate",
+        "docks",
+        "beach"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_pirate_camp_gallery",
+      "name": "Pirate Camp Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "pirate",
+        "beach"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_lighthouse_gallery",
+      "name": "Lighthouse Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "docks",
+        "beach",
+        "landmark"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_docks_gallery",
+      "name": "Docks Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "docks",
+        "industrial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_military_gallery",
+      "name": "Military Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "military",
+        "base"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_bunker_gallery",
+      "name": "Bunker Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "military",
+        "base",
+        "cave"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_agency_gallery",
+      "name": "Agency Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "spy",
+        "base",
+        "lab"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_lab_gallery",
+      "name": "Lab Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "lab",
+        "futuristic"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_sci_fi_gallery",
+      "name": "Sci-Fi Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "futuristic",
+        "lab"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_neo_tilted_gallery",
+      "name": "Neo Tilted Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "neon",
+        "futuristic",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_temple_gallery",
+      "name": "Temple Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "temple",
+        "oriental"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_lucky_landing_gallery",
+      "name": "Lucky Landing Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "oriental",
+        "temple",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_jungle_temple_gallery",
+      "name": "Jungle Temple Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "temple",
+        "jungle",
+        "ruins"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_ruins_gallery",
+      "name": "Ruins Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "ruins"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_stone_pillar_gallery",
+      "name": "Stone Pillar Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "ruins",
+        "temple"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_pool_gallery",
+      "name": "Pool Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "resort"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_resort_gallery",
+      "name": "Resort Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "resort",
+        "beach"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_ski_lodge_gallery",
+      "name": "Ski Lodge Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "snow",
+        "resort"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_restaurant_gallery",
+      "name": "Restaurant Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "restaurant",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_gas_station_gallery",
+      "name": "Gas Station Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_diner_gallery",
+      "name": "Diner Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "restaurant",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_motel_gallery",
+      "name": "Motel Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town",
+        "desert"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_prison_gallery",
+      "name": "Prison Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "military",
+        "base"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_hospital_gallery",
+      "name": "Hospital Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "city",
+        "lab"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_school_gallery",
+      "name": "School Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_arena_gallery",
+      "name": "Arena Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "arena"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_stadium_gallery",
+      "name": "Stadium Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "arena",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_candy_gallery",
+      "name": "Candy Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "candy"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_toy_gallery",
+      "name": "Toy Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "candy",
+        "toy"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_winter_village_gallery",
+      "name": "Winter Village Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "snow",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_floor_and_wall_gallery",
+      "name": "Floor & Wall Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "arena",
+        "base"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_metal_wall_gallery",
+      "name": "Metal Wall Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "industrial",
+        "base"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_brick_wall_gallery",
+      "name": "Brick Wall Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_wood_wall_gallery",
+      "name": "Wood Wall Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "cabin",
+        "farm"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_glass_gallery",
+      "name": "Glass Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "city",
+        "futuristic"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_stairs_and_ramps_gallery",
+      "name": "Stairs & Ramps Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "arena",
+        "course"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_roof_gallery",
+      "name": "Roof Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_door_gallery",
+      "name": "Door Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gb_window_gallery",
+      "name": "Window Gallery",
+      "category": "Building Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_tree_gallery",
+      "name": "Tree Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "forest",
+        "grassland"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_pine_tree_gallery",
+      "name": "Pine Tree Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "forest",
+        "snow"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_palm_tree_gallery",
+      "name": "Palm Tree Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "beach",
+        "jungle",
+        "desert"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_jungle_gallery",
+      "name": "Jungle Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "jungle"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_swamp_gallery",
+      "name": "Swamp Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "swamp"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_autumn_gallery",
+      "name": "Autumn Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "autumn"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_snow_nature_gallery",
+      "name": "Snow Nature Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "snow"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_desert_nature_gallery",
+      "name": "Desert Nature Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "desert"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_rock_gallery",
+      "name": "Rock Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "mountain"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_cliff_gallery",
+      "name": "Cliff Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "mountain",
+        "beach"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_lava_gallery",
+      "name": "Lava Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "volcanic"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_crystal_gallery",
+      "name": "Crystal Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "cave",
+        "candy"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_flower_gallery",
+      "name": "Flower Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "grassland"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_bush_and_shrub_gallery",
+      "name": "Bush & Shrub Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "grassland",
+        "forest"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_mushroom_gallery",
+      "name": "Mushroom Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "forest",
+        "swamp"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_beach_gallery",
+      "name": "Beach Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "beach"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_water_and_lake_gallery",
+      "name": "Water & Lake Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "lake",
+        "beach"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_cave_gallery",
+      "name": "Cave Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "cave",
+        "mountain"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gn_coral_gallery",
+      "name": "Coral Gallery",
+      "category": "Nature Galleries",
+      "tags": [
+        "beach",
+        "docks"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_furniture_gallery",
+      "name": "Furniture Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_kitchen_gallery",
+      "name": "Kitchen Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "town",
+        "restaurant"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_bathroom_gallery",
+      "name": "Bathroom Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_office_prop_gallery",
+      "name": "Office Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_shop_prop_gallery",
+      "name": "Shop Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "shops",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_industrial_prop_gallery",
+      "name": "Industrial Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "industrial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_farm_prop_gallery",
+      "name": "Farm Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "farm"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_military_prop_gallery",
+      "name": "Military Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "military"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_medieval_prop_gallery",
+      "name": "Medieval Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "medieval",
+        "castle"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_spooky_prop_gallery",
+      "name": "Spooky Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "spooky"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_pirate_prop_gallery",
+      "name": "Pirate Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "pirate"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_sci_fi_prop_gallery",
+      "name": "Sci-Fi Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "futuristic",
+        "lab"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_sports_prop_gallery",
+      "name": "Sports Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "arena"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_party_prop_gallery",
+      "name": "Party Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "party",
+        "candy"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_holiday_prop_gallery",
+      "name": "Holiday Prop Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "snow",
+        "party"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_vehicle_wreck_gallery",
+      "name": "Vehicle Wreck Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "junkyard",
+        "industrial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_road_and_street_gallery",
+      "name": "Road & Street Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_fence_gallery",
+      "name": "Fence Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "farm",
+        "town"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_sign_gallery",
+      "name": "Sign Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "town",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_lighting_gallery",
+      "name": "Lighting Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "city",
+        "neon"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_neon_sign_gallery",
+      "name": "Neon Sign Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "neon",
+        "city"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_container_gallery",
+      "name": "Container Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "docks",
+        "industrial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_barrels_and_crates_gallery",
+      "name": "Barrels & Crates Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "docks",
+        "industrial"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_statue_gallery",
+      "name": "Statue Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "landmark"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_particle_and_fx_gallery",
+      "name": "Particle & FX Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "landmark",
+        "party"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_chests_and_ammo_gallery",
+      "name": "Chests & Ammo Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "loot"
+      ],
+      "description": ""
+    },
+    {
+      "id": "gp_traps_gallery",
+      "name": "Traps Gallery",
+      "category": "Prop Galleries",
+      "tags": [
+        "course",
+        "trap"
+      ],
+      "description": ""
+    }
+  ],
+  "chests": [
+    {
+      "id": "treasure_chest",
+      "name": "Treasure Chest",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "loot"
+      ],
+      "description": "Standard chest: a weapon, ammo, a consumable and materials.",
+      "detail": "weapon + ammo + consumable + mats"
+    },
+    {
+      "id": "rare_chest",
+      "name": "Rare Chest",
+      "category": "Chests & Containers",
+      "tags": [
+        "rare",
+        "loot"
+      ],
+      "description": "Higher-rarity chest with more items.",
+      "detail": "rare+ weapons, heals"
+    },
+    {
+      "id": "ammo_box",
+      "name": "Ammo Box",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "ammo"
+      ],
+      "description": "Ammo for every weapon type.",
+      "detail": "ammo"
+    },
+    {
+      "id": "supply_drop",
+      "name": "Supply Drop",
+      "category": "Chests & Containers",
+      "tags": [
+        "rare",
+        "loot",
+        "event"
+      ],
+      "description": "Falls from the sky with high-rarity loot.",
+      "detail": "epic+ weapons, shields, mats"
+    },
+    {
+      "id": "supply_llama",
+      "name": "Supply Llama",
+      "category": "Chests & Containers",
+      "tags": [
+        "rare",
+        "loot"
+      ],
+      "description": "Llama piñata full of materials and consumables.",
+      "detail": "mats, consumables, ammo"
+    },
+    {
+      "id": "cooler",
+      "name": "Cooler",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "heal"
+      ],
+      "description": "Food and healing items.",
+      "detail": "heals"
+    },
+    {
+      "id": "food_box",
+      "name": "Food Box",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "heal"
+      ],
+      "description": "Food items.",
+      "detail": "food"
+    },
+    {
+      "id": "ice_machine",
+      "name": "Ice Machine",
+      "category": "Chests & Containers",
+      "tags": [
+        "common"
+      ],
+      "description": "Ice to throw.",
+      "detail": "utility"
+    },
+    {
+      "id": "safe",
+      "name": "Safe",
+      "category": "Chests & Containers",
+      "tags": [
+        "rare",
+        "loot"
+      ],
+      "description": "Locked safe with gold and items.",
+      "detail": "gold + items"
+    },
+    {
+      "id": "vault_chest",
+      "name": "Vault Chest",
+      "category": "Chests & Containers",
+      "tags": [
+        "epic",
+        "loot"
+      ],
+      "description": "Chest inside a keycard vault.",
+      "detail": "legendary/mythic"
+    },
+    {
+      "id": "bunker_chest",
+      "name": "Bunker Chest",
+      "category": "Chests & Containers",
+      "tags": [
+        "epic",
+        "loot"
+      ],
+      "description": "High-tier chest in bunkers.",
+      "detail": "epic+ weapons"
+    },
+    {
+      "id": "oathbound_chest",
+      "name": "Oathbound Chest",
+      "category": "Chests & Containers",
+      "tags": [
+        "rare",
+        "loot",
+        "themed"
+      ],
+      "description": "Themed chest with a guaranteed rarity.",
+      "detail": "rare+ weapon"
+    },
+    {
+      "id": "holiday_present",
+      "name": "Holiday Present",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "loot",
+        "snow"
+      ],
+      "description": "Holiday gift box.",
+      "detail": "random item"
+    },
+    {
+      "id": "fishing_spot",
+      "name": "Fishing Spot",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "heal",
+        "water"
+      ],
+      "description": "Fish with a rod for food and weapons.",
+      "detail": "fish, items"
+    },
+    {
+      "id": "ammo_crate_large",
+      "name": "Ammo Crate (Large)",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "ammo"
+      ],
+      "description": "Large ammo crate.",
+      "detail": "lots of ammo"
+    },
+    {
+      "id": "weapon_rack",
+      "name": "Weapon Rack",
+      "category": "Chests & Containers",
+      "tags": [
+        "common",
+        "loot"
+      ],
+      "description": "Rack holding a set weapon (Item Spawner).",
+      "detail": "set weapon"
+    }
+  ],
+  "items": [
+    {
+      "id": "it_assault_rifle",
+      "name": "Assault Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_burst_assault_rifle",
+      "name": "Burst Assault Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_heavy_assault_rifle",
+      "name": "Heavy Assault Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_scoped_assault_rifle",
+      "name": "Scoped Assault Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_infantry_rifle",
+      "name": "Infantry Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_thermal_scoped_rifle",
+      "name": "Thermal Scoped Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_striker_ar",
+      "name": "Striker AR",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_red_eye_assault_rifle",
+      "name": "Red-Eye Assault Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_pump_shotgun",
+      "name": "Pump Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_tactical_shotgun",
+      "name": "Tactical Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_heavy_shotgun",
+      "name": "Heavy Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_combat_shotgun",
+      "name": "Combat Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_lever_action_shotgun",
+      "name": "Lever Action Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_charge_shotgun",
+      "name": "Charge Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_double_barrel_shotgun",
+      "name": "Double Barrel Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_auto_shotgun",
+      "name": "Auto Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_submachine_gun",
+      "name": "Submachine Gun",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "smg"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_tactical_smg",
+      "name": "Tactical SMG",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "smg"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_compact_smg",
+      "name": "Compact SMG",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "smg"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_suppressed_smg",
+      "name": "Suppressed SMG",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "smg"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_drum_gun",
+      "name": "Drum Gun",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "smg"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_pistol",
+      "name": "Pistol",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_revolver",
+      "name": "Revolver",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_hand_cannon",
+      "name": "Hand Cannon",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_dual_pistols",
+      "name": "Dual Pistols",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_suppressed_pistol",
+      "name": "Suppressed Pistol",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_bolt_action_sniper_rifle",
+      "name": "Bolt-Action Sniper Rifle",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "sniper"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_semi_auto_sniper_rifle",
+      "name": "Semi-Auto Sniper Rifle",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "sniper"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_heavy_sniper_rifle",
+      "name": "Heavy Sniper Rifle",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "sniper"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_hunting_rifle",
+      "name": "Hunting Rifle",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "sniper"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_crossbow",
+      "name": "Crossbow",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "bow"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_bow",
+      "name": "Bow",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "bow"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_minigun",
+      "name": "Minigun",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "heavy"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_light_machine_gun",
+      "name": "Light Machine Gun",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "heavy"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_rocket_launcher",
+      "name": "Rocket Launcher",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "explosive"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_grenade_launcher",
+      "name": "Grenade Launcher",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "explosive"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_guided_missile",
+      "name": "Guided Missile",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "explosive"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_quad_launcher",
+      "name": "Quad Launcher",
+      "category": "Snipers & Heavy",
+      "tags": [
+        "weapon",
+        "explosive"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_grenade",
+      "name": "Grenade",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "explosive"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_impulse_grenade",
+      "name": "Impulse Grenade",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_shockwave_grenade",
+      "name": "Shockwave Grenade",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_boogie_bomb",
+      "name": "Boogie Bomb",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_clinger",
+      "name": "Clinger",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "explosive"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_stink_bomb",
+      "name": "Stink Bomb",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_smoke_grenade",
+      "name": "Smoke Grenade",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_remote_explosives",
+      "name": "Remote Explosives",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "explosive"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_port_a_fort",
+      "name": "Port-a-Fort",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "build"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_launch_pad_item",
+      "name": "Launch Pad Item",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_grappler",
+      "name": "Grappler",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_grapple_glove",
+      "name": "Grapple Glove",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_shockwave_hammer",
+      "name": "Shockwave Hammer",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility",
+        "melee"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_rift_to_go",
+      "name": "Rift-To-Go",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_bush",
+      "name": "Bush",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "stealth"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_decoy_grenade",
+      "name": "Decoy Grenade",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_fishing_rod",
+      "name": "Fishing Rod",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_flashlight",
+      "name": "Flashlight",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "horror"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_keycard",
+      "name": "Keycard",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "key"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_pickaxe",
+      "name": "Pickaxe",
+      "category": "Throwables & Utility",
+      "tags": [
+        "melee"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_bandages",
+      "name": "Bandages",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_med_kit",
+      "name": "Med Kit",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_small_shield_potion",
+      "name": "Small Shield Potion",
+      "category": "Healing & Shields",
+      "tags": [
+        "shield"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_shield_potion",
+      "name": "Shield Potion",
+      "category": "Healing & Shields",
+      "tags": [
+        "shield"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_chug_jug",
+      "name": "Chug Jug",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "shield"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_slurp_juice",
+      "name": "Slurp Juice",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "shield"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_chug_splash",
+      "name": "Chug Splash",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "shield"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_med_mist",
+      "name": "Med-Mist",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_cozy_campfire",
+      "name": "Cozy Campfire",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_shield_keg",
+      "name": "Shield Keg",
+      "category": "Healing & Shields",
+      "tags": [
+        "shield"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_apple",
+      "name": "Apple",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "food"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_banana",
+      "name": "Banana",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "food"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_mushroom",
+      "name": "Mushroom",
+      "category": "Healing & Shields",
+      "tags": [
+        "shield",
+        "food"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_coconut",
+      "name": "Coconut",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "food"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_pepper",
+      "name": "Pepper",
+      "category": "Healing & Shields",
+      "tags": [
+        "food",
+        "speed"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_flowberry",
+      "name": "Flowberry",
+      "category": "Healing & Shields",
+      "tags": [
+        "shield",
+        "food"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_slap_juice",
+      "name": "Slap Juice",
+      "category": "Healing & Shields",
+      "tags": [
+        "food",
+        "stamina"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_damage_trap",
+      "name": "Damage Trap",
+      "category": "Traps & Materials",
+      "tags": [
+        "trap"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_spike_trap",
+      "name": "Spike Trap",
+      "category": "Traps & Materials",
+      "tags": [
+        "trap"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_bouncer_trap",
+      "name": "Bouncer Trap",
+      "category": "Traps & Materials",
+      "tags": [
+        "trap",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_wall_launcher",
+      "name": "Wall Launcher",
+      "category": "Traps & Materials",
+      "tags": [
+        "trap"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_wood",
+      "name": "Wood",
+      "category": "Traps & Materials",
+      "tags": [
+        "material"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_stone",
+      "name": "Stone",
+      "category": "Traps & Materials",
+      "tags": [
+        "material"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_metal",
+      "name": "Metal",
+      "category": "Traps & Materials",
+      "tags": [
+        "material"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_gold_bars",
+      "name": "Gold Bars",
+      "category": "Traps & Materials",
+      "tags": [
+        "currency"
+      ],
+      "description": ""
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "sports_car",
+      "name": "Sports Car",
+      "category": "Vehicles",
+      "tags": [
+        "car",
+        "road",
+        "racing"
+      ],
+      "description": "Fast two-door car."
+    },
+    {
+      "id": "sedan",
+      "name": "Sedan",
+      "category": "Vehicles",
+      "tags": [
+        "car",
+        "road"
+      ],
+      "description": "Four-seat family car."
+    },
+    {
+      "id": "pickup_truck",
+      "name": "Pickup Truck",
+      "category": "Vehicles",
+      "tags": [
+        "car",
+        "road",
+        "offroad"
+      ],
+      "description": "Sturdy pickup."
+    },
+    {
+      "id": "semi_truck",
+      "name": "Semi Truck",
+      "category": "Vehicles",
+      "tags": [
+        "car",
+        "road",
+        "heavy"
+      ],
+      "description": "Big rig."
+    },
+    {
+      "id": "taxi",
+      "name": "Taxi",
+      "category": "Vehicles",
+      "tags": [
+        "car",
+        "road",
+        "city"
+      ],
+      "description": "City taxi."
+    },
+    {
+      "id": "dirt_bike",
+      "name": "Dirt Bike",
+      "category": "Vehicles",
+      "tags": [
+        "bike",
+        "offroad"
+      ],
+      "description": "Fast two-wheeler."
+    },
+    {
+      "id": "quadcrasher",
+      "name": "Quadcrasher",
+      "category": "Vehicles",
+      "tags": [
+        "offroad"
+      ],
+      "description": "Ramming quad bike."
+    },
+    {
+      "id": "atk_golf_cart",
+      "name": "ATK Golf Cart",
+      "category": "Vehicles",
+      "tags": [
+        "offroad"
+      ],
+      "description": "All-terrain kart."
+    },
+    {
+      "id": "baller",
+      "name": "Baller",
+      "category": "Vehicles",
+      "tags": [
+        "offroad"
+      ],
+      "description": "Rolling ball with a grapple."
+    },
+    {
+      "id": "shopping_cart",
+      "name": "Shopping Cart",
+      "category": "Vehicles",
+      "tags": [
+        "fun"
+      ],
+      "description": "Push-and-ride cart."
+    },
+    {
+      "id": "motorboat",
+      "name": "Motorboat",
+      "category": "Vehicles",
+      "tags": [
+        "boat",
+        "water"
+      ],
+      "description": "Boat with missiles."
+    },
+    {
+      "id": "helicopter_choppa",
+      "name": "Helicopter (Choppa)",
+      "category": "Vehicles",
+      "tags": [
+        "air"
+      ],
+      "description": "Five-seat helicopter."
+    },
+    {
+      "id": "x_4_stormwing",
+      "name": "X-4 Stormwing",
+      "category": "Vehicles",
+      "tags": [
+        "air",
+        "plane"
+      ],
+      "description": "Prop plane."
+    },
+    {
+      "id": "ufo",
+      "name": "UFO",
+      "category": "Vehicles",
+      "tags": [
+        "air",
+        "sci-fi"
+      ],
+      "description": "Flying saucer."
+    },
+    {
+      "id": "hoverboard",
+      "name": "Hoverboard",
+      "category": "Vehicles",
+      "tags": [
+        "board"
+      ],
+      "description": "Hover board."
+    },
+    {
+      "id": "driftboard",
+      "name": "Driftboard",
+      "category": "Vehicles",
+      "tags": [
+        "board"
+      ],
+      "description": "Hover board with boost."
+    },
+    {
+      "id": "tank",
+      "name": "Tank",
+      "category": "Vehicles",
+      "tags": [
+        "military",
+        "heavy"
+      ],
+      "description": "Armoured tank."
+    },
+    {
+      "id": "rocket_racing_car",
+      "name": "Rocket Racing Car",
+      "category": "Vehicles",
+      "tags": [
+        "racing"
+      ],
+      "description": "High-speed racing car."
+    },
+    {
+      "id": "battle_bus",
+      "name": "Battle Bus",
+      "category": "Vehicles",
+      "tags": [
+        "air",
+        "spawn"
+      ],
+      "description": "Spawn bus for BR modes."
+    },
+    {
+      "id": "mech",
+      "name": "Mech",
+      "category": "Vehicles",
+      "tags": [
+        "military",
+        "sci-fi"
+      ],
+      "description": "Walking mech."
+    }
+  ],
+  "creatures": [
+    {
+      "id": "fiend",
+      "name": "Fiend",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "creature",
+        "hostile"
+      ],
+      "description": "Melee creature."
+    },
+    {
+      "id": "elite_fiend",
+      "name": "Elite Fiend",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "creature",
+        "hostile"
+      ],
+      "description": "Stronger fiend."
+    },
+    {
+      "id": "ranged_fiend",
+      "name": "Ranged Fiend",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "creature",
+        "hostile"
+      ],
+      "description": "Ranged attacker."
+    },
+    {
+      "id": "brute",
+      "name": "Brute",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "creature",
+        "hostile"
+      ],
+      "description": "Large tank creature."
+    },
+    {
+      "id": "elite_brute",
+      "name": "Elite Brute",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "creature",
+        "hostile"
+      ],
+      "description": "Armoured brute."
+    },
+    {
+      "id": "cube_fiend",
+      "name": "Cube Fiend",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "creature",
+        "hostile"
+      ],
+      "description": "Cube monster."
+    },
+    {
+      "id": "zombie",
+      "name": "Zombie",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "creature",
+        "hostile",
+        "horror"
+      ],
+      "description": "Shambling undead."
+    },
+    {
+      "id": "wolf",
+      "name": "Wolf",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "wildlife",
+        "hostile"
+      ],
+      "description": "Pack predator."
+    },
+    {
+      "id": "boar",
+      "name": "Boar",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "wildlife"
+      ],
+      "description": "Charges when hit."
+    },
+    {
+      "id": "chicken",
+      "name": "Chicken",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "wildlife",
+        "passive"
+      ],
+      "description": "Grab to glide."
+    },
+    {
+      "id": "frog",
+      "name": "Frog",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "wildlife",
+        "passive"
+      ],
+      "description": "Hops around."
+    },
+    {
+      "id": "raptor",
+      "name": "Raptor",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "wildlife",
+        "hostile"
+      ],
+      "description": "Fast dinosaur."
+    },
+    {
+      "id": "klombo",
+      "name": "Klombo",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "wildlife",
+        "passive"
+      ],
+      "description": "Huge friendly creature."
+    },
+    {
+      "id": "shark",
+      "name": "Shark",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "wildlife",
+        "water",
+        "hostile"
+      ],
+      "description": "Hunts in water."
+    },
+    {
+      "id": "guard_ai",
+      "name": "Guard (AI)",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "npc",
+        "hostile"
+      ],
+      "description": "Armed patrolling guard."
+    },
+    {
+      "id": "henchman",
+      "name": "Henchman",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "npc",
+        "hostile"
+      ],
+      "description": "Boss bodyguard."
+    },
+    {
+      "id": "boss",
+      "name": "Boss",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "npc",
+        "hostile",
+        "boss"
+      ],
+      "description": "Tough boss that drops loot."
+    },
+    {
+      "id": "shopkeeper_npc",
+      "name": "Shopkeeper NPC",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "npc",
+        "friendly"
+      ],
+      "description": "Sells items."
+    },
+    {
+      "id": "quest_giver_npc",
+      "name": "Quest Giver NPC",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "npc",
+        "friendly"
+      ],
+      "description": "Gives objectives."
+    },
+    {
+      "id": "sentry_turret",
+      "name": "Sentry Turret",
+      "category": "Creatures & NPCs",
+      "tags": [
+        "turret",
+        "hostile"
+      ],
+      "description": "Automated turret."
+    }
+  ]
+}

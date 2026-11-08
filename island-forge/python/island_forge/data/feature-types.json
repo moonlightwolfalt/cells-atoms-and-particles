@@ -35,5 +35,7 @@
   "sentry",
   "bouncer",
   "moving_platform",
-  "speed_boost"
+  "speed_boost",
+  "powerup",
+  "turret"
 ]

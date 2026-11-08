@@ -2,6 +2,8 @@
 // providers get it pasted into the prompt. `npm run schema` writes it to /schema for Python/Ruby.
 import { BIOMES, POI_KINDS, FEATURE_TYPES, TIMES_OF_DAY, BUILD_MODES } from './modes.ts';
 
+const ids = (description: string) => ({ type: 'array', items: { type: 'string' }, description });
+
 const point = {
   type: 'object',
   properties: { x: { type: 'number' }, y: { type: 'number' } },
@@ -41,6 +43,8 @@ export const MAP_SCHEMA = obj({
       loot_tier: { type: 'integer', description: '1 = light, 3 = hot drop.' },
       elevation: { type: 'number', description: '0 = sea level, 1 = mountain top.' },
       description: { type: 'string' },
+      prefab: { type: 'string', description: 'Prefab id from the catalog list, or "" to build by hand.' },
+      galleries: ids('1-3 gallery ids from the catalog list.'),
     }),
   },
   lakes: { type: 'array', items: obj({ x: { type: 'number' }, y: { type: 'number' }, radius: { type: 'number' } }) },
@@ -86,6 +90,13 @@ export const MAP_SCHEMA = obj({
     starting_materials: { type: 'integer' },
     build_mode: { type: 'string', enum: [...BUILD_MODES] },
     loot_pool_notes: { type: 'string' },
+  }),
+  loot: obj({
+    starting_loadout: ids('Item ids every player spawns with (empty for loot-only modes).'),
+    pool: ids('Item ids found in chests / on the floor / on the weapon ladder (Gun Game: in ladder order).'),
+    chests: ids('Chest / container ids used on the island.'),
+    vehicles: ids('Vehicle ids.'),
+    creatures: ids('Creature / NPC ids.'),
   }),
   publish: obj({
     title: { type: 'string', description: 'Island title for Discover, max 40 characters.' },

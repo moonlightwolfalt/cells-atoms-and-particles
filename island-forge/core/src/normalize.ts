@@ -1,7 +1,14 @@
 // Turns any AI's (possibly sloppy) answer into a valid MapSpec, then plans the UEFN devices.
-import type { MapSpec, Feature, Poi, Rules, StormPhase, Publish, PlacedDevice } from './types.ts';
+import type { MapSpec, Feature, Poi, Rules, StormPhase, Publish, PlacedDevice, Loot } from './types.ts';
 import { MODES, MODE_IDS, BIOMES, POI_KINDS, FEATURE_TYPES, TIMES_OF_DAY, BUILD_MODES } from './modes.ts';
 import { planDevices } from './devicePlan.ts';
+import { CATALOG, suggestPrefab, suggestGalleries, type CatalogKind } from './catalog.ts';
+import { defaultLoot } from './loot.ts';
+
+const idsOf = (kind: CatalogKind, v: unknown, max: number): string[] => {
+  const known = new Set(CATALOG[kind].map((e) => e.id));
+  return [...new Set(arr(v).filter((x): x is string => typeof x === 'string' && known.has(x.trim())).map((x) => x.trim()))].slice(0, max);
+};
 
 type Raw = Record<string, any>;
 
@@ -33,6 +40,18 @@ export function hashString(s: string): number {
   return h >>> 0;
 }
 
+function normalizeLoot(raw: unknown, mode: (typeof MODES)[string]): Loot {
+  if (!raw || typeof raw !== 'object') return defaultLoot(mode);
+  const r = raw as Raw;
+  return {
+    starting_loadout: idsOf('items', r.starting_loadout, 8),
+    pool: idsOf('items', r.pool, 40),
+    chests: idsOf('chests', r.chests, 12),
+    vehicles: idsOf('vehicles', r.vehicles, 8),
+    creatures: idsOf('creatures', r.creatures, 8),
+  };
+}
+
 export function normalizeSpec(raw: unknown, modeId = 'reload', extra: { prompt?: string; generator?: string } = {}): MapSpec {
   const src: Raw = raw && typeof raw === 'object' ? (raw as Raw) : {};
   const mode = MODES[oneOf(src.mode, MODE_IDS, '' as string) || modeId] || MODES.reload;
@@ -49,9 +68,12 @@ export function normalizeSpec(raw: unknown, modeId = 'reload', extra: { prompt?:
       loot_tier: clamp(int(p?.loot_tier, 2), 1, 3),
       elevation: clamp(num(p?.elevation, 0.2), 0, 1),
       description: str(p?.description).slice(0, 300),
+      // filled in below once the theme is known
+      prefab: typeof p?.prefab === 'string' ? p.prefab.trim() : (undefined as unknown as string),
+      galleries: Array.isArray(p?.galleries) ? p.galleries : (undefined as unknown as string[]),
     }));
   if (pois.length === 0) {
-    pois.push({ name: 'Center', kind: 'plaza', x: 0.5, y: 0.5, size: 'medium', loot_tier: 2, elevation: 0.2, description: 'Placeholder location.' });
+    pois.push({ name: 'Center', kind: 'plaza', x: 0.5, y: 0.5, size: 'medium', loot_tier: 2, elevation: 0.2, description: 'Placeholder location.', prefab: undefined as unknown as string, galleries: undefined as unknown as string[] });
   }
 
   const r: Raw = src.rules || {};
@@ -108,7 +130,7 @@ export function normalizeSpec(raw: unknown, modeId = 'reload', extra: { prompt?:
   if (publish.tags.length === 0) publish.tags = mode.tags.slice(0, 4);
 
   const spec: MapSpec = {
-    format: 'island-forge/map@2',
+    format: 'island-forge/map@3',
     mode: mode.id,
     seed: int(src.seed, NaN) >>> 0 || hashString(JSON.stringify(src.name || '') + mode.id),
     prompt: str(src.prompt ?? extra.prompt).slice(0, 2000),
@@ -137,9 +159,21 @@ export function normalizeSpec(raw: unknown, modeId = 'reload', extra: { prompt?:
       phases,
     },
     rules,
+    loot: normalizeLoot(src.loot, mode),
     publish,
     devices: [],
   };
+
+  // Builds: keep valid prefab/gallery ids, suggest ones for locations that have none.
+  const themeWords = [...spec.theme.toLowerCase().split(/[^a-z]+/), spec.base_biome, ...spec.biomes.map((b) => b.type)].filter(Boolean);
+  const prefabIds = new Set(CATALOG.prefabs.map((e) => e.id));
+  const usedPrefabs = new Set(spec.pois.map((p) => p.prefab).filter((id): id is string => typeof id === 'string' && prefabIds.has(id)));
+  for (const p of spec.pois) {
+    const key = `${spec.seed}|${p.name}`;
+    if (p.prefab === undefined || (p.prefab !== '' && !prefabIds.has(p.prefab))) p.prefab = suggestPrefab(p.kind, themeWords, p.size, key, usedPrefabs);
+    const gal = p.galleries === undefined ? [] : idsOf('galleries', p.galleries, 4);
+    p.galleries = p.galleries === undefined || (gal.length === 0 && (p.galleries as unknown[]).length > 0) ? suggestGalleries(p.kind, themeWords, key) : gal;
+  }
 
   const keptDevices: PlacedDevice[] = arr(src.devices)
     .filter((dv) => dv && typeof dv.device === 'string' && typeof dv.id === 'string')

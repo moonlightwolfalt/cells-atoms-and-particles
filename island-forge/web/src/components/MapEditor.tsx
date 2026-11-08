@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { FEATURE_TYPES, POI_KINDS, featureStyle, gridRef, toWorld, MODES, DEVICE_MAP, type MapSpec } from '../../../core/src/index.ts';
+import { FEATURE_TYPES, POI_KINDS, featureStyle, gridRef, toWorld, MODES, DEVICE_MAP, PREFABS, catalogEntry, chestPlan, type MapSpec } from '../../../core/src/index.ts';
+import { IdPicker } from './IdPicker.tsx';
 import { drawMap, hitTest, terrainImage, DEFAULT_LAYERS, type Layers, type Selection } from '../render/map2d.ts';
 
 type Tool = 'select' | 'poi' | `feature:${string}`;
@@ -41,7 +42,7 @@ export function MapEditor({ spec, onCommit }: Props) {
   const onDown = (e: React.PointerEvent) => {
     const p = toMap(e);
     if (tool === 'poi') {
-      const next = { ...spec, pois: [...spec.pois, { name: `New Location ${spec.pois.length + 1}`, kind: 'town', x: p.x, y: p.y, size: 'medium' as const, loot_tier: 2, elevation: 0.2, description: '' }] };
+      const next = { ...spec, pois: [...spec.pois, { name: `New Location ${spec.pois.length + 1}`, kind: 'town', x: p.x, y: p.y, size: 'medium' as const, loot_tier: 2, elevation: 0.2, description: '', prefab: '', galleries: [] }] };
       onCommit(next, { replanDevices: true });
       setSelected({ kind: 'poi', index: next.pois.length - 1 });
       setTool('select');
@@ -178,6 +179,19 @@ export function MapEditor({ spec, onCommit }: Props) {
               <input type="range" min={0} max={1} step={0.05} value={item.elevation} onChange={(e) => update({ elevation: +e.target.value })} className="w-full" />
             </label>
             <textarea className="input" rows={3} value={item.description} onChange={(e) => update({ description: e.target.value }, false)} aria-label="Description" />
+            <label className="block text-xs text-mute">Prefab
+              <select className="input" value={item.prefab} onChange={(e) => update({ prefab: e.target.value }, false)}>
+                <option value="">Build by hand (no prefab)</option>
+                {[...new Set(PREFABS.map((p) => p.category))].map((cat) => (
+                  <optgroup key={cat} label={cat}>
+                    {PREFABS.filter((p) => p.category === cat).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+                  </optgroup>
+                ))}
+              </select>
+            </label>
+            {item.prefab && <p className="text-xs text-mute">{catalogEntry(item.prefab)?.description}</p>}
+            <IdPicker kind="galleries" label="Galleries" value={item.galleries} max={6} onChange={(galleries) => update({ galleries }, false)} />
+            <p className="text-xs text-mute">Chests: {chestPlan(spec, item).map((c) => `${c.name} ×${c.count}`).join(', ') || 'none'}</p>
           </div>
         )}
         {item && selected?.kind === 'feature' && (

@@ -1,6 +1,6 @@
 // Writes the map JSON schema + catalogs to /schema for the Python and Ruby clients.
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { MAP_SCHEMA, MODE_LIST, DEVICES, FEATURE_TYPES } from '../core/src/index.ts';
+import { MAP_SCHEMA, MODE_LIST, DEVICES, FEATURE_TYPES, CATALOG } from '../core/src/index.ts';
 
 // The Python and Ruby packages ship their own copy so they work when installed on their own.
 const DIRS = ['../schema/', '../python/island_forge/data/', '../ruby/data/'];
@@ -14,4 +14,5 @@ write('island-map.schema.json', { $schema: 'https://json-schema.org/draft/2020-1
 write('modes.json', MODE_LIST);
 write('devices.json', DEVICES);
 write('feature-types.json', FEATURE_TYPES);
-console.log(`Wrote island-map.schema.json, modes.json, devices.json, feature-types.json to ${DIRS.join(', ')}`);
+write('catalog.json', CATALOG);
+console.log(`Wrote island-map.schema.json, modes.json, devices.json, feature-types.json, catalog.json to ${DIRS.join(', ')}`);

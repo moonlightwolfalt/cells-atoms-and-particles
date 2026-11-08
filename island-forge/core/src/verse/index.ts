@@ -8,6 +8,9 @@ import type { MapSpec } from '../types.ts';
 import { MODES } from '../modes.ts';
 import { toWorld, stormCenters, gridRef } from '../terrain.ts';
 import { featureStyle } from '../features.ts';
+import { catalogEntry } from '../catalog.ts';
+
+const itemName = (id: string) => catalogEntry(id)?.name || id;
 
 export interface VerseModule {
   id: string;
@@ -438,7 +441,9 @@ const gunGame: VerseModule = {
   fileName: (s) => `${verseIdent(s.name)}_gun_game.verse`,
   deviceName: (s) => deviceName(s, 'gun_game'),
   setup: (s) => [
-    `Place one Item Granter per weapon level (set each to grant one weapon) and add them, in order, to WeaponLadder (${Math.max(5, s.rules.score_to_win)} is a good length).`,
+    s.loot.pool.length
+      ? `Place one Item Granter per weapon level and add them to WeaponLadder in this order: ${s.loot.pool.map((id, i) => `${i + 1}. ${itemName(id)}`).join(', ')}. (devices.csv lists them as "Ladder #n".)`
+      : `Place one Item Granter per weapon level (set each to grant one weapon) and add them, in order, to WeaponLadder (${Math.max(5, s.rules.score_to_win)} is a good length).`,
     'Set ClearWeapons to an Item Remover that removes all weapons.',
     'Add every Player Spawn Pad to Spawners so players get their current weapon when they respawn.',
     'Set EndGame to an End Game device.',
@@ -966,8 +971,53 @@ ${WATCH_ELIMINATIONS}
   },
 };
 
+const loadoutOnSpawn: VerseModule = {
+  id: 'loadout_on_spawn',
+  title: 'Loadout on spawn',
+  description: 'Gives every player the starting loadout each time they spawn.',
+  fileName: (s) => `${verseIdent(s.name)}_loadout.verse`,
+  deviceName: (s) => deviceName(s, 'loadout'),
+  setup: (s) => [
+    `Place one Item Granter per loadout item (${s.loot.starting_loadout.map(itemName).join(', ')}) — devices.csv lists them as "Loadout — …".`,
+    `Add those Item Granters to LoadoutGranters and every Player Spawn Pad to Spawners on ${deviceName(s, 'loadout')}.`,
+    'Optional: set ClearFirst to an Item Remover so players never keep old weapons.',
+  ],
+  generate: (spec) => `${header(spec, 'Loadout on spawn', [`Loadout: ${spec.loot.starting_loadout.map(itemName).join(', ') || 'none'}.`])}
+using { /Fortnite.com/Devices }
+using { /Verse.org/Simulation }
+
+${deviceName(spec, 'loadout')} := class(creative_device):
+
+    @editable
+    Spawners : []player_spawner_device = array{}
+
+    @editable
+    LoadoutGranters : []item_granter_device = array{}
+
+    @editable
+    ClearFirst : ?item_remover_device = false
+
+    OnBegin<override>()<suspends> : void =
+        for (Spawner : Spawners):
+            Spawner.SpawnedEvent.Subscribe(GiveLoadout)
+
+    GiveLoadout(Agent : agent) : void =
+        if (Remover := ClearFirst?):
+            Remover.Remove(Agent)
+        for (Granter : LoadoutGranters):
+            Granter.GrantItem(Agent)
+`,
+};
+
+/** Verse modules an island gets: its mode's modules, plus loadout-on-spawn when it has a loadout. */
+export function verseModuleIds(spec: MapSpec): string[] {
+  const ids = [...(MODES[spec.mode]?.verse || ['layout_markers'])];
+  if (spec.loot?.starting_loadout?.length && spec.mode !== 'gun_game') ids.splice(1, 0, 'loadout_on_spawn');
+  return ids;
+}
+
 export const VERSE_MODULES: Record<string, VerseModule> = Object.fromEntries(
-  [layoutMarkers, eliminationScoring, matchHud, roundManager, reloadRespawn, gunGame, zoneControl, checkpointCourse, tycoonEconomy, waveSpawner, collectToEscape, teamSwap, playerStats].map((m) => [m.id, m]),
+  [loadoutOnSpawn, layoutMarkers, eliminationScoring, matchHud, roundManager, reloadRespawn, gunGame, zoneControl, checkpointCourse, tycoonEconomy, waveSpawner, collectToEscape, teamSwap, playerStats].map((m) => [m.id, m]),
 );
 
 export interface VerseFile {
@@ -981,7 +1031,7 @@ export interface VerseFile {
 
 /** All Verse files for a spec (the mode's modules plus any extra ids requested). */
 export function generateVerseFiles(spec: MapSpec, extra: string[] = []): VerseFile[] {
-  const ids = [...new Set([...(MODES[spec.mode]?.verse || ['layout_markers']), ...extra])];
+  const ids = [...new Set([...verseModuleIds(spec), ...extra])];
   return ids
     .map((id) => VERSE_MODULES[id])
     .filter(Boolean)

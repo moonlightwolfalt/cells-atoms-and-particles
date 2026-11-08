@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .catalog import DEVICES, FEATURE_TYPES, MODES
+from .catalog import CATALOG_IDS, DEVICES, FEATURE_TYPES, MODES
 
 CM_PER_M = 100
 MAX_ELEVATION_CM = 6000
@@ -67,6 +67,12 @@ def validate_spec(spec: Any) -> list[str]:
 
     for i, p in enumerate(spec["pois"]):
         in_range(p, f"pois[{i}] ({p.get('name', '?')})")
+        if p.get("prefab") and not _known(p["prefab"]):
+            problems.append(f"pois[{i}]: unknown prefab {p['prefab']!r}")
+    for key, ids in (spec.get("loot") or {}).items():
+        for id_ in ids:
+            if not _known(id_):
+                problems.append(f"loot.{key}: unknown id {id_!r}")
     for i, f in enumerate(spec["features"]):
         in_range(f, f"features[{i}]")
         if f.get("type") not in FEATURE_TYPES:
@@ -105,6 +111,17 @@ def markers(spec: dict[str, Any]) -> list[dict[str, Any]]:
     return out
 
 
+def _known(id_: str) -> bool:
+    """Catalog ids, plus entries the user imported into the web app (custom_*)."""
+    return id_ in CATALOG_IDS or id_.startswith("custom_")
+
+
+def _name(id_: str | None) -> str | None:
+    if not id_:
+        return None
+    return CATALOG_IDS.get(id_, {}).get("name", id_)
+
+
 def summarize(spec: dict[str, Any]) -> dict[str, Any]:
     mode = MODES.get(spec["mode"], {})
     feature_counts: dict[str, int] = {}
@@ -124,6 +141,8 @@ def summarize(spec: dict[str, Any]) -> dict[str, Any]:
         "features": feature_counts,
         "devices": device_counts,
         "storm_phases": len(spec["storm"].get("phases", [])),
+        "builds": {p["name"]: {"prefab": _name(p.get("prefab")), "galleries": [_name(g) for g in p.get("galleries", [])]} for p in spec["pois"]},
+        "loot": {k: [_name(i) for i in v] for k, v in (spec.get("loot") or {}).items()},
         "verse_modules": mode.get("verse", []),
         "tags": spec["publish"].get("tags", []),
     }

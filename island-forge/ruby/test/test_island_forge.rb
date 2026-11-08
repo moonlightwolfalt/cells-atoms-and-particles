@@ -41,6 +41,19 @@ class TestSpec < Minitest::Test
     assert_equal s['devices'].count { |d| d['enabled'] } + 1, s.devices_csv.lines.size
   end
 
+  def test_catalog_and_builds
+    assert_operator IslandForge::Catalog::CATALOG['prefabs'].size, :>=, 100
+    assert(IslandForge::Catalog.search('vehicles', 'boat').any? { |e| e['id'] == 'motorboat' })
+    s = specs.first
+    assert_equal s['pois'].map { |p| p['name'] }.sort, s.summary[:builds].keys.sort
+    data = JSON.parse(File.read(File.join(FIXTURES, 'reload.json')))
+    data['loot']['pool'] << 'it_laser_sword'
+    data['loot']['chests'] << 'custom_new_chest'
+    problems = IslandForge::Spec.new(data).problems
+    assert_includes problems, 'loot.pool: unknown id "it_laser_sword"'
+    refute(problems.any? { |p| p.include?('custom_new_chest') })
+  end
+
   def test_summary
     s = specs[1]
     sum = s.summary

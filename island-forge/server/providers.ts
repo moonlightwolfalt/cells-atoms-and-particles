@@ -24,8 +24,46 @@ export const PROVIDERS: ProviderInfo[] = [
     env: 'ANTHROPIC_API_KEY',
     keyHint: 'sk-ant-...',
   },
-  { id: 'openai', label: 'OpenAI or any OpenAI-compatible API', defaultModel: 'gpt-5', models: [], needsKey: true, env: 'OPENAI_API_KEY', keyHint: 'sk-...', baseUrl: 'https://api.openai.com/v1' },
-  { id: 'gemini', label: 'Google Gemini', defaultModel: 'gemini-2.5-flash', models: [], needsKey: true, env: 'GEMINI_API_KEY', keyHint: 'AIza...' },
+  {
+    id: 'openai',
+    label: 'ChatGPT (OpenAI)',
+    defaultModel: 'gpt-5',
+    models: ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-4.1', 'gpt-4o'],
+    needsKey: true,
+    env: 'OPENAI_API_KEY',
+    keyHint: 'sk-...',
+    baseUrl: 'https://api.openai.com/v1',
+  },
+  {
+    id: 'gemini',
+    label: 'Google Gemini',
+    defaultModel: 'gemini-2.5-flash',
+    models: ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'],
+    needsKey: true,
+    env: 'GEMINI_API_KEY',
+    keyHint: 'AIza...',
+    baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
+  },
+  {
+    id: 'deepseek',
+    label: 'DeepSeek',
+    defaultModel: 'deepseek-chat',
+    models: ['deepseek-chat', 'deepseek-reasoner'],
+    needsKey: true,
+    env: 'DEEPSEEK_API_KEY',
+    keyHint: 'sk-...',
+    baseUrl: 'https://api.deepseek.com',
+  },
+  {
+    id: 'compatible',
+    label: 'Other OpenAI-compatible (OpenRouter, Groq, LM Studio…)',
+    defaultModel: '',
+    models: [],
+    needsKey: false,
+    env: 'OPENAI_COMPATIBLE_API_KEY',
+    keyHint: 'API key if the service needs one',
+    baseUrl: 'https://openrouter.ai/api/v1',
+  },
   { id: 'ollama', label: 'Ollama (local models)', defaultModel: 'llama3.1', models: [], needsKey: false, baseUrl: 'http://localhost:11434' },
   { id: 'offline', label: 'Offline generator (no AI, instant)', defaultModel: 'procedural', models: [], needsKey: false },
 ];
@@ -115,51 +153,75 @@ async function fetchJson(url: string, init: RequestInit, label: string): Promise
   }
   if (!res.ok) {
     const msg = data?.error?.message || data?.error || text.slice(0, 300);
-    throw httpError(res.status === 401 || res.status === 403 ? 401 : res.status === 429 ? 429 : 502, `${label} error (${res.status}): ${msg}`);
+    const authFailed = res.status === 401 || res.status === 403 || /api key|authenticat/i.test(String(msg));
+    throw httpError(authFailed ? 401 : res.status === 429 ? 429 : 502, `${label} error (${res.status}): ${msg}`);
   }
   return data;
 }
 
-async function callOpenAI({ apiKey, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
-  const key = apiKey || process.env.OPENAI_API_KEY;
-  const base = (baseUrl || 'https://api.openai.com/v1').replace(/\/+$/, '');
-  if (!key && base.includes('api.openai.com')) throw httpError(400, 'Add your OpenAI API key (or set OPENAI_API_KEY).');
-  const data = await fetchJson(
-    `${base}/chat/completions`,
-    {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', ...(key ? { authorization: `Bearer ${key}` } : {}) },
-      body: JSON.stringify({
-        model,
-        response_format: { type: 'json_object' },
-        messages: [
-          { role: 'system', content: `${buildSystemPrompt()}\n\n${schemaInstructions()}` },
-          { role: 'user', content: buildUserPrompt(idea, mode) },
-        ],
-      }),
-    },
-    'OpenAI-compatible API',
-  );
-  return extractJson(data?.choices?.[0]?.message?.content);
+/** Chat-completions call shared by ChatGPT, DeepSeek and any OpenAI-compatible service. */
+function openAICompatible(opts: { label: string; env: string; defaultBase: string; keyRequired: boolean; extraBody?: (model: string) => Record<string, unknown> }) {
+  return async ({ apiKey, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> => {
+    const key = apiKey || process.env[opts.env];
+    const base = (baseUrl || opts.defaultBase).replace(/\/+$/, '');
+    if (!key && opts.keyRequired) throw httpError(400, `Add your ${opts.label} API key (or set ${opts.env}).`);
+    if (!model) throw httpError(400, `Type a model name for ${opts.label}.`);
+    const data = await fetchJson(
+      `${base}/chat/completions`,
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', ...(key ? { authorization: `Bearer ${key}` } : {}) },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: `${buildSystemPrompt()}\n\n${schemaInstructions()}` },
+            { role: 'user', content: buildUserPrompt(idea, mode) },
+          ],
+          ...(opts.extraBody ? opts.extraBody(model) : { response_format: { type: 'json_object' } }),
+        }),
+      },
+      opts.label,
+    );
+    const choice = data?.choices?.[0];
+    if (choice?.finish_reason === 'length') throw httpError(502, `${opts.label} ran out of output tokens. Try a shorter idea or another model.`);
+    return extractJson(choice?.message?.content);
+  };
 }
 
-async function callGemini({ apiKey, model, idea, mode }: CallArgs): Promise<unknown> {
+const callOpenAI = openAICompatible({ label: 'ChatGPT (OpenAI)', env: 'OPENAI_API_KEY', defaultBase: 'https://api.openai.com/v1', keyRequired: true });
+
+// DeepSeek: OpenAI-compatible. deepseek-chat supports JSON mode; deepseek-reasoner answers in plain text.
+const callDeepSeek = openAICompatible({
+  label: 'DeepSeek',
+  env: 'DEEPSEEK_API_KEY',
+  defaultBase: 'https://api.deepseek.com',
+  keyRequired: true,
+  extraBody: (model) => (model.includes('reasoner') ? { max_tokens: 32000 } : { response_format: { type: 'json_object' }, max_tokens: 8192 }),
+});
+
+const callCompatible = openAICompatible({ label: 'OpenAI-compatible API', env: 'OPENAI_COMPATIBLE_API_KEY', defaultBase: 'https://openrouter.ai/api/v1', keyRequired: false });
+
+async function callGemini({ apiKey, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
   const key = apiKey || process.env.GEMINI_API_KEY;
   if (!key) throw httpError(400, 'Add your Gemini API key (or set GEMINI_API_KEY).');
+  const base = (baseUrl || 'https://generativelanguage.googleapis.com/v1beta').replace(/\/+$/, '');
   const data = await fetchJson(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+    `${base}/models/${encodeURIComponent(model)}:generateContent`,
     {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: `${buildSystemPrompt()}\n\n${schemaInstructions()}` }] },
         contents: [{ role: 'user', parts: [{ text: buildUserPrompt(idea, mode) }] }],
-        generationConfig: { responseMimeType: 'application/json' },
+        generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 32768 },
       }),
     },
     'Gemini',
   );
-  return extractJson(data?.candidates?.[0]?.content?.parts?.map((p: any) => p.text).join(''));
+  const candidate = data?.candidates?.[0];
+  if (candidate?.finishReason === 'MAX_TOKENS') throw httpError(502, 'Gemini ran out of output tokens. Try a shorter idea or another model.');
+  if (candidate?.finishReason === 'SAFETY') throw httpError(422, 'Gemini declined this prompt. Try rewording your island idea.');
+  return extractJson(candidate?.content?.parts?.map((p: any) => p.text).join(''));
 }
 
 async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
@@ -185,7 +247,7 @@ async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unk
 }
 
 export type Caller = (args: CallArgs) => Promise<unknown>;
-const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, ollama: callOllama };
+const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, compatible: callCompatible, ollama: callOllama };
 
 export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS): Promise<MapSpec> {
   const mode = MODES[body.mode] ? body.mode : 'reload';

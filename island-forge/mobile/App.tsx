@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, Share, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
 import Svg, { Circle, G, Line, Polyline, Rect, Text as SvgText } from 'react-native-svg';
 import {
-  MODE_LIST, MODE_CATEGORIES, MODES, DEVICE_MAP, generateProcedural, generateVerseFiles, heightAt, featureStyle, TEAM_COLORS, LAND_THRESHOLD, gridRef,
+  MODE_LIST, MODE_CATEGORIES, MODES, DEVICE_MAP, catalogEntry, generateProcedural, generateVerseFiles, heightAt, featureStyle, TEAM_COLORS, LAND_THRESHOLD, gridRef,
   type MapSpec,
 } from '../core/src/index.ts';
 
@@ -17,8 +17,9 @@ const BIOME: Record<string, string> = {
 const PROVIDERS = [
   { id: 'offline', label: 'Offline (on phone)' },
   { id: 'anthropic', label: 'Claude' },
-  { id: 'openai', label: 'OpenAI' },
+  { id: 'openai', label: 'ChatGPT' },
   { id: 'gemini', label: 'Gemini' },
+  { id: 'deepseek', label: 'DeepSeek' },
   { id: 'ollama', label: 'Ollama' },
 ];
 type Tab = 'map' | 'places' | 'devices' | 'verse';
@@ -186,6 +187,7 @@ export default function App() {
               <View key={i} style={st.row}>
                 <Text style={st.rowTitle}>{p.name}</Text>
                 <Text style={st.mute}>{p.kind} · {p.size} · {'★'.repeat(p.loot_tier)} · {gridRef(p.x, p.y)}</Text>
+                <Text style={st.mute}>Prefab: {p.prefab ? catalogEntry(p.prefab)?.name : 'build by hand'}{p.galleries.length ? ` · Galleries: ${p.galleries.map((g) => catalogEntry(g)?.name || g).join(', ')}` : ''}</Text>
               </View>
             ))}
           {tab === 'devices' &&

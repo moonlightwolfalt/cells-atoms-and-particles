@@ -43,6 +43,8 @@ export const FEATURE_STYLE: Record<string, FeatureStyle> = {
   bouncer: { color: '#80ffdb', glyph: '⇡', label: 'Bouncer' },
   moving_platform: { color: '#adb5bd', glyph: '↔', label: 'Moving Platform' },
   speed_boost: { color: '#fb8500', glyph: '»', label: 'Speed Boost' },
+  powerup: { color: '#80ed99', glyph: '✚', label: 'Power-up' },
+  turret: { color: '#495057', glyph: '⊕', label: 'Turret' },
 };
 
 export const TEAM_COLORS = ['#ffffff', '#ef233c', '#3a86ff', '#38b000', '#ffd60a', '#9d4edd', '#fb8500', '#ff4d6d', '#2ec4b6'];

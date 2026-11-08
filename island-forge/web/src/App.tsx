@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { MODES, MODE_LIST, DEVICES, VERSE_MODULES, generateProcedural, generateVerseFiles, readZip, type MapSpec } from '../../core/src/index.ts';
+import { MODES, MODE_LIST, DEVICES, VERSE_MODULES, CATALOG, generateProcedural, generateVerseFiles, readZip, type MapSpec } from '../../core/src/index.ts';
 import { loadProviders, generate, OFFLINE, type ProviderInfo } from './api.ts';
 import { store } from './storage.ts';
 import { useIsland, replan } from './useIsland.ts';
@@ -12,6 +12,7 @@ import { VersePanel } from './components/VersePanel.tsx';
 import { DetailsPanel } from './components/DetailsPanel.tsx';
 import { PublishPanel } from './components/PublishPanel.tsx';
 import { ExportPanel } from './components/ExportPanel.tsx';
+import { CatalogPanel, restoreCustomCatalog } from './components/CatalogPanel.tsx';
 import type { IslandScene } from './render/scene3d.ts';
 
 const TABS = [
@@ -20,11 +21,15 @@ const TABS = [
   ['image', 'Island image'],
   ['devices', 'Devices'],
   ['verse', 'Verse'],
-  ['details', 'Details & rules'],
+  ['details', 'Details & loot'],
+  ['catalog', 'Catalog'],
   ['publish', 'Publish'],
   ['export', 'Export'],
 ] as const;
 type Tab = (typeof TABS)[number][0];
+
+// Re-apply imported catalog entries before any island is normalized.
+restoreCustomCatalog();
 
 export default function App() {
   const island = useIsland();
@@ -156,7 +161,7 @@ export default function App() {
           <div>
             <h1 className="font-display text-2xl uppercase leading-none">Island Forge</h1>
             <p className="text-xs text-mute">
-              {MODE_LIST.length} island types · {DEVICES.length} UEFN devices · {Object.keys(VERSE_MODULES).length} Verse modules
+              {MODE_LIST.length} island types · {DEVICES.length} devices · {CATALOG.prefabs.length} prefabs · {CATALOG.galleries.length} galleries · {Object.keys(VERSE_MODULES).length} Verse modules
             </p>
           </div>
         </div>
@@ -217,6 +222,7 @@ export default function App() {
               {tab === 'verse' && <VersePanel spec={spec} />}
               {tab === 'details' && <DetailsPanel spec={spec} onCommit={commit} />}
               {tab === 'publish' && <PublishPanel spec={spec} onCommit={commit} />}
+              {tab === 'catalog' && <CatalogPanel spec={spec} onCommit={commit} onStatus={setStatus} />}
               {tab === 'export' && <ExportPanel spec={spec} hero={hero} onStatus={setStatus} />}
             </>
           )}

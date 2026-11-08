@@ -1,5 +1,5 @@
 {
-  "format": "island-forge/map@2",
+  "format": "island-forge/map@3",
   "mode": "capture_the_flag",
   "seed": 2471857585,
   "prompt": "pirate bay",
@@ -46,7 +46,12 @@
       "size": "medium",
       "loot_tier": 2,
       "elevation": 0.15,
-      "description": "Spawn base for team 1."
+      "description": "Spawn base for team 1.",
+      "prefab": "th_space_base",
+      "galleries": [
+        "gb_resort_gallery",
+        "gn_palm_tree_gallery"
+      ]
     },
     {
       "name": "Blue Base",
@@ -56,7 +61,12 @@
       "size": "medium",
       "loot_tier": 2,
       "elevation": 0.15,
-      "description": "Spawn base for team 2."
+      "description": "Spawn base for team 2.",
+      "prefab": "th_beach_resort",
+      "galleries": [
+        "gb_pirate_gallery",
+        "gn_palm_tree_gallery"
+      ]
     },
     {
       "name": "Lazy Arena",
@@ -66,7 +76,13 @@
       "size": "large",
       "loot_tier": 3,
       "elevation": 0.25,
-      "description": "The contested middle."
+      "description": "The contested middle.",
+      "prefab": "br_colossal_coliseum",
+      "galleries": [
+        "gb_lighthouse_gallery",
+        "gn_palm_tree_gallery",
+        "gp_sports_prop_gallery"
+      ]
     },
     {
       "name": "Pleasant Resort",
@@ -76,7 +92,12 @@
       "size": "small",
       "loot_tier": 2,
       "elevation": 0.2612276551546529,
-      "description": "Side area themed as a resort."
+      "description": "Side area themed as a resort.",
+      "prefab": "br_snobby_shores",
+      "galleries": [
+        "gb_resort_gallery",
+        "gn_palm_tree_gallery"
+      ]
     },
     {
       "name": "Pirate Village",
@@ -86,7 +107,13 @@
       "size": "small",
       "loot_tier": 2,
       "elevation": 0.07041238152887672,
-      "description": "Side area themed as a town."
+      "description": "Side area themed as a town.",
+      "prefab": "br_sweaty_sands",
+      "galleries": [
+        "gb_lighthouse_gallery",
+        "gn_palm_tree_gallery",
+        "gp_kitchen_gallery"
+      ]
     }
   ],
   "lakes": [],
@@ -371,6 +398,26 @@
     "build_mode": "build",
     "loot_pool_notes": "Class loadouts per team."
   },
+  "loot": {
+    "starting_loadout": [
+      "it_assault_rifle",
+      "it_pump_shotgun",
+      "it_submachine_gun",
+      "it_small_shield_potion",
+      "it_med_kit"
+    ],
+    "pool": [
+      "it_rocket_launcher",
+      "it_grenade",
+      "it_shield_potion"
+    ],
+    "chests": [
+      "ammo_box",
+      "weapon_rack"
+    ],
+    "vehicles": [],
+    "creatures": []
+  },
   "publish": {
     "title": "Lagoon Showdown",
     "description": "Steal the enemy flag and bring it home. Theme: pirate bay",
@@ -487,6 +534,216 @@
       "y": 0.4807163717094038,
       "settings": {
         "Display Time": 4
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-1",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Red Base",
+      "x": 0.14,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-2",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Red Base",
+      "x": 0.14,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-3",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Blue Base",
+      "x": 0.86,
+      "y": 0.4999999999999999,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-4",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Blue Base",
+      "x": 0.86,
+      "y": 0.4999999999999999,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-5",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×4 — Lazy Arena",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-6",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Lazy Arena",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-7",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Pleasant Resort",
+      "x": 0.6678628943860532,
+      "y": 0.6330282299220562,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-8",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Pleasant Resort",
+      "x": 0.6678628943860532,
+      "y": 0.6330282299220562,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-9",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Pirate Village",
+      "x": 0.8175833271443844,
+      "y": 0.7893897734582425,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-10",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Pirate Village",
+      "x": 0.8175833271443844,
+      "y": 0.7893897734582425,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-1",
+      "device": "item_granter",
+      "label": "Loadout — Assault Rifle",
+      "x": 0.5700000000000001,
+      "y": 0.5,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Assault Rifle",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-2",
+      "device": "item_granter",
+      "label": "Loadout — Pump Shotgun",
+      "x": 0.5492705098312485,
+      "y": 0.5285316954888546,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Pump Shotgun",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-3",
+      "device": "item_granter",
+      "label": "Loadout — Submachine Gun",
+      "x": 0.5157294901687516,
+      "y": 0.5176335575687742,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Submachine Gun",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-4",
+      "device": "item_granter",
+      "label": "Loadout — Small Shield Potion",
+      "x": 0.5157294901687516,
+      "y": 0.48236644243122584,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Small Shield Potion",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-5",
+      "device": "item_granter",
+      "label": "Loadout — Med Kit",
+      "x": 0.5492705098312485,
+      "y": 0.4714683045111454,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Med Kit",
+        "Grant On": "Spawn"
       },
       "enabled": true
     },
@@ -808,6 +1065,17 @@
     {
       "id": "verse_device-2",
       "device": "verse_device",
+      "label": "Verse — lagoon_showdown_loadout_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "lagoon_showdown_loadout.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-3",
+      "device": "verse_device",
       "label": "Verse — lagoon_showdown_elimination_scoring_device",
       "x": 0.5,
       "y": 0.5,
@@ -817,7 +1085,7 @@
       "enabled": true
     },
     {
-      "id": "verse_device-3",
+      "id": "verse_device-4",
       "device": "verse_device",
       "label": "Verse — lagoon_showdown_hud_device",
       "x": 0.5,

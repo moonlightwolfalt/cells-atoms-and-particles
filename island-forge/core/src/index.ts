@@ -12,4 +12,6 @@ export * from './rng.ts';
 export * from './png.ts';
 export * from './zip.ts';
 export * from './uefn.ts';
-export { VERSE_MODULES, generateVerseFiles, verseIdent, collectMarkers, type VerseFile, type VerseModule } from './verse/index.ts';
+export * from './catalog.ts';
+export * from './loot.ts';
+export { VERSE_MODULES, verseModuleIds, generateVerseFiles, verseIdent, collectMarkers, type VerseFile, type VerseModule } from './verse/index.ts';

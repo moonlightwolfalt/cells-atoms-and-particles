@@ -1,4 +1,5 @@
-import { MODES, BUILD_MODES, TIMES_OF_DAY, BIOMES, gridRef, normalizeSpec, type MapSpec, type Rules } from '../../../core/src/index.ts';
+import { MODES, BUILD_MODES, TIMES_OF_DAY, BIOMES, gridRef, normalizeSpec, catalogEntry, type MapSpec, type Rules, type Loot } from '../../../core/src/index.ts';
+import { IdPicker } from './IdPicker.tsx';
 
 const fmt = (s: number) => (s >= 60 ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s` : `${s}s`);
 
@@ -70,10 +71,25 @@ export function DetailsPanel({ spec, onCommit }: { spec: MapSpec; onCommit: (s: 
       </section>
 
       <section>
+        <h3 className="label">Loot</h3>
+        <div className="grid gap-4 md:grid-cols-2">
+          {([
+            ['starting_loadout', 'items', 'Starting loadout (granted on spawn)', 8],
+            ['pool', 'items', spec.mode === 'gun_game' ? 'Weapon ladder (in order)' : 'Loot pool', 40],
+            ['chests', 'chests', 'Chests & containers', 12],
+            ['vehicles', 'vehicles', 'Vehicles', 8],
+            ['creatures', 'creatures', 'Creatures & NPCs', 8],
+          ] as const).map(([key, kind, label, max]) => (
+            <IdPicker key={key} kind={kind} label={label} max={max} value={spec.loot[key]} onChange={(ids) => onCommit({ ...spec, loot: { ...spec.loot, [key]: ids } as Loot }, { replanDevices: true })} />
+          ))}
+        </div>
+      </section>
+
+      <section>
         <h3 className="label">Locations ({spec.pois.length})</h3>
         <div className="overflow-x-auto">
           <table className="table-x">
-            <thead><tr><th>Name</th><th>Kind</th><th>Size</th><th>Loot</th><th>Grid</th></tr></thead>
+            <thead><tr><th>Name</th><th>Kind</th><th>Prefab</th><th>Size</th><th>Loot</th><th>Grid</th></tr></thead>
             <tbody>
               {spec.pois.map((p, i) => (
                 <tr key={i}>
@@ -84,7 +100,7 @@ export function DetailsPanel({ spec, onCommit }: { spec: MapSpec; onCommit: (s: 
                       set({ pois });
                     }} />
                   </td>
-                  <td>{p.kind}</td><td>{p.size}</td><td>{'★'.repeat(p.loot_tier)}</td><td>{gridRef(p.x, p.y)}</td>
+                  <td>{p.kind}</td><td className="text-mute">{p.prefab ? catalogEntry(p.prefab)?.name : '—'}</td><td>{p.size}</td><td>{'★'.repeat(p.loot_tier)}</td><td>{gridRef(p.x, p.y)}</td>
                 </tr>
               ))}
             </tbody>

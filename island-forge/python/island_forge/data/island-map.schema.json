@@ -142,6 +142,17 @@
           },
           "description": {
             "type": "string"
+          },
+          "prefab": {
+            "type": "string",
+            "description": "Prefab id from the catalog list, or \"\" to build by hand."
+          },
+          "galleries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "1-3 gallery ids from the catalog list."
           }
         },
         "required": [
@@ -152,7 +163,9 @@
           "size",
           "loot_tier",
           "elevation",
-          "description"
+          "description",
+          "prefab",
+          "galleries"
         ],
         "additionalProperties": false
       }
@@ -287,7 +300,9 @@
               "sentry",
               "bouncer",
               "moving_platform",
-              "speed_boost"
+              "speed_boost",
+              "powerup",
+              "turret"
             ]
           },
           "x": {
@@ -470,6 +485,54 @@
       ],
       "additionalProperties": false
     },
+    "loot": {
+      "type": "object",
+      "properties": {
+        "starting_loadout": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Item ids every player spawns with (empty for loot-only modes)."
+        },
+        "pool": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Item ids found in chests / on the floor / on the weapon ladder (Gun Game: in ladder order)."
+        },
+        "chests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Chest / container ids used on the island."
+        },
+        "vehicles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Vehicle ids."
+        },
+        "creatures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Creature / NPC ids."
+        }
+      },
+      "required": [
+        "starting_loadout",
+        "pool",
+        "chests",
+        "vehicles",
+        "creatures"
+      ],
+      "additionalProperties": false
+    },
     "publish": {
       "type": "object",
       "properties": {
@@ -517,6 +580,7 @@
     "bus_route",
     "storm",
     "rules",
+    "loot",
     "publish"
   ],
   "additionalProperties": false

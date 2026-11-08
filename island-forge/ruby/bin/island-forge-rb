@@ -14,6 +14,7 @@ parser = OptionParser.new do |o|
     Commands:
       modes                     list every island type
       devices                   list the UEFN device catalog
+      catalog [KIND] [SEARCH]   browse prefabs, galleries, chests, items, vehicles, creatures
       generate PROMPT           generate an island (writes NAME.island.json)
       info SPEC                 summarize a map spec
       validate SPEC             check a map spec
@@ -26,7 +27,7 @@ parser = OptionParser.new do |o|
   TXT
   o.on('--server URL', 'Island Forge server (default http://localhost:5173)') { |v| opts[:server] = v }
   o.on('--mode MODE', 'Island type for generate (default reload)') { |v| opts[:mode] = v }
-  o.on('--provider ID', 'anthropic, openai, gemini, ollama or offline') { |v| opts[:provider] = v }
+  o.on('--provider ID', 'anthropic (Claude), openai (ChatGPT), gemini, deepseek, compatible, ollama or offline') { |v| opts[:provider] = v }
   o.on('--model MODEL', 'Model name') { |v| opts[:model] = v }
   o.on('-o', '--out PATH', 'Output file or folder') { |v| opts[:out] = v }
 end
@@ -43,6 +44,12 @@ begin
     end
   when 'devices'
     IslandForge::Catalog::DEVICES.each_value { |d| puts format('%-26s %-18s %s', d['id'], d['category'], d['name']) }
+  when 'catalog'
+    if args.empty?
+      IslandForge::Catalog::CATALOG.each { |k, v| puts format('%-10s %4d entries', k, v.size) }
+    else
+      IslandForge::Catalog.search(args[0], args[1]).each { |e| puts format('%-34s %-26s %s', e['id'], e['category'], e['name']) }
+    end
   when 'generate'
     abort parser.help unless args.first
     IslandForge::Catalog.mode(opts[:mode])

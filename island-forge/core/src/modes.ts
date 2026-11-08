@@ -369,7 +369,7 @@ export const FEATURE_TYPES = [
   'spawn_pad', 'team_spawn', 'capture_zone', 'flag', 'bomb_site', 'checkpoint', 'finish_line', 'race_checkpoint',
   'tycoon_plot', 'shop', 'upgrade_button', 'creature_spawner', 'guard_spawner', 'vehicle_spawner', 'teleporter', 'trap',
   'collectible', 'hiding_spot', 'item_spawner', 'minigame_pad', 'npc', 'wildlife', 'objective', 'sentry', 'bouncer',
-  'moving_platform', 'speed_boost',
+  'moving_platform', 'speed_boost', 'powerup', 'turret',
 ];
 export const TIMES_OF_DAY = ['day', 'dawn', 'dusk', 'night'] as const;
 export const BUILD_MODES = ['build', 'zero_build', 'edit_only'] as const;

@@ -4,6 +4,7 @@ A client and command-line tool for an Island Forge server, using only the Ruby s
 
 ```bash
 ruby bin/island-forge-rb modes
+ruby bin/island-forge-rb catalog prefabs castle
 ruby bin/island-forge-rb --mode horror --provider offline generate "abandoned hospital"
 ruby bin/island-forge-rb validate abandoned-hospital.island.json
 ruby bin/island-forge-rb markers abandoned-hospital.island.json > markers.csv

@@ -22,6 +22,10 @@ export interface Poi extends Point {
   loot_tier: number;
   elevation: number;
   description: string;
+  /** Prefab id from the catalog to drop here ('' = build by hand). */
+  prefab: string;
+  /** Gallery ids to dress this location. */
+  galleries: string[];
 }
 
 export interface Lake extends Point {
@@ -63,6 +67,15 @@ export interface Rules {
   loot_pool_notes: string;
 }
 
+/** Catalog ids (see catalog.ts). */
+export interface Loot {
+  starting_loadout: string[];
+  pool: string[];
+  chests: string[];
+  vehicles: string[];
+  creatures: string[];
+}
+
 export interface Publish {
   title: string;
   description: string;
@@ -79,7 +92,7 @@ export interface PlacedDevice extends Point {
 }
 
 export interface MapSpec {
-  format: 'island-forge/map@2';
+  format: 'island-forge/map@3';
   mode: string;
   seed: number;
   prompt: string;
@@ -100,6 +113,7 @@ export interface MapSpec {
   bus_route: { start: Point; end: Point } | null;
   storm: { final_x: number; final_y: number; phases: StormPhase[] };
   rules: Rules;
+  loot: Loot;
   publish: Publish;
   devices: PlacedDevice[];
 }

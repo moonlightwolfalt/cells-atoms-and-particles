@@ -60,3 +60,61 @@ test('API: catalog, offline generate, verse, readme, package', async () => {
   const traversal = await fetch(`${base}/..%2F..%2Fpackage.json`);
   assert.ok([403, 404].includes(traversal.status));
 });
+
+test('ChatGPT, DeepSeek, Gemini and compatible callers send the right requests', async () => {
+  const http = await import('node:http');
+  const seen: { url: string; auth?: string; goog?: string; body: any }[] = [];
+  const layout = { name: 'Wire Isle', pois: [{ name: 'Dock', kind: 'docks', x: 0.4, y: 0.5, prefab: 'br_dirty_docks', galleries: ['gb_docks_gallery'] }], loot: { starting_loadout: [], pool: ['it_pump_shotgun'], chests: ['treasure_chest'], vehicles: [], creatures: [] } };
+  const fake = http.createServer(async (req, res) => {
+    let raw = '';
+    for await (const c of req) raw += c;
+    seen.push({ url: req.url || '', auth: req.headers.authorization, goog: req.headers['x-goog-api-key'] as string, body: JSON.parse(raw) });
+    res.setHeader('content-type', 'application/json');
+    if (req.url?.includes(':generateContent')) {
+      res.end(JSON.stringify({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(layout) }] } }] }));
+    } else if (req.headers.authorization === 'Bearer bad') {
+      res.statusCode = 401;
+      res.end(JSON.stringify({ error: { message: 'Invalid key' } }));
+    } else {
+      res.end(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: '```json\n' + JSON.stringify(layout) + '\n```' } }] }));
+    }
+  });
+  await new Promise<void>((r) => fake.listen(0, '127.0.0.1', r));
+  const url = `http://127.0.0.1:${(fake.address() as AddressInfo).port}`;
+  try {
+    const gpt = await generateMap({ provider: 'openai', apiKey: 'sk-gpt', baseUrl: url, prompt: 'docks', mode: 'reload' });
+    assert.equal(gpt.generator, 'openai/gpt-5');
+    assert.equal(gpt.pois[0].prefab, 'br_dirty_docks');
+    assert.equal(seen[0].url, '/chat/completions');
+    assert.equal(seen[0].auth, 'Bearer sk-gpt');
+    assert.equal(seen[0].body.model, 'gpt-5');
+    assert.deepEqual(seen[0].body.response_format, { type: 'json_object' });
+    assert.match(seen[0].body.messages[1].content, /Prefab ids:/);
+
+    const ds = await generateMap({ provider: 'deepseek', apiKey: 'sk-ds', baseUrl: url, prompt: 'docks', mode: 'blitz' });
+    assert.equal(ds.generator, 'deepseek/deepseek-chat');
+    assert.equal(seen[1].body.model, 'deepseek-chat');
+    assert.equal(seen[1].body.max_tokens, 8192);
+    await generateMap({ provider: 'deepseek', model: 'deepseek-reasoner', apiKey: 'sk-ds', baseUrl: url, prompt: 'docks' });
+    assert.equal(seen[2].body.response_format, undefined, 'reasoner gets no JSON mode');
+
+    const gem = await generateMap({ provider: 'gemini', apiKey: 'AIza-test', baseUrl: url, prompt: 'docks', mode: 'racing' });
+    assert.equal(gem.mode, 'racing');
+    assert.equal(seen[3].url, '/models/gemini-2.5-flash:generateContent');
+    assert.equal(seen[3].goog, 'AIza-test');
+    assert.equal(seen[3].body.generationConfig.responseMimeType, 'application/json');
+
+    const other = await generateMap({ provider: 'compatible', model: 'meta/llama', baseUrl: url, prompt: 'docks' });
+    assert.equal(other.generator, 'compatible/meta/llama');
+    assert.equal(seen[4].auth, undefined, 'no key sent when none given');
+
+    await assert.rejects(generateMap({ provider: 'openai', apiKey: 'bad', baseUrl: url, prompt: 'x' }), /ChatGPT \(OpenAI\) error \(401\): Invalid key/);
+    await assert.rejects(generateMap({ provider: 'compatible', baseUrl: url, prompt: 'x' }), /Type a model name/);
+    const saved = process.env.DEEPSEEK_API_KEY;
+    delete process.env.DEEPSEEK_API_KEY;
+    await assert.rejects(generateMap({ provider: 'deepseek', baseUrl: url, prompt: 'x' }), /Add your DeepSeek API key/);
+    if (saved) process.env.DEEPSEEK_API_KEY = saved;
+  } finally {
+    fake.close();
+  }
+});

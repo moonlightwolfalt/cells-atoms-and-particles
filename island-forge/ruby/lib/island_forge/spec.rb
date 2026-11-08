@@ -53,6 +53,9 @@ module IslandForge
       @data['devices'].each_with_index do |d, i|
         out << "devices[#{i}]: unknown device #{d['device'].inspect}" unless Catalog::DEVICES.key?(d['device'])
       end
+      (@data['loot'] || {}).each do |key, ids|
+        ids.each { |id| out << "loot.#{key}: unknown id #{id.inspect}" unless Catalog::CATALOG_IDS.key?(id) || id.start_with?('custom_') }
+      end
       radii = @data['storm'].fetch('phases', []).map { |p| p['end_radius_pct'] }
       out << 'storm phases must shrink' unless radii == radii.sort.reverse
       out
@@ -119,7 +122,9 @@ module IslandForge
         devices: @data['devices'].select { |d| d.fetch('enabled', true) }.map { |d| d['device'] }.tally,
         storm_phases: @data['storm'].fetch('phases', []).size,
         verse_modules: mode ? mode['verse'] : [],
-        tags: @data['publish']['tags']
+        tags: @data['publish']['tags'],
+        builds: @data['pois'].to_h { |p| [p['name'], { prefab: p['prefab'].to_s.empty? ? nil : Catalog.name_of(p['prefab']), galleries: Array(p['galleries']).map { |g| Catalog.name_of(g) } }] },
+        loot: (@data['loot'] || {}).transform_values { |ids| ids.map { |i| Catalog.name_of(i) } }
       }
     end
   end

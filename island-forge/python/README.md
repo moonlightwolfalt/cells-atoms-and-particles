@@ -11,9 +11,11 @@ pip install -e ".[claude,render]"     # from island-forge/python
 ```bash
 island-forge modes                                   # all 31 island types
 island-forge devices --category Logic                # UEFN device catalog
+island-forge catalog                                 # prefabs, galleries, chests, items, vehicles, creatures
+island-forge catalog prefabs --search castle
 
 # Through a running Island Forge server (npm start):
-island-forge generate "pizza tycoon on a beach" --mode tycoon --provider anthropic
+island-forge generate "pizza tycoon on a beach" --mode tycoon --provider anthropic   # or openai (ChatGPT), gemini, deepseek
 island-forge generate "lava temple run" --mode deathrun --provider offline -o run.json
 island-forge batch prompts.txt --out-dir islands      # one prompt per line, or "mode | prompt"
 island-forge package run.json                          # UEFN package zip

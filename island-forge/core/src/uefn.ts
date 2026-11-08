@@ -8,6 +8,10 @@ import { toWorld, gridRef, stormCenters } from './terrain.ts';
 import { generateVerseFiles, verseIdent } from './verse/index.ts';
 import { heightmapPng, biomePaintPng } from './png.ts';
 import { createZip, type ZipEntry } from './zip.ts';
+import { catalogEntry } from './catalog.ts';
+import { chestPlan } from './devicePlan.ts';
+
+const cname = (id: string) => catalogEntry(id)?.name || id;
 
 const fmtTime = (s: number) => (s >= 60 ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s` : `${s}s`);
 const csvCell = (v: unknown) => {
@@ -20,6 +24,21 @@ export function devicesCsv(spec: MapSpec): string {
   for (const d of spec.devices.filter((x) => x.enabled)) {
     const w = toWorld(spec, d.x, d.y);
     rows.push([d.id, DEVICE_MAP[d.device]?.name || d.device, d.label, gridRef(d.x, d.y), String(w.X), String(w.Y), Object.entries(d.settings).map(([k, v]) => `${k}=${v}`).join('; ')]);
+  }
+  return rows.map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
+}
+
+/** What to drop at each location: prefab, galleries and chests. */
+export function buildsCsv(spec: MapSpec): string {
+  const rows = [['location', 'kind', 'grid', 'world_x_cm', 'world_y_cm', 'world_z_cm', 'prefab', 'galleries', 'chests']];
+  for (const p of spec.pois) {
+    const w = toWorld(spec, p.x, p.y, p.elevation);
+    rows.push([
+      p.name, p.kind, gridRef(p.x, p.y), String(w.X), String(w.Y), String(w.Z),
+      p.prefab ? cname(p.prefab) : '(build by hand)',
+      p.galleries.map(cname).join('; '),
+      chestPlan(spec, p).map((c) => `${c.name} x${c.count}`).join('; '),
+    ]);
   }
   return rows.map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
 }
@@ -88,6 +107,7 @@ ${spec.description}
 | \`biome-paint.png\` | Which biome/material goes where — a guide for painting landscape layers. |
 | \`Verse/*.verse\` | ${verse.length} Verse devices for this mode (see below). |
 | \`devices.csv\` | Every device to place, with world coordinates and settings. |
+| \`builds.csv\` | Prefab, galleries and chests for every location, with coordinates. |
 | \`publish.txt\` | Title, description, tags and release notes for publishing. |
 | \`map-spec.json\` | The full layout. Re-import it into Island Forge any time. |
 
@@ -131,6 +151,22 @@ ${spec.pois
 
 ${spec.pois.map((p) => (p.description ? `- **${p.name}:** ${p.description}` : '')).filter(Boolean).join('\n')}
 
+## Builds — prefabs & galleries per location
+
+In UEFN open the **Creative inventory → Prefabs / Galleries** (or the Content Browser) and drop these at each location's marker. Names follow Fortnite Creative; if an item has been renamed or removed this season, pick the closest match.
+
+| Location | Prefab | Galleries | Chests |
+|---|---|---|---|
+${spec.pois.map((p) => `| ${p.name} | ${p.prefab ? cname(p.prefab) : '_build by hand_'} | ${p.galleries.map(cname).join(', ') || '—'} | ${chestPlan(spec, p).map((c) => `${c.name} ×${c.count}`).join(', ') || '—'} |`).join('\n')}
+
+## Loot
+
+- **Starting loadout:** ${spec.loot.starting_loadout.map(cname).join(', ') || 'none'}
+- **${spec.mode === 'gun_game' ? 'Weapon ladder (in order)' : 'Loot pool'}:** ${spec.loot.pool.map(cname).join(', ') || 'none'}
+- **Chests & containers:** ${spec.loot.chests.map(cname).join(', ') || 'none'}
+- **Vehicles:** ${spec.loot.vehicles.map(cname).join(', ') || 'none'}
+- **Creatures & NPCs:** ${spec.loot.creatures.map(cname).join(', ') || 'none'}
+
 ## Features
 
 ${Object.entries(featureCounts).map(([k, n]) => `- ${featureStyle(k).label}: ${n}`).join('\n') || '- none'}
@@ -167,6 +203,7 @@ export async function packageFiles(spec: MapSpec, images: { thumbnailJpg?: Uint8
     { name: `${folder}/README.md`, data: generateReadme(spec) },
     { name: `${folder}/map-spec.json`, data: JSON.stringify(spec, null, 2) },
     { name: `${folder}/devices.csv`, data: devicesCsv(spec) },
+    { name: `${folder}/builds.csv`, data: buildsCsv(spec) },
     { name: `${folder}/publish.txt`, data: publishKit(spec) },
     { name: `${folder}/heightmap-1009.png`, data: await heightmapPng(spec, 1009) },
     { name: `${folder}/biome-paint.png`, data: await biomePaintPng(spec, 512) },

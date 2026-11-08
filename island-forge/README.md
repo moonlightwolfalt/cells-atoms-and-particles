@@ -1,11 +1,11 @@
 # Island Forge
 
-Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI designs the whole thing. You get the layout, terrain, every UEFN device it needs with settings, the Verse code for the game mode, a 3D preview, the island image and the publish text. Then you export all of it for UEFN.
+Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI (Claude, ChatGPT, Gemini, DeepSeek and more) designs the whole thing. You get the layout, terrain, the prefab and galleries to drop at every location, the loot plan and chests, every UEFN device it needs with settings, the Verse code for the game mode, a 3D preview, the island image and the publish text. Then you export all of it for UEFN.
 
 | Part | Tech | Folder |
 |---|---|---|
 | **Web app** (main app) | TypeScript, React 19, Tailwind CSS 4, WebGL (three.js), HTML5 Canvas, Vite | [`web/`](web/) |
-| **Shared core**: island types, devices, Verse library, terrain, exporters | TypeScript (runs in browsers, Node and React Native) | [`core/`](core/) |
+| **Shared core**: island types, Creative catalog, devices, Verse library, terrain, exporters | TypeScript (runs in browsers, Node and React Native) | [`core/`](core/) |
 | **Server**: AI providers and HTTP API | TypeScript on Node 22+, Anthropic SDK | [`server/`](server/) |
 | **Python** toolkit and CLI | Python 3.10+, optional Anthropic SDK and Pillow | [`python/`](python/) |
 | **Ruby** gem and CLI | Ruby 3 (standard library only) | [`ruby/`](ruby/) |
@@ -28,6 +28,37 @@ To use Claude without pasting a key into the app, set it before starting:
 ```bash
 ANTHROPIC_API_KEY=sk-ant-... npm start
 ```
+
+## Choosing the AI
+
+| Provider | Models offered (type any other) | Key |
+|---|---|---|
+| **Claude (Anthropic)** — default | `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`, `claude-fable-5-1` | `ANTHROPIC_API_KEY` |
+| **ChatGPT (OpenAI)** | `gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `gpt-4.1`, `gpt-4o` | `OPENAI_API_KEY` |
+| **Google Gemini** | `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite` | `GEMINI_API_KEY` |
+| **DeepSeek** | `deepseek-chat`, `deepseek-reasoner` | `DEEPSEEK_API_KEY` |
+| Other OpenAI-compatible (OpenRouter, Groq, LM Studio…) | any — set the base URL | `OPENAI_COMPATIBLE_API_KEY` (optional) |
+| Ollama (local) | any local model | none |
+| Offline generator | — | none |
+
+Set keys as environment variables before `npm start`, or paste them in the app (kept only in your browser if you tick *Remember key*). Model lists change often — if a provider has a newer model, just type its name.
+
+## Fortnite Creative catalog
+
+| Catalog | Count | Used for |
+|---|---|---|
+| Prefabs | 128 | Battle Royale locations, themed buildings, arenas and course sections — one suggested per location |
+| Galleries | 100 | Building, nature and prop galleries — 1–3 suggested per location |
+| Devices | 154 (103 with Verse class names) | Device plan, Devices tab, Verse wiring |
+| Verse devices | 14 Island Forge modules + 103 Fortnite Verse device classes | Verse tab |
+| Chests & containers | 16 | Per-location chest plan (Treasure Chest, Rare Chest, Ammo Box, Cooler, Supply Drop, Vault Chest…) |
+| Weapons & items | 83 | Starting loadout, loot pool, Gun Game ladder |
+| Vehicles | 20 | Vehicle spawners |
+| Creatures & NPCs | 20 | Creature, wildlife and guard spawners |
+
+The AI is given the catalog ids, so it picks real prefabs, galleries and loot; anything it gets wrong is replaced with a suggestion. Browse it all in the **Catalog** tab.
+
+**Keeping it current:** Epic doesn't publish a machine-readable asset list, so this catalog was written by hand from Fortnite Creative content and may be incomplete or out of date — Epic adds or retires content every season. Use **Catalog → Import catalog .json** to add new entries or fix names (format: `{ "prefabs": [{ "name": "…", "tags": ["castle", "snow"], "description": "…" }], "galleries": […], "items": […] }`). Imported entries are saved in your browser and the generator uses them right away.
 
 ## What you can make: 31 island types
 
@@ -56,9 +87,11 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 - **Map editor:** drag locations and features around, add new ones from 37 feature types, edit team, order and size, and delete. Undo and redo with Ctrl+Z and Ctrl+Shift+Z.
 - **3D view (WebGL):** terrain from the same height field the heightmap export uses, plus water, buildings, labels, feature beacons, the storm ring and the Battle Bus.
 - **Island image:** a 1920×1080 thumbnail. It can use a shot of the 3D view as its picture.
-- **Devices:** the planned UEFN devices for the island, which you can turn on or off and change settings for. The full catalog of 80 devices is there to add more.
+- **Devices:** the planned UEFN devices for the island, which you can turn on or off and change settings for. The full catalog of 154 devices is there to add more.
+- **Catalog:** browse every prefab, gallery, device, Verse device, chest, item, vehicle and creature; add loot or devices to the island; import your own entries.
+- **Builds:** pick the prefab and galleries for any location in the map inspector; each location shows its chest plan.
 - **Verse:** the generated Verse devices for the island type, with syntax colouring, copy, download and step-by-step wiring instructions.
-- **Details and rules:** name, time of day, biome, map size, players, teams, respawns, rounds, score, building, loot and storm.
+- **Details and loot:** name, time of day, biome, map size, players, teams, respawns, rounds, score, building, storm, and the loot plan (starting loadout, loot pool or Gun Game ladder, chests, vehicles, creatures).
 - **Publish:** title (40 characters max), description, tags and release notes.
 - **Export:** the full UEFN package or any single file.
 - **Import:** load a `.json` or `.zip` you exported before, or drop it on the page.
@@ -72,11 +105,12 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 | `biome-paint.png` | Shows which landscape material goes where |
 | `Verse/*.verse` | Verse devices for the island type (see below) |
 | `devices.csv` | Every device with UEFN world coordinates and settings |
+| `builds.csv` | Prefab, galleries and chests for every location, with coordinates |
 | `publish.txt` | Title, description, tags and release notes |
 | `thumbnail.jpg` / `minimap.png` | Island image (1920×1080, under 1 MB) and top-down map |
 | `map-spec.json` | The full island, which you can re-import into any Island Forge client |
 
-### Verse library (13 modules)
+### Verse library (14 modules)
 
 | Module | Used by |
 |---|---|
@@ -93,6 +127,7 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 | Collect to escape: collect items to open the exit | Horror, Escape Room |
 | Team swap: caught players join the hunters | Prop Hunt, Hide & Seek, Infected |
 | Persistent stats: matches and eliminations saved across sessions | many island types |
+| Loadout on spawn: grants the starting loadout every time a player spawns | any island with a starting loadout |
 
 ### Limits
 
@@ -110,7 +145,7 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 | Route | What it does |
 |---|---|
 | `GET /api/providers` | AI providers, and which have keys set on the server |
-| `GET /api/catalog` | Island types, devices, Verse modules |
+| `GET /api/catalog` | Island types, devices, Verse modules, Creative catalog |
 | `GET /api/schema` | JSON schema the AI answers in |
 | `POST /api/generate` | `{prompt, mode, provider, model?, apiKey?, baseUrl?}` → `{spec}` |
 | `POST /api/verse` | `{spec}` → `{files}` |

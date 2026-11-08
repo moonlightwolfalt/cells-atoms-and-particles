@@ -4,6 +4,7 @@ import {
   MODES, MODE_IDS, MODE_LIST, DEVICES, DEVICE_MAP, FEATURE_DEVICE, FEATURE_TYPES, VERSE_MODULES,
   normalizeSpec, generateProcedural, generateVerseFiles, generateReadme, devicesCsv, publishKit,
   toWorld, collectMarkers, verseIdent, createZip, readZip, crc32, packageFiles, encodeGray16, heightmapPng, MAP_SCHEMA,
+  CATALOG, catalogEntry, registerCatalogEntries, defaultLoot, verseModuleIds, buildsCsv, chestPlan, buildUserPrompt,
 } from '../src/index.ts';
 
 test('catalogs are consistent', () => {
@@ -96,7 +97,8 @@ test('Verse files are well-formed for every mode', () => {
     const spec = generateProcedural('haunted swamp castle', mode);
     spec.name = 'Spooky "Isle" {test}';
     const files = generateVerseFiles(spec);
-    assert.deepEqual(files.map((f) => f.module), MODES[mode].verse);
+    assert.deepEqual(files.map((f) => f.module), verseModuleIds(spec));
+    for (const id of MODES[mode].verse) assert.ok(verseModuleIds(spec).includes(id));
     const classNames = new Set<string>();
     for (const f of files) {
       assert.ok(!f.code.includes('\t'), 'spaces only');
@@ -146,7 +148,8 @@ test('zip and png encoders produce valid files', async () => {
   assert.equal(new DataView(hm.buffer).getUint32(16), 65);
   const pkg = await packageFiles(spec);
   assert.ok(pkg.some((f) => f.name.endsWith('heightmap-1009.png')));
-  assert.ok(pkg.filter((f) => f.name.includes('/Verse/')).length === MODES.blitz.verse.length);
+  assert.equal(pkg.filter((f) => f.name.includes('/Verse/')).length, verseModuleIds(spec).length);
+  assert.ok(pkg.some((f) => f.name.endsWith('builds.csv')));
 });
 
 test('schema requires every property it defines', () => {
@@ -159,4 +162,69 @@ test('schema requires every property it defines', () => {
     if (s?.type === 'array') walk(s.items);
   };
   walk(MAP_SCHEMA);
+});
+
+test('Creative catalog: unique ids, default loot resolves, every location gets a build', () => {
+  const all = Object.values(CATALOG).flat();
+  assert.equal(new Set(all.map((e) => e.id)).size, all.length, 'catalog ids unique');
+  assert.ok(CATALOG.prefabs.length >= 100 && CATALOG.galleries.length >= 90 && CATALOG.items.length >= 75 && CATALOG.chests.length >= 15);
+  assert.ok(DEVICES.length >= 150);
+  assert.ok(DEVICES.filter((d) => d.verse).length >= 100);
+  for (const m of MODE_LIST) {
+    const l = defaultLoot(m);
+    for (const [kind, ids] of [['items', [...l.starting_loadout, ...l.pool]], ['chests', l.chests], ['vehicles', l.vehicles], ['creatures', l.creatures]] as const) {
+      for (const id of ids) assert.ok(CATALOG[kind].some((e) => e.id === id), `${m.id}: unknown ${kind} id ${id}`);
+    }
+    const spec = generateProcedural('haunted pirate castle', m.id);
+    assert.deepEqual(spec.loot, l, `${m.id}: default loot`);
+    for (const p of spec.pois) {
+      assert.ok(p.prefab === '' || CATALOG.prefabs.some((e) => e.id === p.prefab), `${m.id}: prefab ${p.prefab}`);
+      for (const g of p.galleries) assert.ok(CATALOG.galleries.some((e) => e.id === g));
+      if (MODES[m.id].layout === 'island') assert.ok(!catalogEntry(p.prefab)?.category.startsWith('Arenas'), `${m.id}: no game-space prefab on island locations`);
+    }
+  }
+});
+
+test('normalizer keeps valid builds/loot and repairs bad ones', () => {
+  const spec = normalizeSpec({
+    pois: [
+      { name: 'A', kind: 'castle', x: 0.4, y: 0.4, prefab: 'th_medieval_castle', galleries: ['gb_castle_gallery', 'nope'] },
+      { name: 'B', kind: 'castle', x: 0.6, y: 0.6, prefab: 'made_up', galleries: ['also_made_up'] },
+      { name: 'C', kind: 'town', x: 0.5, y: 0.3, prefab: '', galleries: [] },
+    ],
+    loot: { starting_loadout: ['it_pump_shotgun', 'it_laser_sword'], pool: [], chests: ['treasure_chest', 'mystery_box'], vehicles: ['ufo'], creatures: ['wolf'] },
+  }, 'reload');
+  assert.equal(spec.pois[0].prefab, 'th_medieval_castle');
+  assert.deepEqual(spec.pois[0].galleries, ['gb_castle_gallery']);
+  assert.ok(spec.pois[1].prefab && spec.pois[1].prefab !== 'made_up');
+  assert.ok(spec.pois[1].galleries.length > 0);
+  assert.equal(spec.pois[2].prefab, '', 'explicit "build by hand" is kept');
+  assert.deepEqual(spec.pois[2].galleries, []);
+  assert.deepEqual(spec.loot, { starting_loadout: ['it_pump_shotgun'], pool: [], chests: ['treasure_chest'], vehicles: ['ufo'], creatures: ['wolf'] });
+  assert.ok(spec.devices.some((d) => d.device === 'item_granter' && d.label.includes('Pump Shotgun')));
+  assert.ok(verseModuleIds(spec).includes('loadout_on_spawn'));
+});
+
+test('chests, vehicles and creatures become devices; builds.csv lists every location', () => {
+  const br = generateProcedural('desert canyon', 'battle_royale');
+  const chests = br.devices.filter((d) => d.device === 'chest_spawner');
+  assert.ok(chests.length >= br.pois.length, 'every location gets chests');
+  for (const p of br.pois) assert.ok(chestPlan(br, p).some((c) => c.id === 'treasure_chest'));
+  assert.ok(br.devices.some((d) => d.device.startsWith('vehicle_') && d.settings.Vehicle));
+  const csv = buildsCsv(br).trim().split('\n');
+  assert.equal(csv.length, br.pois.length + 1);
+  const gg = generateProcedural('x', 'gun_game');
+  assert.equal(gg.devices.filter((d) => d.label.startsWith('Ladder #')).length, gg.loot.pool.length);
+  const waves = generateProcedural('x', 'wave_defense');
+  assert.ok(waves.devices.some((d) => d.device === 'creature_spawner' && d.settings['Creature Type']));
+  assert.match(buildUserPrompt('x', 'reload'), /Prefab ids: br_pleasant_park/);
+});
+
+test('custom catalog entries can be registered', () => {
+  const n = registerCatalogEntries('prefabs', [{ name: 'Season Test Prefab', tags: ['castle'], category: 'Custom' }, { name: '' }]);
+  assert.equal(n, 1);
+  const e = catalogEntry('custom_season_test_prefab');
+  assert.equal(e?.custom, true);
+  const spec = normalizeSpec({ pois: [{ name: 'A', kind: 'castle', x: 0.5, y: 0.5, prefab: 'custom_season_test_prefab' }] }, 'reload');
+  assert.equal(spec.pois[0].prefab, 'custom_season_test_prefab');
 });

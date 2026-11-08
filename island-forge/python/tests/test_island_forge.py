@@ -153,3 +153,30 @@ def test_real_server_round_trip(tmp_path):
     assert validate_spec(spec) == []
     assert [f["path"].endswith(".verse") for f in client.verse(spec)]
     assert client.package(spec)[:2] == b"PK"
+
+
+def test_catalog_and_builds(spec):
+    from island_forge import CATALOG, search_catalog
+
+    assert len(CATALOG["prefabs"]) >= 100 and len(CATALOG["galleries"]) >= 90
+    assert any(e["id"] == "br_pleasant_park" for e in search_catalog("prefabs", "suburban"))
+    with pytest.raises(KeyError):
+        search_catalog("hats")
+    s = summarize(spec)
+    assert set(s["builds"]) == {p["name"] for p in spec["pois"]}
+    assert s["loot"]["chests"] or s["loot"]["pool"] or spec["mode"] == "capture_the_flag"
+    bad = json.loads(json.dumps(spec))
+    bad["pois"][0]["prefab"] = "nope"
+    bad["loot"]["pool"].append("it_laser_sword")
+    bad["loot"]["chests"].append("custom_my_new_chest")
+    problems = validate_spec(bad)
+    assert "pois[0]: unknown prefab 'nope'" in problems
+    assert "loot.pool: unknown id 'it_laser_sword'" in problems
+    assert not any("custom_my_new_chest" in p for p in problems)
+
+
+def test_cli_catalog(capsys):
+    assert main(["catalog"]) == 0
+    assert "prefabs" in capsys.readouterr().out
+    assert main(["catalog", "chests", "--search", "llama"]) == 0
+    assert "supply_llama" in capsys.readouterr().out

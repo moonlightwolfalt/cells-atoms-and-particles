@@ -1,6 +1,21 @@
 // Prompt text sent to whichever AI provider is chosen.
 import { MODES } from './modes.ts';
 import { MAP_SCHEMA } from './schema.ts';
+import { CATALOG } from './catalog.ts';
+import { defaultLoot } from './loot.ts';
+
+/** Compact id list of the Creative catalog so the AI can pick real prefabs, galleries and loot. */
+export function catalogHints(): string {
+  const list = (k: keyof typeof CATALOG) => CATALOG[k].map((e) => e.id).join(', ');
+  return [
+    `Prefab ids: ${list('prefabs')}`,
+    `Gallery ids: ${list('galleries')}`,
+    `Item ids: ${list('items')}`,
+    `Chest ids: ${list('chests')}`,
+    `Vehicle ids: ${list('vehicles')}`,
+    `Creature ids: ${list('creatures')}`,
+  ].join('\n');
+}
 
 export function buildSystemPrompt(): string {
   return [
@@ -13,6 +28,7 @@ export function buildSystemPrompt(): string {
     'Use team = 1, 2, ... for team spawns, flags and bases; team = 0 otherwise. Put features where they make gameplay sense.',
     'If the mode has a storm, phases must shrink to 0 and final_x/final_y must be on land. If the mode has no storm, return an empty phases array.',
     'Respect the mode rules you are given, adjusting them only when the idea clearly asks for it.',
+    'For every location pick a prefab id that fits (or "" if none fits) and 1-3 gallery ids from the catalog lists. Fill loot with item, chest, vehicle and creature ids from the catalog lists only.',
     'Fill publish with a Discover-ready title (max 40 characters), a short description, up to 4 tags and release notes.',
     'Reply with JSON only, matching the provided schema exactly.',
   ].join('\n');
@@ -31,6 +47,10 @@ export function buildUserPrompt(idea: string, modeId: string): string {
     `Default rules: ${JSON.stringify(mode.rules)}`,
     mode.storm.length ? `Default storm (${mode.storm.length} phases): ${JSON.stringify(mode.storm)}` : 'This mode has no storm.',
     `Suggested tags: ${mode.tags.join(', ')}`,
+    `Default loot: ${JSON.stringify(defaultLoot(mode))}`,
+    '',
+    'Fortnite Creative catalog (use these ids):',
+    catalogHints(),
     '',
     `Island idea from the creator: """${idea || 'Surprise me with a fun, original island.'}"""`,
   ].join('\n');

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { buildPackageZip, generateReadme, devicesCsv, publishKit, heightmapPng, biomePaintPng, generateVerseFiles, slug, type MapSpec } from '../../../core/src/index.ts';
+import { buildPackageZip, generateReadme, devicesCsv, buildsCsv, publishKit, heightmapPng, biomePaintPng, generateVerseFiles, slug, type MapSpec } from '../../../core/src/index.ts';
 import { renderMinimap, canvasBlob, thumbnailJpeg } from '../render/map2d.ts';
 import { download } from '../storage.ts';
 
@@ -35,6 +35,7 @@ export function ExportPanel({ spec, hero, onStatus }: { spec: MapSpec; hero: () 
       key: 'verse', title: 'All Verse files', desc: `${generateVerseFiles(spec).length} .verse devices for this mode.`,
       fn: async () => generateVerseFiles(spec).forEach((f, i) => setTimeout(() => download(f.path, f.code, 'text/plain'), i * 250)),
     },
+    { key: 'builds', title: 'Builds list (.csv)', desc: 'Prefab, galleries and chests for every location, with coordinates.', fn: async () => download(`${base}-builds.csv`, buildsCsv(spec), 'text/csv') },
     { key: 'csv', title: 'Device list (.csv)', desc: 'Every device with coordinates and settings — opens in Sheets/Excel.', fn: async () => download(`${base}-devices.csv`, devicesCsv(spec), 'text/csv') },
     { key: 'readme', title: 'Setup guide (.md)', desc: 'The import guide on its own.', fn: async () => download(`${base}-UEFN-setup.md`, generateReadme(spec), 'text/markdown') },
     { key: 'publish', title: 'Publish kit (.txt)', desc: 'Title, description, tags, release notes.', fn: async () => download(`${base}-publish.txt`, publishKit(spec), 'text/plain') },

@@ -1,5 +1,5 @@
 {
-  "format": "island-forge/map@2",
+  "format": "island-forge/map@3",
   "mode": "reload",
   "seed": 2323202936,
   "prompt": "frozen volcano with a neon city",
@@ -52,7 +52,13 @@
       "size": "large",
       "loot_tier": 3,
       "elevation": 0.25452350205741825,
-      "description": "A large town with a snow vibe."
+      "description": "A large town with a snow vibe.",
+      "prefab": "br_happy_hamlet",
+      "galleries": [
+        "gb_winter_village_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
     },
     {
       "name": "Ashen Station",
@@ -62,7 +68,13 @@
       "size": "medium",
       "loot_tier": 2,
       "elevation": 0.325496284046676,
-      "description": "A medium lab with a snow vibe."
+      "description": "A medium lab with a snow vibe.",
+      "prefab": "th_volcano_lair",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
     },
     {
       "name": "Neon Pier",
@@ -72,7 +84,13 @@
       "size": "small",
       "loot_tier": 2,
       "elevation": 0.3063505690544844,
-      "description": "A small docks with a snow vibe."
+      "description": "A small docks with a snow vibe.",
+      "prefab": "th_viking_longship",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
     },
     {
       "name": "Lucky Mines",
@@ -82,7 +100,13 @@
       "size": "small",
       "loot_tier": 1,
       "elevation": 0.32649435702478513,
-      "description": "A small cave with a snow vibe."
+      "description": "A small cave with a snow vibe.",
+      "prefab": "th_cave_network",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
     },
     {
       "name": "Shifty Downtown",
@@ -92,7 +116,13 @@
       "size": "medium",
       "loot_tier": 2,
       "elevation": 0.15224363515153527,
-      "description": "A medium city with a snow vibe."
+      "description": "A medium city with a snow vibe.",
+      "prefab": "th_office_tower",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
     },
     {
       "name": "Polar Heights",
@@ -102,7 +132,13 @@
       "size": "large",
       "loot_tier": 3,
       "elevation": 0.16202114678453655,
-      "description": "A large town with a snow vibe."
+      "description": "A large town with a snow vibe.",
+      "prefab": "br_happy_hamlet",
+      "galleries": [
+        "gb_winter_village_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
     },
     {
       "name": "Blaze Works",
@@ -112,7 +148,13 @@
       "size": "medium",
       "loot_tier": 2,
       "elevation": 0.2184700104640797,
-      "description": "A medium industrial with a snow vibe."
+      "description": "A medium industrial with a snow vibe.",
+      "prefab": "br_logjam_lumberyard",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
     }
   ],
   "lakes": [
@@ -458,6 +500,47 @@
     "build_mode": "build",
     "loot_pool_notes": "Classic-style loot pool, floor loot heavy, chests in every named location."
   },
+  "loot": {
+    "starting_loadout": [],
+    "pool": [
+      "it_assault_rifle",
+      "it_burst_assault_rifle",
+      "it_heavy_assault_rifle",
+      "it_pump_shotgun",
+      "it_tactical_shotgun",
+      "it_submachine_gun",
+      "it_compact_smg",
+      "it_pistol",
+      "it_hunting_rifle",
+      "it_bolt_action_sniper_rifle",
+      "it_rocket_launcher",
+      "it_grenade",
+      "it_shockwave_grenade",
+      "it_bandages",
+      "it_med_kit",
+      "it_small_shield_potion",
+      "it_shield_potion",
+      "it_chug_jug",
+      "it_slurp_juice",
+      "it_launch_pad_item",
+      "it_port_a_fort"
+    ],
+    "chests": [
+      "treasure_chest",
+      "rare_chest",
+      "ammo_box",
+      "cooler",
+      "supply_drop",
+      "vault_chest"
+    ],
+    "vehicles": [
+      "sports_car",
+      "pickup_truck",
+      "motorboat",
+      "quadcrasher"
+    ],
+    "creatures": []
+  },
   "publish": {
     "title": "Snowdrift Key",
     "description": "Small island, squads, respawn while a teammate is still alive — until the late storm. Theme: frozen volcano with a neon city",
@@ -668,12 +751,13 @@
     {
       "id": "chest_spawner-1",
       "device": "chest_spawner",
-      "label": "Loot — Scorched Grove",
+      "label": "Treasure Chest ×8 — Scorched Grove",
       "x": 0.5983088870073142,
       "y": 0.41957356898859216,
       "settings": {
         "Chest Spawn Chance": "100%",
-        "Chests": 16,
+        "Container": "Treasure Chest",
+        "Count": 8,
         "Tier": 3
       },
       "enabled": true
@@ -681,77 +765,349 @@
     {
       "id": "chest_spawner-2",
       "device": "chest_spawner",
-      "label": "Loot — Ashen Station",
-      "x": 0.36608004216891143,
-      "y": 0.2321233007709269,
+      "label": "Rare Chest ×2 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
       "settings": {
         "Chest Spawn Chance": "100%",
-        "Chests": 8,
-        "Tier": 2
+        "Container": "Rare Chest",
+        "Count": 2,
+        "Tier": 3
       },
       "enabled": true
     },
     {
       "id": "chest_spawner-3",
       "device": "chest_spawner",
-      "label": "Loot — Neon Pier",
-      "x": 0.28901111270963514,
-      "y": 0.764068036495958,
+      "label": "Ammo Box ×4 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
       "settings": {
         "Chest Spawn Chance": "100%",
-        "Chests": 8,
-        "Tier": 2
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
       },
       "enabled": true
     },
     {
       "id": "chest_spawner-4",
       "device": "chest_spawner",
-      "label": "Loot — Lucky Mines",
-      "x": 0.5624177538780416,
-      "y": 0.7755505665905179,
+      "label": "Cooler ×1 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
       "settings": {
         "Chest Spawn Chance": "100%",
-        "Chests": 4,
-        "Tier": 1
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 3
       },
       "enabled": true
     },
     {
       "id": "chest_spawner-5",
       "device": "chest_spawner",
-      "label": "Loot — Shifty Downtown",
-      "x": 0.802769707949095,
-      "y": 0.5321910109505428,
+      "label": "Vault Chest ×3 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
       "settings": {
         "Chest Spawn Chance": "100%",
-        "Chests": 8,
-        "Tier": 2
+        "Container": "Vault Chest",
+        "Count": 3,
+        "Tier": 3
       },
       "enabled": true
     },
     {
       "id": "chest_spawner-6",
       "device": "chest_spawner",
-      "label": "Loot — Polar Heights",
-      "x": 0.4236611895303463,
-      "y": 0.5655438256786035,
+      "label": "Treasure Chest ×5 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
       "settings": {
         "Chest Spawn Chance": "100%",
-        "Chests": 16,
-        "Tier": 3
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
       },
       "enabled": true
     },
     {
       "id": "chest_spawner-7",
       "device": "chest_spawner",
-      "label": "Loot — Blaze Works",
+      "label": "Rare Chest ×1 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-8",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-9",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-10",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×4 — Neon Pier",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 4,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-11",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Neon Pier",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-12",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Neon Pier",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-13",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×2 — Lucky Mines",
+      "x": 0.5624177538780416,
+      "y": 0.7755505665905179,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 2,
+        "Tier": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-14",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×2 — Lucky Mines",
+      "x": 0.5624177538780416,
+      "y": 0.7755505665905179,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 2,
+        "Tier": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-15",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-16",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-17",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-18",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-19",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×8 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 8,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-20",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×2 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 2,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-21",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×4 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-22",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-23",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Blaze Works",
       "x": 0.694029565734521,
       "y": 0.20858234575319023,
       "settings": {
         "Chest Spawn Chance": "100%",
-        "Chests": 8,
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-24",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Blaze Works",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-25",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Blaze Works",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-26",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Blaze Works",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
         "Tier": 2
       },
       "enabled": true
