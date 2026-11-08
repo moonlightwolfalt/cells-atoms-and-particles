@@ -85,6 +85,26 @@ export const PROVIDERS: ProviderInfo[] = [
     baseUrl: 'https://api.llama.com/compat/v1',
   },
   {
+    id: 'qwen',
+    label: 'Qwen (Alibaba Cloud)',
+    defaultModel: 'qwen-plus',
+    models: ['qwen-max', 'qwen-plus', 'qwen-turbo', 'qwen3-max', 'qwen3-coder-plus'],
+    needsKey: true,
+    env: 'DASHSCOPE_API_KEY',
+    keyHint: 'sk-... (Model Studio / DashScope key)',
+    baseUrl: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+  },
+  {
+    id: 'kimi',
+    label: 'Kimi (Moonshot AI)',
+    defaultModel: 'kimi-k2-turbo-preview',
+    models: ['kimi-k2-turbo-preview', 'kimi-k2-0905-preview', 'kimi-latest', 'moonshot-v1-128k'],
+    needsKey: true,
+    env: 'MOONSHOT_API_KEY',
+    keyHint: 'sk-... (Moonshot key)',
+    baseUrl: 'https://api.moonshot.ai/v1',
+  },
+  {
     id: 'compatible',
     label: 'Other OpenAI-compatible (OpenRouter, Groq, LM Studio…)',
     defaultModel: '',
@@ -249,6 +269,25 @@ const callLlama = openAICompatible({
   extraBody: () => ({ max_tokens: 16000 }),
 });
 
+// Qwen through Alibaba Cloud Model Studio (DashScope) compatible mode. Mainland China accounts:
+// set the base URL to https://dashscope.aliyuncs.com/compatible-mode/v1.
+const callQwen = openAICompatible({
+  label: 'Qwen (Alibaba Cloud)',
+  env: 'DASHSCOPE_API_KEY',
+  defaultBase: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+  keyRequired: true,
+  extraBody: () => ({ response_format: { type: 'json_object' }, max_tokens: 8192 }),
+});
+
+// Kimi through Moonshot AI. Mainland China accounts: base URL https://api.moonshot.cn/v1.
+const callKimi = openAICompatible({
+  label: 'Kimi (Moonshot AI)',
+  env: 'MOONSHOT_API_KEY',
+  defaultBase: 'https://api.moonshot.ai/v1',
+  keyRequired: true,
+  extraBody: () => ({ response_format: { type: 'json_object' }, max_tokens: 16000 }),
+});
+
 const callCompatible = openAICompatible({ label: 'OpenAI-compatible API', env: 'OPENAI_COMPATIBLE_API_KEY', defaultBase: 'https://openrouter.ai/api/v1', keyRequired: false });
 
 async function callGemini({ apiKey, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
@@ -297,7 +336,7 @@ async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unk
 }
 
 export type Caller = (args: CallArgs) => Promise<unknown>;
-const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, compatible: callCompatible, ollama: callOllama };
+const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, qwen: callQwen, kimi: callKimi, compatible: callCompatible, ollama: callOllama };
 
 export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS): Promise<MapSpec> {
   const mode = MODES[body.mode] ? body.mode : 'reload';

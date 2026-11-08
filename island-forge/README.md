@@ -1,6 +1,6 @@
 # Island Forge
 
-Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI (Claude, ChatGPT, Gemini, DeepSeek, Grok, Mistral, Llama and more) designs the whole thing. You get the layout, terrain, the prefab and galleries to drop at every location, the loot plan and chests, every UEFN device it needs with settings, the Verse code for the game mode, a 3D preview, the island image and the publish text. Then you export all of it for UEFN.
+Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI (Claude, ChatGPT, Gemini, DeepSeek, Grok, Mistral, Llama, Qwen, Kimi and more) designs the whole thing. You get the layout, terrain, the prefab and galleries to drop at every location, the loot plan and chests, every UEFN device it needs with settings, the Verse code for the game mode, a 3D preview, the island image and the publish text. Then you export all of it for UEFN.
 
 | Part | Tech | Folder |
 |---|---|---|
@@ -40,6 +40,8 @@ ANTHROPIC_API_KEY=sk-ant-... npm start
 | **Grok (xAI)** | `grok-4`, `grok-4-fast`, `grok-3`, `grok-3-mini` | `XAI_API_KEY` |
 | **Mistral** | `mistral-large-latest`, `mistral-medium-latest`, `mistral-small-latest`, `magistral-medium-latest`, `codestral-latest` | `MISTRAL_API_KEY` |
 | **Llama (Meta Llama API)** | `Llama-4-Maverick-17B-128E-Instruct-FP8`, `Llama-4-Scout-17B-16E-Instruct-FP8`, `Llama-3.3-70B-Instruct`, `Llama-3.3-8B-Instruct` | `LLAMA_API_KEY` |
+| **Qwen (Alibaba Cloud)** | `qwen-max`, `qwen-plus`, `qwen-turbo`, `qwen3-max`, `qwen3-coder-plus` | `DASHSCOPE_API_KEY` (mainland China accounts: change the base URL to `https://dashscope.aliyuncs.com/compatible-mode/v1`) |
+| **Kimi (Moonshot AI)** | `kimi-k2-turbo-preview`, `kimi-k2-0905-preview`, `kimi-latest`, `moonshot-v1-128k` | `MOONSHOT_API_KEY` (mainland China accounts: base URL `https://api.moonshot.cn/v1`) |
 | Other OpenAI-compatible (OpenRouter, Groq, LM Studio…) | any — set the base URL | `OPENAI_COMPATIBLE_API_KEY` (optional) |
 | Ollama (local) | any local model, e.g. `llama3.1` to run Llama on your own machine | none |
 | Offline generator | — | none |

@@ -156,7 +156,7 @@ def build_parser() -> argparse.ArgumentParser:
     g = sub.add_parser("generate", help="generate an island from a prompt")
     g.add_argument("prompt")
     g.add_argument("--mode", default="reload")
-    g.add_argument("--provider", default="anthropic", choices=["anthropic", "openai", "gemini", "deepseek", "grok", "mistral", "llama", "compatible", "ollama", "offline"], help="anthropic (Claude), openai (ChatGPT), gemini, deepseek, grok, mistral, llama, compatible, ollama or offline")
+    g.add_argument("--provider", default="anthropic", choices=["anthropic", "openai", "gemini", "deepseek", "grok", "mistral", "llama", "qwen", "kimi", "compatible", "ollama", "offline"], help="anthropic (Claude), openai (ChatGPT), gemini, deepseek, grok, mistral, llama, qwen, kimi, compatible, ollama or offline")
     g.add_argument("--model")
     g.add_argument("--direct", action="store_true", help="call Claude directly with the Anthropic Python SDK (no server)")
     g.add_argument("-o", "--out")

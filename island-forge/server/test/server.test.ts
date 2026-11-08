@@ -124,6 +124,17 @@ test('ChatGPT, DeepSeek, Gemini and compatible callers send the right requests',
     assert.equal(seen[7].body.response_format, undefined);
     assert.equal(seen[7].body.max_tokens, 16000);
 
+    const qwen = await generateMap({ provider: 'qwen', apiKey: 'sk-qwen', baseUrl: url, prompt: 'docks', mode: 'tycoon' });
+    assert.equal(qwen.generator, 'qwen/qwen-plus');
+    assert.equal(seen[8].auth, 'Bearer sk-qwen');
+    assert.deepEqual(seen[8].body.response_format, { type: 'json_object' });
+    assert.equal(seen[8].body.max_tokens, 8192);
+
+    const kimi = await generateMap({ provider: 'kimi', apiKey: 'sk-kimi', baseUrl: url, prompt: 'docks', mode: 'horror' });
+    assert.equal(kimi.generator, 'kimi/kimi-k2-turbo-preview');
+    assert.equal(seen[9].body.model, 'kimi-k2-turbo-preview');
+    assert.deepEqual(seen[9].body.response_format, { type: 'json_object' });
+
     await assert.rejects(generateMap({ provider: 'openai', apiKey: 'bad', baseUrl: url, prompt: 'x' }), /ChatGPT \(OpenAI\) error \(401\): Invalid key/);
     await assert.rejects(generateMap({ provider: 'compatible', baseUrl: url, prompt: 'x' }), /Type a model name/);
     const saved = process.env.DEEPSEEK_API_KEY;

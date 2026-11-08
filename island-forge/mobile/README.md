@@ -1,6 +1,6 @@
 # Island Forge mobile (React Native and Expo)
 
-Pick an island type and describe it. The app generates the island either on the phone (offline generator) or through your Island Forge server with Claude, ChatGPT, Gemini, DeepSeek, Grok, Mistral or Llama. You can browse the map, locations (with their prefab and galleries), devices and Verse code, then share the map spec to a computer and export it for UEFN there.
+Pick an island type and describe it. The app generates the island either on the phone (offline generator) or through your Island Forge server with Claude, ChatGPT, Gemini, DeepSeek, Grok, Mistral, Llama, Qwen or Kimi. You can browse the map, locations (with their prefab and galleries), devices and Verse code, then share the map spec to a computer and export it for UEFN there.
 
 ```bash
 cd island-forge/mobile
