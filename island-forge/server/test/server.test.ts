@@ -227,3 +227,16 @@ test('Claude Code gets an isolated environment: only the given key, never a logi
   delete process.env.ISLAND_FORGE_PUBLIC;
   if (saved) process.env.ANTHROPIC_API_KEY = saved;
 });
+
+test('keep-alive generation starts the response at once and still returns the spec or a readable error', async () => {
+  const res = await fetch(`${base}/api/generate`, { method: 'POST', headers: { 'x-island-forge-keepalive': '1' }, body: JSON.stringify({ provider: 'offline', prompt: 'x', mode: 'blitz' }) });
+  assert.equal(res.status, 200);
+  const text = await res.text();
+  assert.match(text, /^ +\{/, 'body starts with keep-alive spaces');
+  assert.equal(JSON.parse(text).spec.mode, 'blitz');
+
+  const bad = await fetch(`${base}/api/generate`, { method: 'POST', headers: { 'x-island-forge-keepalive': '1' }, body: JSON.stringify({ provider: 'compatible', prompt: 'x' }) });
+  const err = JSON.parse(await bad.text());
+  assert.match(err.error, /Type a model name/);
+  assert.equal(err.status, 400);
+});
