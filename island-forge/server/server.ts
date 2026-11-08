@@ -5,7 +5,7 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { generateMap, PROVIDERS, providerStatus, httpError } from './providers.ts';
+import { generateMap, PROVIDERS, providerStatus, httpError, accessPolicy } from './providers.ts';
 import {
   MODE_LIST, MODE_CATEGORIES, DEVICES, DEVICE_CATEGORIES, VERSE_MODULES, MAP_SCHEMA,
   normalizeSpec, generateVerseFiles, generateReadme, buildPackageZip, slug,
@@ -46,6 +46,22 @@ async function readJson(req: http.IncomingMessage, limit = 4_000_000): Promise<a
   }
 }
 
+// Simple per-visitor rate limit for AI generation on public servers (RATE_LIMIT_PER_HOUR, 0 = off).
+const hits = new Map<string, number[]>();
+function rateLimited(req: http.IncomingMessage): boolean {
+  const policy = accessPolicy();
+  const limit = Number(process.env.RATE_LIMIT_PER_HOUR ?? (policy.public ? 30 : 0));
+  if (!limit) return false;
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+  const recent = (hits.get(ip) || []).filter((t) => now - t < 3_600_000);
+  if (recent.length >= limit) return true;
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 10_000) hits.clear();
+  return false;
+}
+
 const specFrom = (body: any) => {
   if (!body?.spec || typeof body.spec !== 'object') throw httpError(400, 'Send { "spec": <map spec> }');
   return normalizeSpec(body.spec, body.spec.mode);
@@ -55,10 +71,17 @@ export const server = http.createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   try {
     if (req.method === 'OPTIONS') {
-      return send(res, 204, '', 'text/plain', { 'access-control-allow-methods': 'GET, POST', 'access-control-allow-headers': 'content-type' });
+      return send(res, 204, '', 'text/plain', { 'access-control-allow-methods': 'GET, POST', 'access-control-allow-headers': 'content-type, x-island-forge-passcode' });
     }
     if (url.pathname === '/api/health') return send(res, 200, { ok: true });
-    if (url.pathname === '/api/providers') return send(res, 200, { providers: PROVIDERS, status: providerStatus() });
+    if (url.pathname === '/api/providers') {
+      const policy = accessPolicy();
+      return send(res, 200, {
+        providers: PROVIDERS,
+        status: providerStatus(),
+        access: { public: policy.public, serverKeys: policy.serverKeys, customBaseUrls: policy.public ? policy.allowedBaseUrls?.length ? 'allowlist' : 'off' : 'any' },
+      });
+    }
     if (url.pathname === '/api/catalog') {
       return send(res, 200, {
         modes: MODE_LIST,
@@ -70,7 +93,10 @@ export const server = http.createServer(async (req, res) => {
     }
     if (url.pathname === '/api/schema') return send(res, 200, MAP_SCHEMA);
     if (req.method === 'POST' && url.pathname === '/api/generate') {
-      return send(res, 200, { spec: await generateMap(await readJson(req)) });
+      const body = await readJson(req);
+      if (body?.provider !== 'offline' && rateLimited(req)) throw httpError(429, 'Too many AI requests from you this hour. Try again later, or use the offline generator.');
+      const passcode = req.headers['x-island-forge-passcode'];
+      return send(res, 200, { spec: await generateMap(body, undefined, { passcode: typeof passcode === 'string' ? passcode : undefined }) });
     }
     if (req.method === 'POST' && url.pathname === '/api/verse') {
       const spec = specFrom(await readJson(req));

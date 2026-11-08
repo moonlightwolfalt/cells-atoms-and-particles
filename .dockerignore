@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/.expo
+**/__pycache__
+**/*.egg-info
+.git
+island-forge/mobile
+island-forge/python
+island-forge/ruby
+island-forge/schema
+island-forge/core/test
+island-forge/server/test
+*.md

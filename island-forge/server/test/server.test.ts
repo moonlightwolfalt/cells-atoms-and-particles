@@ -145,3 +145,54 @@ test('ChatGPT, DeepSeek, Gemini and compatible callers send the right requests',
     fake.close();
   }
 });
+
+test('public mode: server keys need the passcode, custom base URLs are blocked, AI calls are rate limited', async () => {
+  const saved = { ...process.env };
+  const restore = () => {
+    for (const k of ['ISLAND_FORGE_PUBLIC', 'ISLAND_FORGE_PASSCODE', 'ALLOW_SHARED_KEYS', 'ALLOWED_BASE_URLS', 'ANTHROPIC_API_KEY', 'RATE_LIMIT_PER_HOUR']) {
+      if (saved[k] === undefined) delete process.env[k];
+      else process.env[k] = saved[k];
+    }
+  };
+  let seen: any;
+  const fake = { anthropic: async (a: any) => ((seen = a), { name: 'P' }), compatible: async (a: any) => ((seen = a), { name: 'C' }), ollama: async () => ({ name: 'O' }) };
+  try {
+    process.env.ISLAND_FORGE_PUBLIC = '1';
+    process.env.ANTHROPIC_API_KEY = 'sk-owner';
+
+    // No passcode configured: the owner's key is never used; visitors bring their own.
+    await generateMap({ provider: 'anthropic', apiKey: 'sk-visitor', prompt: 'x' }, fake);
+    assert.equal(seen.useEnvKeys, false);
+    assert.equal(seen.apiKey, 'sk-visitor');
+
+    // Passcode configured.
+    process.env.ISLAND_FORGE_PASSCODE = 'open-sesame';
+    await assert.rejects(generateMap({ provider: 'anthropic', prompt: 'x' }, fake), /enter the server passcode/);
+    await assert.rejects(generateMap({ provider: 'anthropic', prompt: 'x' }, fake, { passcode: 'nope' }), /Wrong server passcode/);
+    await generateMap({ provider: 'anthropic', prompt: 'x' }, fake, { passcode: 'open-sesame' });
+    assert.equal(seen.useEnvKeys, true);
+
+    // Base URLs: defaults fine, custom blocked unless allow-listed, Ollama off.
+    await assert.rejects(generateMap({ provider: 'compatible', model: 'm', baseUrl: 'http://169.254.169.254/latest', prompt: 'x' }, fake), /Custom base URLs are turned off/);
+    await assert.rejects(generateMap({ provider: 'ollama', prompt: 'x' }, fake), /turned off on this public server/);
+    await generateMap({ provider: 'compatible', model: 'm', prompt: 'x' }, fake);
+    assert.equal(seen.baseUrl, '');
+    process.env.ALLOWED_BASE_URLS = 'https://api.groq.com/openai/v1, https://example.org/v1/';
+    await generateMap({ provider: 'compatible', model: 'm', baseUrl: 'https://example.org/v1', prompt: 'x' }, fake);
+    assert.equal(seen.baseUrl, 'https://example.org/v1');
+
+    // API reports the policy; generation is rate limited per visitor.
+    const prov = await (await fetch(`${base}/api/providers`)).json();
+    assert.deepEqual(prov.access, { public: true, serverKeys: 'passcode', customBaseUrls: 'allowlist' });
+    assert.equal(prov.status.anthropic.envKey, true);
+    process.env.RATE_LIMIT_PER_HOUR = '2';
+    const ask = () => fetch(`${base}/api/generate`, { method: 'POST', headers: { 'x-forwarded-for': '203.0.113.9' }, body: JSON.stringify({ provider: 'anthropic', prompt: 'x' }) });
+    assert.equal((await ask()).status, 401);
+    assert.equal((await ask()).status, 401);
+    assert.equal((await ask()).status, 429);
+    const offline = await fetch(`${base}/api/generate`, { method: 'POST', headers: { 'x-forwarded-for': '203.0.113.9' }, body: JSON.stringify({ provider: 'offline', prompt: 'x' }) });
+    assert.equal(offline.status, 200, 'offline generation is never rate limited');
+  } finally {
+    restore();
+  }
+});
