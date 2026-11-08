@@ -20,6 +20,9 @@ const PROVIDERS = [
   { id: 'openai', label: 'ChatGPT' },
   { id: 'gemini', label: 'Gemini' },
   { id: 'deepseek', label: 'DeepSeek' },
+  { id: 'grok', label: 'Grok' },
+  { id: 'mistral', label: 'Mistral' },
+  { id: 'llama', label: 'Llama' },
   { id: 'ollama', label: 'Ollama' },
 ];
 type Tab = 'map' | 'places' | 'devices' | 'verse';

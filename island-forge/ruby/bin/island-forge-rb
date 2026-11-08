@@ -27,7 +27,7 @@ parser = OptionParser.new do |o|
   TXT
   o.on('--server URL', 'Island Forge server (default http://localhost:5173)') { |v| opts[:server] = v }
   o.on('--mode MODE', 'Island type for generate (default reload)') { |v| opts[:mode] = v }
-  o.on('--provider ID', 'anthropic (Claude), openai (ChatGPT), gemini, deepseek, compatible, ollama or offline') { |v| opts[:provider] = v }
+  o.on('--provider ID', 'anthropic (Claude), openai (ChatGPT), gemini, deepseek, grok, mistral, llama, compatible, ollama or offline') { |v| opts[:provider] = v }
   o.on('--model MODEL', 'Model name') { |v| opts[:model] = v }
   o.on('-o', '--out PATH', 'Output file or folder') { |v| opts[:out] = v }
 end

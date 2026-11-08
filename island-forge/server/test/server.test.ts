@@ -108,6 +108,22 @@ test('ChatGPT, DeepSeek, Gemini and compatible callers send the right requests',
     assert.equal(other.generator, 'compatible/meta/llama');
     assert.equal(seen[4].auth, undefined, 'no key sent when none given');
 
+    const grok = await generateMap({ provider: 'grok', apiKey: 'xai-test', baseUrl: url, prompt: 'docks', mode: 'box_fights' });
+    assert.equal(grok.generator, 'grok/grok-4');
+    assert.equal(seen[5].auth, 'Bearer xai-test');
+    assert.deepEqual(seen[5].body.response_format, { type: 'json_object' });
+
+    const mis = await generateMap({ provider: 'mistral', apiKey: 'mis-test', baseUrl: url, prompt: 'docks' });
+    assert.equal(mis.generator, 'mistral/mistral-large-latest');
+    assert.deepEqual(seen[6].body.response_format, { type: 'json_object' });
+    assert.equal(seen[6].body.max_tokens, 32000);
+
+    const llama = await generateMap({ provider: 'llama', apiKey: 'LLM|test', baseUrl: url, prompt: 'docks', mode: 'deathrun' });
+    assert.equal(llama.generator, 'llama/Llama-4-Maverick-17B-128E-Instruct-FP8');
+    assert.equal(seen[7].url, '/chat/completions');
+    assert.equal(seen[7].body.response_format, undefined);
+    assert.equal(seen[7].body.max_tokens, 16000);
+
     await assert.rejects(generateMap({ provider: 'openai', apiKey: 'bad', baseUrl: url, prompt: 'x' }), /ChatGPT \(OpenAI\) error \(401\): Invalid key/);
     await assert.rejects(generateMap({ provider: 'compatible', baseUrl: url, prompt: 'x' }), /Type a model name/);
     const saved = process.env.DEEPSEEK_API_KEY;

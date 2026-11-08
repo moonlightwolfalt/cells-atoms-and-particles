@@ -55,6 +55,36 @@ export const PROVIDERS: ProviderInfo[] = [
     baseUrl: 'https://api.deepseek.com',
   },
   {
+    id: 'grok',
+    label: 'Grok (xAI)',
+    defaultModel: 'grok-4',
+    models: ['grok-4', 'grok-4-fast', 'grok-3', 'grok-3-mini'],
+    needsKey: true,
+    env: 'XAI_API_KEY',
+    keyHint: 'xai-...',
+    baseUrl: 'https://api.x.ai/v1',
+  },
+  {
+    id: 'mistral',
+    label: 'Mistral',
+    defaultModel: 'mistral-large-latest',
+    models: ['mistral-large-latest', 'mistral-medium-latest', 'mistral-small-latest', 'magistral-medium-latest', 'codestral-latest'],
+    needsKey: true,
+    env: 'MISTRAL_API_KEY',
+    keyHint: 'Mistral API key',
+    baseUrl: 'https://api.mistral.ai/v1',
+  },
+  {
+    id: 'llama',
+    label: 'Llama (Meta Llama API)',
+    defaultModel: 'Llama-4-Maverick-17B-128E-Instruct-FP8',
+    models: ['Llama-4-Maverick-17B-128E-Instruct-FP8', 'Llama-4-Scout-17B-16E-Instruct-FP8', 'Llama-3.3-70B-Instruct', 'Llama-3.3-8B-Instruct'],
+    needsKey: true,
+    env: 'LLAMA_API_KEY',
+    keyHint: 'LLM|...',
+    baseUrl: 'https://api.llama.com/compat/v1',
+  },
+  {
     id: 'compatible',
     label: 'Other OpenAI-compatible (OpenRouter, Groq, LM Studio…)',
     defaultModel: '',
@@ -152,7 +182,7 @@ async function fetchJson(url: string, init: RequestInit, label: string): Promise
     /* not JSON */
   }
   if (!res.ok) {
-    const msg = data?.error?.message || data?.error || text.slice(0, 300);
+    const msg = data?.error?.message || data?.error || data?.detail || data?.message || text.slice(0, 300);
     const authFailed = res.status === 401 || res.status === 403 || /api key|authenticat/i.test(String(msg));
     throw httpError(authFailed ? 401 : res.status === 429 ? 429 : 502, `${label} error (${res.status}): ${msg}`);
   }
@@ -197,6 +227,26 @@ const callDeepSeek = openAICompatible({
   defaultBase: 'https://api.deepseek.com',
   keyRequired: true,
   extraBody: (model) => (model.includes('reasoner') ? { max_tokens: 32000 } : { response_format: { type: 'json_object' }, max_tokens: 8192 }),
+});
+
+const callGrok = openAICompatible({ label: 'Grok (xAI)', env: 'XAI_API_KEY', defaultBase: 'https://api.x.ai/v1', keyRequired: true });
+
+const callMistral = openAICompatible({
+  label: 'Mistral',
+  env: 'MISTRAL_API_KEY',
+  defaultBase: 'https://api.mistral.ai/v1',
+  keyRequired: true,
+  extraBody: () => ({ response_format: { type: 'json_object' }, max_tokens: 32000 }),
+});
+
+// Meta's Llama API is OpenAI-compatible under /compat/v1. JSON is read from the reply text,
+// so this also works when the model ignores JSON mode. Running Llama locally? Use Ollama.
+const callLlama = openAICompatible({
+  label: 'Llama (Meta Llama API)',
+  env: 'LLAMA_API_KEY',
+  defaultBase: 'https://api.llama.com/compat/v1',
+  keyRequired: true,
+  extraBody: () => ({ max_tokens: 16000 }),
 });
 
 const callCompatible = openAICompatible({ label: 'OpenAI-compatible API', env: 'OPENAI_COMPATIBLE_API_KEY', defaultBase: 'https://openrouter.ai/api/v1', keyRequired: false });
@@ -247,7 +297,7 @@ async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unk
 }
 
 export type Caller = (args: CallArgs) => Promise<unknown>;
-const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, compatible: callCompatible, ollama: callOllama };
+const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, compatible: callCompatible, ollama: callOllama };
 
 export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS): Promise<MapSpec> {
   const mode = MODES[body.mode] ? body.mode : 'reload';
