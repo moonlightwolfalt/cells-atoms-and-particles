@@ -2,6 +2,7 @@
 //   npm start            -> http://localhost:5173 (serves web/dist)
 //   npm run dev          -> API on :5174, Vite dev server on :5173 with hot reload
 import http from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -63,6 +64,48 @@ function rateLimited(req: http.IncomingMessage): boolean {
   return false;
 }
 
+// Background generation jobs. The web app starts a job, then asks for its result every couple
+// of seconds, so no single request stays open long enough for a gateway's time limit to cut it
+// off, however slow the AI is. Jobs live in memory: run one server instance.
+interface Job {
+  id: string;
+  ip: string;
+  status: 'running' | 'done' | 'error';
+  spec?: unknown;
+  error?: string;
+  httpStatus?: number;
+  started: number;
+  finished?: number;
+}
+const jobs = new Map<string, Job>();
+const JOB_TTL_MS = 15 * 60 * 1000;
+const MAX_RUNNING_PER_VISITOR = 3;
+
+function visitorIp(req: http.IncomingMessage): string {
+  return String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+}
+
+function sweepJobs() {
+  const now = Date.now();
+  for (const [id, job] of jobs) if (now - (job.finished || job.started) > JOB_TTL_MS) jobs.delete(id);
+}
+
+function runGeneration(body: any, passcode: string | undefined) {
+  const started = Date.now();
+  const tag = `[generate] ${String(body?.provider || 'anthropic')}/${String(body?.model || 'default').slice(0, 60)} ${String(body?.mode || '')}`;
+  return generateMap(body, undefined, { passcode }).then(
+    (spec) => {
+      console.log(`${tag} ok in ${Date.now() - started}ms`);
+      return spec;
+    },
+    (err: any) => {
+      console.error(`${tag} failed in ${Date.now() - started}ms: ${err.status || 500} ${err.message}`);
+      if (!err.status) console.error(err);
+      throw err;
+    },
+  );
+}
+
 const specFrom = (body: any) => {
   if (!body?.spec || typeof body.spec !== 'object') throw httpError(400, 'Send { "spec": <map spec> }');
   return normalizeSpec(body.spec, body.spec.mode);
@@ -93,6 +136,32 @@ export const server = http.createServer(async (req, res) => {
       });
     }
     if (url.pathname === '/api/schema') return send(res, 200, MAP_SCHEMA);
+    if (req.method === 'POST' && url.pathname === '/api/jobs') {
+      const body = await readJson(req);
+      const ip = visitorIp(req);
+      sweepJobs();
+      const running = [...jobs.values()].filter((j) => j.ip === ip && j.status === 'running').length;
+      if (running >= MAX_RUNNING_PER_VISITOR) throw httpError(429, 'You already have islands being generated. Wait for them to finish.');
+      if (jobs.size > 2000) throw httpError(503, 'The server is busy. Try again in a minute.');
+      if (body?.provider !== 'offline' && rateLimited(req)) throw httpError(429, 'Too many AI requests from you this hour. Try again later, or use the offline generator.');
+      const passcode = req.headers['x-island-forge-passcode'];
+      const job: Job = { id: randomUUID(), ip, status: 'running', started: Date.now() };
+      jobs.set(job.id, job);
+      runGeneration(body, typeof passcode === 'string' ? passcode : undefined).then(
+        (spec) => Object.assign(job, { status: 'done', spec, finished: Date.now() }),
+        (err: any) => Object.assign(job, { status: 'error', error: err.message || 'Something went wrong', httpStatus: err.status || 500, finished: Date.now() }),
+      );
+      return send(res, 202, { id: job.id, status: job.status });
+    }
+    const jobMatch = url.pathname.match(/^\/api\/jobs\/([0-9a-f-]{36})$/);
+    if (req.method === 'GET' && jobMatch) {
+      const job = jobs.get(jobMatch[1]);
+      if (!job) throw httpError(404, 'This island job was not found — the server may have restarted. Please generate again.');
+      const elapsed_ms = (job.finished || Date.now()) - job.started;
+      if (job.status === 'running') return send(res, 200, { id: job.id, status: job.status, elapsed_ms });
+      if (job.status === 'error') return send(res, 200, { id: job.id, status: job.status, error: job.error, http_status: job.httpStatus, elapsed_ms });
+      return send(res, 200, { id: job.id, status: job.status, spec: job.spec, elapsed_ms });
+    }
     if (req.method === 'POST' && url.pathname === '/api/generate') {
       const body = await readJson(req);
       if (body?.provider !== 'offline' && rateLimited(req)) throw httpError(429, 'Too many AI requests from you this hour. Try again later, or use the offline generator.');

@@ -157,7 +157,9 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 | `GET /api/providers` | AI providers, and which have keys set on the server |
 | `GET /api/catalog` | Island types, devices, Verse modules, Creative catalog |
 | `GET /api/schema` | JSON schema the AI answers in |
-| `POST /api/generate` | `{prompt, mode, provider, model?, apiKey?, baseUrl?}` → `{spec}` |
+| `POST /api/generate` | `{prompt, mode, provider, model?, apiKey?, baseUrl?}` → `{spec}` (one request; add header `x-island-forge-keepalive: 1` for keep-alive spaces) |
+| `POST /api/jobs` | Same body → `{id}`: starts generation in the background (what the web app uses, so slow models never hit gateway time limits) |
+| `GET /api/jobs/:id` | `{status: running \| done \| error, spec?, error?, elapsed_ms}` |
 | `POST /api/verse` | `{spec}` → `{files}` |
 | `POST /api/readme` | `{spec}` → setup guide (Markdown) |
 | `POST /api/package` | `{spec}` → UEFN package (.zip, without the browser-rendered images) |

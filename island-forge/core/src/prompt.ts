@@ -30,6 +30,7 @@ export function buildSystemPrompt(): string {
     'Respect the mode rules you are given, adjusting them only when the idea clearly asks for it.',
     'For every location pick a prefab id that fits (or "" if none fits) and 1-3 gallery ids from the catalog lists. Fill loot with item, chest, vehicle and creature ids from the catalog lists only.',
     'Fill publish with a Discover-ready title (max 40 characters), a short description, up to 4 tags and release notes.',
+    'Keep the answer compact so it finishes quickly: descriptions under 15 words, notes under 6 words, 2-4 points per road and at most 6 per river, and roughly the suggested number of features.',
     'Reply with JSON only, matching the provided schema exactly.',
   ].join('\n');
 }

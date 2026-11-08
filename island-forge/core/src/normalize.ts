@@ -134,7 +134,7 @@ export function normalizeSpec(raw: unknown, modeId = 'reload', extra: { prompt?:
     mode: mode.id,
     seed: int(src.seed, NaN) >>> 0 || hashString(JSON.stringify(src.name || '') + mode.id),
     prompt: str(src.prompt ?? extra.prompt).slice(0, 2000),
-    generator: str(src.generator ?? extra.generator, 'unknown').slice(0, 80),
+    generator: str(src.generator ?? extra.generator, 'unknown').slice(0, 140),
     map_size_m: clamp(int(src.map_size_m, mode.mapSizeM), 50, 4000),
     name,
     tagline,
