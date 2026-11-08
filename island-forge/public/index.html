@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Island Forge</title>
+    <meta name="description" content="Prompt an AI, get a Fortnite Reload, Battle Royale or Blitz island layout, and export it for UEFN." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%232b6cff'/><path d='M14 40c6-14 14-22 18-22s12 8 18 22z' fill='%2364d16a'/><circle cx='42' cy='20' r='5' fill='%23ffd60a'/></svg>" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <div>
+          <h1>Island Forge</h1>
+          <p>Prompt → Fortnite island layout → UEFN</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <label class="btn ghost" for="import-file">Import .json / .zip</label>
+        <input id="import-file" type="file" accept=".json,.zip,application/json,application/zip" hidden />
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel controls" aria-label="Generator">
+        <div class="field">
+          <span class="label">Game mode</span>
+          <div class="modes" role="radiogroup" id="modes"></div>
+          <p class="hint" id="mode-blurb"></p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="prompt">Describe your island</label>
+          <textarea id="prompt" rows="5" placeholder="e.g. A frozen volcano island with a neon city in the middle, pirate docks on the coast and a haunted swamp in the south"></textarea>
+          <div class="chips" id="examples"></div>
+        </div>
+
+        <details class="field ai" open>
+          <summary class="label">AI model</summary>
+          <label class="sublabel" for="provider">Provider</label>
+          <select id="provider"></select>
+          <label class="sublabel" for="model">Model</label>
+          <input id="model" list="model-list" autocomplete="off" />
+          <datalist id="model-list"></datalist>
+          <div id="baseurl-row">
+            <label class="sublabel" for="baseurl">Base URL</label>
+            <input id="baseurl" autocomplete="off" />
+          </div>
+          <div id="key-row">
+            <label class="sublabel" for="apikey">API key <span id="env-note" class="ok"></span></label>
+            <input id="apikey" type="password" autocomplete="off" />
+            <label class="check"><input type="checkbox" id="remember" /> Remember key in this browser</label>
+          </div>
+        </details>
+
+        <button id="generate" class="btn primary big">Generate island</button>
+        <button id="reroll" class="btn ghost" title="New random layout with the offline generator">Quick offline reroll</button>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel stage" aria-label="Result">
+        <div class="tabs" role="tablist">
+          <button role="tab" class="tab active" data-tab="map">Map</button>
+          <button role="tab" class="tab" data-tab="thumb">Island image</button>
+          <button role="tab" class="tab" data-tab="details">Details</button>
+          <button role="tab" class="tab" data-tab="uefn">UEFN</button>
+        </div>
+
+        <div class="tabpane active" data-pane="map">
+          <div class="canvas-wrap square"><canvas id="map-canvas" width="1024" height="1024"></canvas><div class="spinner" hidden></div></div>
+          <div class="toggles">
+            <label class="check"><input type="checkbox" data-layer="grid" checked /> Grid</label>
+            <label class="check"><input type="checkbox" data-layer="labels" checked /> Names</label>
+            <label class="check"><input type="checkbox" data-layer="features" checked /> Features</label>
+            <label class="check"><input type="checkbox" data-layer="storm" checked /> Storm</label>
+            <label class="check"><input type="checkbox" data-layer="bus" checked /> Bus route</label>
+          </div>
+          <div class="legend" id="legend"></div>
+        </div>
+
+        <div class="tabpane" data-pane="thumb">
+          <div class="canvas-wrap wide"><canvas id="thumb-canvas" width="1920" height="1080"></canvas></div>
+          <p class="hint">1920×1080 — the size UEFN / the Creator Portal uses for island thumbnails. Exported as JPEG and kept under 1 MB.</p>
+        </div>
+
+        <div class="tabpane" data-pane="details">
+          <div class="details" id="details"></div>
+        </div>
+
+        <div class="tabpane" data-pane="uefn">
+          <div class="uefn">
+            <h3>Export for UEFN</h3>
+            <p>The package contains the island image, the minimap, a Verse layout device and a step-by-step guide to import the layout into a new UEFN island.</p>
+            <div class="export-grid">
+              <button class="btn primary" data-export="zip">UEFN package (.zip)</button>
+              <button class="btn" data-export="thumb">Island image (.jpg)</button>
+              <button class="btn" data-export="minimap">Minimap (.png)</button>
+              <button class="btn" data-export="json">Map spec (.json)</button>
+              <button class="btn" data-export="verse">Verse device (.verse)</button>
+              <button class="btn" data-export="readme">Setup guide (.md)</button>
+            </div>
+            <h4>Verse preview</h4>
+            <pre id="verse-preview"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">Not affiliated with or endorsed by Epic Games. Fortnite and UEFN are trademarks of Epic Games, Inc.</footer>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

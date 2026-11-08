@@ -1,0 +1,17 @@
+{
+  "name": "island-forge",
+  "version": "1.0.0",
+  "description": "Prompt an AI and get a Fortnite Reload, Battle Royale or Blitz island layout, with UEFN export (island image, minimap, Verse layout device, setup guide).",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0"
+  }
+}
