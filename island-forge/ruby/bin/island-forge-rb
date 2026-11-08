@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# island-forge-rb: Ruby CLI for Island Forge.
+require 'optparse'
+require 'json'
+require_relative '../lib/island_forge'
+
+opts = { server: 'http://localhost:5173', mode: 'reload', provider: 'anthropic' }
+parser = OptionParser.new do |o|
+  o.banner = <<~TXT
+    Usage: island-forge-rb [options] COMMAND [ARGS]
+
+    Commands:
+      modes                     list every island type
+      devices                   list the UEFN device catalog
+      catalog [KIND] [SEARCH]   browse prefabs, galleries, chests, items, vehicles, creatures
+      generate PROMPT           generate an island (writes NAME.island.json)
+      info SPEC                 summarize a map spec
+      validate SPEC             check a map spec
+      markers SPEC              print locations/features with UEFN coordinates (CSV)
+      devices-csv SPEC          print the device plan (CSV)
+      package SPEC              download the UEFN package zip
+      verse SPEC                write the Verse files into ./Verse
+
+    Options:
+  TXT
+  o.on('--server URL', 'Island Forge server (default http://localhost:5173)') { |v| opts[:server] = v }
+  o.on('--mode MODE', 'Island type for generate (default reload)') { |v| opts[:mode] = v }
+  o.on('--provider ID', 'anthropic (Claude), openai (ChatGPT), gemini, deepseek, grok, mistral, llama, qwen, kimi, compatible, ollama or offline') { |v| opts[:provider] = v }
+  o.on('--model MODEL', 'Model name') { |v| opts[:model] = v }
+  o.on('-o', '--out PATH', 'Output file or folder') { |v| opts[:out] = v }
+end
+args = parser.parse(ARGV)
+command = args.shift
+slug = ->(name) { name.downcase.gsub(/[^a-z0-9]+/, '-').gsub(/^-|-$/, '') }
+
+begin
+  case command
+  when 'modes'
+    IslandForge::Catalog.modes_by_category.each do |cat, modes|
+      puts "\n#{cat}"
+      modes.each { |m| puts format('  %-20s %-22s %3dp  %s', m['id'], m['label'], m['rules']['max_players'], m['blurb']) }
+    end
+  when 'devices'
+    IslandForge::Catalog::DEVICES.each_value { |d| puts format('%-26s %-18s %s', d['id'], d['category'], d['name']) }
+  when 'catalog'
+    if args.empty?
+      IslandForge::Catalog::CATALOG.each { |k, v| puts format('%-10s %4d entries', k, v.size) }
+    else
+      IslandForge::Catalog.search(args[0], args[1]).each { |e| puts format('%-34s %-26s %s', e['id'], e['category'], e['name']) }
+    end
+  when 'generate'
+    abort parser.help unless args.first
+    IslandForge::Catalog.mode(opts[:mode])
+    spec = IslandForge::Client.new(opts[:server]).generate(args.first, mode: opts[:mode], provider: opts[:provider], model: opts[:model])
+    out = opts[:out] || "#{slug.(spec.name)}.island.json"
+    spec.save(out)
+    puts "#{spec.name} (#{spec.mode['label']}): #{spec['pois'].size} locations, #{spec['devices'].size} devices -> #{out}"
+  when 'info' then puts JSON.pretty_generate(IslandForge::Spec.load(args.fetch(0)).summary)
+  when 'validate'
+    problems = IslandForge::Spec.load(args.fetch(0)).problems
+    problems.empty? ? puts('OK') : (problems.each { |p| puts "- #{p}" }; exit 1)
+  when 'markers' then puts IslandForge::Spec.load(args.fetch(0)).markers_csv
+  when 'devices-csv' then puts IslandForge::Spec.load(args.fetch(0)).devices_csv
+  when 'package'
+    spec = IslandForge::Spec.load(args.fetch(0))
+    out = opts[:out] || "#{slug.(spec.name)}-uefn.zip"
+    File.binwrite(out, IslandForge::Client.new(opts[:server]).package(spec))
+    puts "Wrote #{out}"
+  when 'verse'
+    spec = IslandForge::Spec.load(args.fetch(0))
+    dir = opts[:out] || 'Verse'
+    Dir.mkdir(dir) unless Dir.exist?(dir)
+    IslandForge::Client.new(opts[:server]).verse(spec).each do |f|
+      File.write(File.join(dir, f['path']), f['code'])
+      puts File.join(dir, f['path'])
+    end
+  else
+    puts parser.help
+    exit(command ? 2 : 0)
+  end
+rescue IslandForge::Error, ArgumentError, Errno::ENOENT, IndexError, KeyError => e
+  warn "error: #{e.message}"
+  exit 1
+end

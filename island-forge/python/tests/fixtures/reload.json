@@ -1,0 +1,1282 @@
+{
+  "format": "island-forge/map@3",
+  "mode": "reload",
+  "seed": 2323202936,
+  "prompt": "frozen volcano with a neon city",
+  "generator": "offline-procedural",
+  "map_size_m": 1000,
+  "name": "Snowdrift Key",
+  "tagline": "Reload: frozen volcano with a neon city",
+  "description": "frozen volcano with a neon city — Small island, squads, respawn while a teammate is still alive — until the late storm.",
+  "theme": "snow, volcanic, urban",
+  "time_of_day": "night",
+  "base_biome": "snow",
+  "biomes": [
+    {
+      "type": "snow",
+      "x": 0.42823014352470634,
+      "y": 0.42109904531389475,
+      "radius": 0.20816598428413274
+    },
+    {
+      "type": "mountain",
+      "x": 0.8908504964783788,
+      "y": 0.21324587352573873,
+      "radius": 0.16443902659229936
+    },
+    {
+      "type": "forest",
+      "x": 0.8841019103303552,
+      "y": 0.45659522283822296,
+      "radius": 0.20040361931547523
+    },
+    {
+      "type": "volcanic",
+      "x": 0.40559781771153214,
+      "y": 0.14378915429115297,
+      "radius": 0.14639648330397906
+    },
+    {
+      "type": "urban",
+      "x": 0.1957786671817303,
+      "y": 0.823284200578928,
+      "radius": 0.1515838147699833
+    }
+  ],
+  "pois": [
+    {
+      "name": "Scorched Grove",
+      "kind": "town",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
+      "size": "large",
+      "loot_tier": 3,
+      "elevation": 0.25452350205741825,
+      "description": "A large town with a snow vibe.",
+      "prefab": "br_happy_hamlet",
+      "galleries": [
+        "gb_winter_village_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
+    },
+    {
+      "name": "Ashen Station",
+      "kind": "lab",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.325496284046676,
+      "description": "A medium lab with a snow vibe.",
+      "prefab": "th_volcano_lair",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
+    },
+    {
+      "name": "Neon Pier",
+      "kind": "docks",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "size": "small",
+      "loot_tier": 2,
+      "elevation": 0.3063505690544844,
+      "description": "A small docks with a snow vibe.",
+      "prefab": "th_viking_longship",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
+    },
+    {
+      "name": "Lucky Mines",
+      "kind": "cave",
+      "x": 0.5624177538780416,
+      "y": 0.7755505665905179,
+      "size": "small",
+      "loot_tier": 1,
+      "elevation": 0.32649435702478513,
+      "description": "A small cave with a snow vibe.",
+      "prefab": "th_cave_network",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
+    },
+    {
+      "name": "Shifty Downtown",
+      "kind": "city",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.15224363515153527,
+      "description": "A medium city with a snow vibe.",
+      "prefab": "th_office_tower",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
+    },
+    {
+      "name": "Polar Heights",
+      "kind": "town",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "size": "large",
+      "loot_tier": 3,
+      "elevation": 0.16202114678453655,
+      "description": "A large town with a snow vibe.",
+      "prefab": "br_happy_hamlet",
+      "galleries": [
+        "gb_winter_village_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
+    },
+    {
+      "name": "Blaze Works",
+      "kind": "industrial",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.2184700104640797,
+      "description": "A medium industrial with a snow vibe.",
+      "prefab": "br_logjam_lumberyard",
+      "galleries": [
+        "gb_cabin_gallery",
+        "gn_pine_tree_gallery",
+        "gp_holiday_prop_gallery"
+      ]
+    }
+  ],
+  "lakes": [
+    {
+      "x": 0.2712861108963668,
+      "y": 0.4924172890622954,
+      "radius": 0.0452431851066649
+    }
+  ],
+  "rivers": [
+    {
+      "points": [
+        {
+          "x": 0.49661831077188257,
+          "y": 0.5783819783478975
+        },
+        {
+          "x": 0.45773306036014616,
+          "y": 0.5142497921975989
+        },
+        {
+          "x": 0.4786357936318278,
+          "y": 0.44222149399631605
+        },
+        {
+          "x": 0.4695409301429229,
+          "y": 0.36777497991997943
+        },
+        {
+          "x": 0.44614937322941184,
+          "y": 0.29651605019771954
+        },
+        {
+          "x": 0.415956344928751,
+          "y": 0.22786198227719867
+        },
+        {
+          "x": 0.4076438060812572,
+          "y": 0.1533240610698769
+        },
+        {
+          "x": 0.4360556034207223,
+          "y": 0.08391390495464283
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5102609895728528,
+          "y": 0.40332967329770325
+        },
+        {
+          "x": 0.5847241394503442,
+          "y": 0.4122873130717878
+        },
+        {
+          "x": 0.6570476953934387,
+          "y": 0.4321443837456329
+        },
+        {
+          "x": 0.7320317651625093,
+          "y": 0.43369011362732174
+        },
+        {
+          "x": 0.7995319067361369,
+          "y": 0.46638156338930437
+        },
+        {
+          "x": 0.8647566663902654,
+          "y": 0.503404944219007
+        },
+        {
+          "x": 0.93695021771045,
+          "y": 0.48308030036530375
+        },
+        {
+          "x": 0.97,
+          "y": 0.5293774357949262
+        }
+      ]
+    }
+  ],
+  "roads": [
+    {
+      "points": [
+        {
+          "x": 0.5983088870073142,
+          "y": 0.41957356898859216
+        },
+        {
+          "x": 0.5194488700455833,
+          "y": 0.47278419134862837
+        },
+        {
+          "x": 0.4236611895303463,
+          "y": 0.5655438256786035
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5983088870073142,
+          "y": 0.41957356898859216
+        },
+        {
+          "x": 0.6375569613428581,
+          "y": 0.32835244879183817
+        },
+        {
+          "x": 0.694029565734521,
+          "y": 0.20858234575319023
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5983088870073142,
+          "y": 0.41957356898859216
+        },
+        {
+          "x": 0.6798032338804807,
+          "y": 0.47384408337643397
+        },
+        {
+          "x": 0.802769707949095,
+          "y": 0.5321910109505428
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.4236611895303463,
+          "y": 0.5655438256786035
+        },
+        {
+          "x": 0.3362560046657161,
+          "y": 0.693104669304262
+        },
+        {
+          "x": 0.28901111270963514,
+          "y": 0.764068036495958
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.4236611895303463,
+          "y": 0.5655438256786035
+        },
+        {
+          "x": 0.46813993487195815,
+          "y": 0.6532054140377873
+        },
+        {
+          "x": 0.5624177538780416,
+          "y": 0.7755505665905179
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5983088870073142,
+          "y": 0.41957356898859216
+        },
+        {
+          "x": 0.5032577321348187,
+          "y": 0.33536668614515874
+        },
+        {
+          "x": 0.36608004216891143,
+          "y": 0.2321233007709269
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "type": "vault",
+      "x": 0.5889329412422548,
+      "y": 0.424630176732783,
+      "note": "Inside Scorched Grove",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "vending_machine",
+      "x": 0.613238115840478,
+      "y": 0.14130831669102678,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "vending_machine",
+      "x": 0.5806982702052003,
+      "y": 0.6794916891424303,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "vending_machine",
+      "x": 0.8336325868658077,
+      "y": 0.48329140906061935,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "launch_pad",
+      "x": 0.4206415458439708,
+      "y": 0.1865384874895934,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "launch_pad",
+      "x": 0.5887472520430981,
+      "y": 0.5048011172244717,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "supply_drop",
+      "x": 0.4868886160416527,
+      "y": 0.5545251448763099,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "supply_drop",
+      "x": 0.24988468051979223,
+      "y": 0.2532475700229764,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "campfire",
+      "x": 0.14597189507374886,
+      "y": 0.5317101357470951,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "campfire",
+      "x": 0.6628788659232716,
+      "y": 0.5755907062430646,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "zipline",
+      "x": 0.4026411452056887,
+      "y": 0.44424386526084386,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "rift",
+      "x": 0.4999110751203973,
+      "y": 0.4004827316391193,
+      "note": "",
+      "team": 0,
+      "order": 0
+    }
+  ],
+  "bus_route": {
+    "start": {
+      "x": 0.7037157426350709,
+      "y": 0.08756831328977455
+    },
+    "end": {
+      "x": 0.18350102036110522,
+      "y": 0.8338089212222144
+    }
+  },
+  "storm": {
+    "final_x": 0.28901111270963514,
+    "final_y": 0.764068036495958,
+    "phases": [
+      {
+        "wait_s": 60,
+        "shrink_s": 90,
+        "end_radius_pct": 0.42,
+        "damage_per_tick": 1
+      },
+      {
+        "wait_s": 60,
+        "shrink_s": 75,
+        "end_radius_pct": 0.3,
+        "damage_per_tick": 2
+      },
+      {
+        "wait_s": 50,
+        "shrink_s": 60,
+        "end_radius_pct": 0.2,
+        "damage_per_tick": 5
+      },
+      {
+        "wait_s": 45,
+        "shrink_s": 50,
+        "end_radius_pct": 0.12,
+        "damage_per_tick": 8
+      },
+      {
+        "wait_s": 40,
+        "shrink_s": 45,
+        "end_radius_pct": 0.06,
+        "damage_per_tick": 10
+      },
+      {
+        "wait_s": 30,
+        "shrink_s": 40,
+        "end_radius_pct": 0,
+        "damage_per_tick": 10
+      }
+    ]
+  },
+  "rules": {
+    "max_players": 40,
+    "team_size": 4,
+    "team_count": 0,
+    "respawn_enabled": true,
+    "respawn_delay_s": 15,
+    "respawn_cutoff_phase": 4,
+    "rounds": 1,
+    "round_time_s": 900,
+    "score_to_win": 0,
+    "starting_materials": 300,
+    "build_mode": "build",
+    "loot_pool_notes": "Classic-style loot pool, floor loot heavy, chests in every named location."
+  },
+  "loot": {
+    "starting_loadout": [],
+    "pool": [
+      "it_assault_rifle",
+      "it_burst_assault_rifle",
+      "it_heavy_assault_rifle",
+      "it_pump_shotgun",
+      "it_tactical_shotgun",
+      "it_submachine_gun",
+      "it_compact_smg",
+      "it_pistol",
+      "it_hunting_rifle",
+      "it_bolt_action_sniper_rifle",
+      "it_rocket_launcher",
+      "it_grenade",
+      "it_shockwave_grenade",
+      "it_bandages",
+      "it_med_kit",
+      "it_small_shield_potion",
+      "it_shield_potion",
+      "it_chug_jug",
+      "it_slurp_juice",
+      "it_launch_pad_item",
+      "it_port_a_fort"
+    ],
+    "chests": [
+      "treasure_chest",
+      "rare_chest",
+      "ammo_box",
+      "cooler",
+      "supply_drop",
+      "vault_chest"
+    ],
+    "vehicles": [
+      "sports_car",
+      "pickup_truck",
+      "motorboat",
+      "quadcrasher"
+    ],
+    "creatures": []
+  },
+  "publish": {
+    "title": "Snowdrift Key",
+    "description": "Small island, squads, respawn while a teammate is still alive — until the late storm. Theme: frozen volcano with a neon city",
+    "tags": [
+      "battle royale",
+      "squads",
+      "respawn"
+    ],
+    "release_notes": "First release."
+  },
+  "devices": [
+    {
+      "id": "island_settings-1",
+      "device": "island_settings",
+      "label": "Island Settings",
+      "x": 0.53,
+      "y": 0.5,
+      "settings": {
+        "Max Players": 40,
+        "Spawn Location": "Battle Bus",
+        "Allow Building": "All",
+        "Team Size": 4,
+        "Teams": "Squads",
+        "Respawn": "On (15s)",
+        "Starting Materials": 300,
+        "Round Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "day_sequence-1",
+      "device": "day_sequence",
+      "label": "Day Sequence",
+      "x": 0.5229813332935693,
+      "y": 0.5192836282905962,
+      "settings": {
+        "Time Of Day": "night"
+      },
+      "enabled": true
+    },
+    {
+      "id": "skydome-1",
+      "device": "skydome",
+      "label": "Skydome",
+      "x": 0.5052094453300079,
+      "y": 0.5295442325903662,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "map_indicator-1",
+      "device": "map_indicator",
+      "label": "Map Indicator",
+      "x": 0.485,
+      "y": 0.5259807621135332,
+      "settings": {
+        "Icon": "Default"
+      },
+      "enabled": true
+    },
+    {
+      "id": "battle_bus-1",
+      "device": "battle_bus",
+      "label": "Battle Bus",
+      "x": 0.4718092213764227,
+      "y": 0.51026060429977,
+      "settings": {
+        "Bus Route": "From layout",
+        "Jump Delay": 5
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_controller-1",
+      "device": "advanced_storm_controller",
+      "label": "Advanced Storm Controller",
+      "x": 0.4718092213764227,
+      "y": 0.48973939570022995,
+      "settings": {
+        "Generate Storm On Game Start": true
+      },
+      "enabled": true
+    },
+    {
+      "id": "teleporter-1",
+      "device": "teleporter",
+      "label": "Teleporter",
+      "x": 0.485,
+      "y": 0.4740192378864668,
+      "settings": {
+        "Teleporter Group": "A"
+      },
+      "enabled": true
+    },
+    {
+      "id": "elimination_manager-1",
+      "device": "elimination_manager",
+      "label": "Elimination Manager",
+      "x": 0.5052094453300079,
+      "y": 0.47045576740963374,
+      "settings": {
+        "Target Type": "Player"
+      },
+      "enabled": true
+    },
+    {
+      "id": "end_game-1",
+      "device": "end_game",
+      "label": "End Game",
+      "x": 0.5229813332935693,
+      "y": 0.4807163717094038,
+      "settings": {
+        "Activating Team": "Any",
+        "Ends": "Round"
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-1",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 1",
+      "x": 0.46483518545160585,
+      "y": 0.544011339415993,
+      "settings": {
+        "Phase": 1,
+        "End Radius (m)": 420,
+        "Wait Time (s)": 60,
+        "Shrink Time (s)": 90,
+        "Damage Per Tick": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-2",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 2",
+      "x": 0.4296703709032117,
+      "y": 0.588022678831986,
+      "settings": {
+        "Phase": 2,
+        "End Radius (m)": 300,
+        "Wait Time (s)": 60,
+        "Shrink Time (s)": 75,
+        "Damage Per Tick": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-3",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 3",
+      "x": 0.39450555635481754,
+      "y": 0.632034018247979,
+      "settings": {
+        "Phase": 3,
+        "End Radius (m)": 200,
+        "Wait Time (s)": 50,
+        "Shrink Time (s)": 60,
+        "Damage Per Tick": 5
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-4",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 4",
+      "x": 0.35934074180642345,
+      "y": 0.676045357663972,
+      "settings": {
+        "Phase": 4,
+        "End Radius (m)": 120,
+        "Wait Time (s)": 45,
+        "Shrink Time (s)": 50,
+        "Damage Per Tick": 8
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-5",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 5",
+      "x": 0.32417592725802924,
+      "y": 0.720056697079965,
+      "settings": {
+        "Phase": 5,
+        "End Radius (m)": 60,
+        "Wait Time (s)": 40,
+        "Shrink Time (s)": 45,
+        "Damage Per Tick": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-6",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 6",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "settings": {
+        "Phase": 6,
+        "End Radius (m)": 0,
+        "Wait Time (s)": 30,
+        "Shrink Time (s)": 40,
+        "Damage Per Tick": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-1",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×8 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 8,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-2",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×2 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 2,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-3",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×4 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-4",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-5",
+      "device": "chest_spawner",
+      "label": "Vault Chest ×3 — Scorched Grove",
+      "x": 0.5983088870073142,
+      "y": 0.41957356898859216,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Vault Chest",
+        "Count": 3,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-6",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-7",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-8",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-9",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Ashen Station",
+      "x": 0.36608004216891143,
+      "y": 0.2321233007709269,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-10",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×4 — Neon Pier",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 4,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-11",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Neon Pier",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-12",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Neon Pier",
+      "x": 0.28901111270963514,
+      "y": 0.764068036495958,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-13",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×2 — Lucky Mines",
+      "x": 0.5624177538780416,
+      "y": 0.7755505665905179,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 2,
+        "Tier": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-14",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×2 — Lucky Mines",
+      "x": 0.5624177538780416,
+      "y": 0.7755505665905179,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 2,
+        "Tier": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-15",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-16",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-17",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-18",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Shifty Downtown",
+      "x": 0.802769707949095,
+      "y": 0.5321910109505428,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-19",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×8 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 8,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-20",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×2 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 2,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-21",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×4 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-22",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Polar Heights",
+      "x": 0.4236611895303463,
+      "y": 0.5655438256786035,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-23",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Blaze Works",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-24",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Blaze Works",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-25",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Blaze Works",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-26",
+      "device": "chest_spawner",
+      "label": "Cooler ×1 — Blaze Works",
+      "x": 0.694029565734521,
+      "y": 0.20858234575319023,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Cooler",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "vault-1",
+      "device": "vault",
+      "label": "Vault (Lock + Keycard) — Inside Scorched Grove",
+      "x": 0.5889329412422548,
+      "y": 0.424630176732783,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-1",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.613238115840478,
+      "y": 0.14130831669102678,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-2",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.5806982702052003,
+      "y": 0.6794916891424303,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-3",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.8336325868658077,
+      "y": 0.48329140906061935,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "launch_pad-1",
+      "device": "launch_pad",
+      "label": "Launch Pad",
+      "x": 0.4206415458439708,
+      "y": 0.1865384874895934,
+      "settings": {
+        "Launch Strength": "Normal"
+      },
+      "enabled": true
+    },
+    {
+      "id": "launch_pad-2",
+      "device": "launch_pad",
+      "label": "Launch Pad",
+      "x": 0.5887472520430981,
+      "y": 0.5048011172244717,
+      "settings": {
+        "Launch Strength": "Normal"
+      },
+      "enabled": true
+    },
+    {
+      "id": "supply_drop-1",
+      "device": "supply_drop",
+      "label": "Supply Drop Spawner",
+      "x": 0.4868886160416527,
+      "y": 0.5545251448763099,
+      "settings": {
+        "Drop Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "supply_drop-2",
+      "device": "supply_drop",
+      "label": "Supply Drop Spawner",
+      "x": 0.24988468051979223,
+      "y": 0.2532475700229764,
+      "settings": {
+        "Drop Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "campfire-1",
+      "device": "campfire",
+      "label": "Campfire",
+      "x": 0.14597189507374886,
+      "y": 0.5317101357470951,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "campfire-2",
+      "device": "campfire",
+      "label": "Campfire",
+      "x": 0.6628788659232716,
+      "y": 0.5755907062430646,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "zipline-1",
+      "device": "zipline",
+      "label": "Zipline",
+      "x": 0.4026411452056887,
+      "y": 0.44424386526084386,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "rift-1",
+      "device": "rift",
+      "label": "Rift / Rift Point",
+      "x": 0.4999110751203973,
+      "y": 0.4004827316391193,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "verse_device-1",
+      "device": "verse_device",
+      "label": "Verse — snowdrift_key_layout_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "snowdrift_key_layout.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-2",
+      "device": "verse_device",
+      "label": "Verse — snowdrift_key_reload_respawn_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "snowdrift_key_reload_respawn.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-3",
+      "device": "verse_device",
+      "label": "Verse — snowdrift_key_elimination_scoring_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "snowdrift_key_elimination_scoring.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-4",
+      "device": "verse_device",
+      "label": "Verse — snowdrift_key_hud_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "snowdrift_key_hud.verse"
+      },
+      "enabled": true
+    }
+  ]
+}

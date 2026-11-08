@@ -1,0 +1,1099 @@
+{
+  "format": "island-forge/map@3",
+  "mode": "capture_the_flag",
+  "seed": 2471857585,
+  "prompt": "pirate bay",
+  "generator": "offline-procedural",
+  "map_size_m": 350,
+  "name": "Lagoon Showdown",
+  "tagline": "Capture the Flag: pirate bay",
+  "description": "pirate bay — Steal the enemy flag and bring it home.",
+  "theme": "beach",
+  "time_of_day": "day",
+  "base_biome": "beach",
+  "biomes": [
+    {
+      "type": "beach",
+      "x": 0.5856980251148344,
+      "y": 0.770951309427619,
+      "radius": 0.14664552906528117
+    },
+    {
+      "type": "jungle",
+      "x": 0.25301881581544877,
+      "y": 0.38917650450021035,
+      "radius": 0.25938963908702134
+    },
+    {
+      "type": "grassland",
+      "x": 0.3524571511894464,
+      "y": 0.6858891787007451,
+      "radius": 0.25798579547554257
+    },
+    {
+      "type": "beach",
+      "x": 0.5624738894402981,
+      "y": 0.2795675521716475,
+      "radius": 0.23177278699353338
+    }
+  ],
+  "pois": [
+    {
+      "name": "Red Base",
+      "kind": "base",
+      "x": 0.14,
+      "y": 0.5,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.15,
+      "description": "Spawn base for team 1.",
+      "prefab": "th_space_base",
+      "galleries": [
+        "gb_resort_gallery",
+        "gn_palm_tree_gallery"
+      ]
+    },
+    {
+      "name": "Blue Base",
+      "kind": "base",
+      "x": 0.86,
+      "y": 0.4999999999999999,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.15,
+      "description": "Spawn base for team 2.",
+      "prefab": "th_beach_resort",
+      "galleries": [
+        "gb_pirate_gallery",
+        "gn_palm_tree_gallery"
+      ]
+    },
+    {
+      "name": "Lazy Arena",
+      "kind": "arena",
+      "x": 0.5,
+      "y": 0.5,
+      "size": "large",
+      "loot_tier": 3,
+      "elevation": 0.25,
+      "description": "The contested middle.",
+      "prefab": "br_colossal_coliseum",
+      "galleries": [
+        "gb_lighthouse_gallery",
+        "gn_palm_tree_gallery",
+        "gp_sports_prop_gallery"
+      ]
+    },
+    {
+      "name": "Pleasant Resort",
+      "kind": "resort",
+      "x": 0.6678628943860532,
+      "y": 0.6330282299220562,
+      "size": "small",
+      "loot_tier": 2,
+      "elevation": 0.2612276551546529,
+      "description": "Side area themed as a resort.",
+      "prefab": "br_snobby_shores",
+      "galleries": [
+        "gb_resort_gallery",
+        "gn_palm_tree_gallery"
+      ]
+    },
+    {
+      "name": "Pirate Village",
+      "kind": "town",
+      "x": 0.8175833271443844,
+      "y": 0.7893897734582425,
+      "size": "small",
+      "loot_tier": 2,
+      "elevation": 0.07041238152887672,
+      "description": "Side area themed as a town.",
+      "prefab": "br_sweaty_sands",
+      "galleries": [
+        "gb_lighthouse_gallery",
+        "gn_palm_tree_gallery",
+        "gp_kitchen_gallery"
+      ]
+    }
+  ],
+  "lakes": [],
+  "rivers": [],
+  "roads": [
+    {
+      "points": [
+        {
+          "x": 0.14,
+          "y": 0.5
+        },
+        {
+          "x": 0.32104619130957873,
+          "y": 0.5248753582406789
+        },
+        {
+          "x": 0.5,
+          "y": 0.5
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.5890249596955255,
+          "y": 0.5440677029266954
+        },
+        {
+          "x": 0.6678628943860532,
+          "y": 0.6330282299220562
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.6678628943860532,
+          "y": 0.6330282299220562
+        },
+        {
+          "x": 0.7704087535152212,
+          "y": 0.7230489888926969
+        },
+        {
+          "x": 0.8175833271443844,
+          "y": 0.7893897734582425
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.6678628943860532,
+          "y": 0.6330282299220562
+        },
+        {
+          "x": 0.7774093255540356,
+          "y": 0.5875874578626825
+        },
+        {
+          "x": 0.86,
+          "y": 0.4999999999999999
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "type": "team_spawn",
+      "x": 0.18000985098347472,
+      "y": 0.5070320259364355,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.822960630558544,
+      "y": 0.4889189273690389,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.12470772678470704,
+      "y": 0.5004431938827256,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.8963647127210624,
+      "y": 0.4789537479458548,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.1602418331460129,
+      "y": 0.5163234253143267,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.8358993515475865,
+      "y": 0.517970165089764,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.17775193582988358,
+      "y": 0.5233459688543629,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.8688858493060996,
+      "y": 0.5313187910873234,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.1559692042418157,
+      "y": 0.5150298140578209,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.8400386699373255,
+      "y": 0.5034612730908745,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.15427849392673437,
+      "y": 0.5204742548542313,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.8207443912706657,
+      "y": 0.48560844636867,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.09573295257980147,
+      "y": 0.5035206812749837,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.8620101841262793,
+      "y": 0.5385893509694458,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.15839012751113707,
+      "y": 0.4902738679004494,
+      "note": "",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "team_spawn",
+      "x": 0.8276791271783454,
+      "y": 0.5212623079880707,
+      "note": "",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "flag",
+      "x": 0.14,
+      "y": 0.5,
+      "note": "Red flag",
+      "team": 1,
+      "order": 0
+    },
+    {
+      "type": "flag",
+      "x": 0.86,
+      "y": 0.4999999999999999,
+      "note": "Blue flag",
+      "team": 2,
+      "order": 0
+    },
+    {
+      "type": "item_spawner",
+      "x": 0.325207904484123,
+      "y": 0.15316124245524407,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "item_spawner",
+      "x": 0.24254788104444747,
+      "y": 0.11458289239555597,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "item_spawner",
+      "x": 0.9036139817349613,
+      "y": 0.27860445719212296,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "item_spawner",
+      "x": 0.35507614803500476,
+      "y": 0.1984992548264563,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "launch_pad",
+      "x": 0.7304882521834225,
+      "y": 0.7100432359799743,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "launch_pad",
+      "x": 0.6551097425352782,
+      "y": 0.7981051975861192,
+      "note": "",
+      "team": 0,
+      "order": 0
+    }
+  ],
+  "bus_route": null,
+  "storm": {
+    "final_x": 0.15,
+    "final_y": 0.5,
+    "phases": []
+  },
+  "rules": {
+    "max_players": 16,
+    "team_size": 8,
+    "team_count": 2,
+    "respawn_enabled": true,
+    "respawn_delay_s": 5,
+    "respawn_cutoff_phase": 0,
+    "rounds": 1,
+    "round_time_s": 900,
+    "score_to_win": 3,
+    "starting_materials": 0,
+    "build_mode": "build",
+    "loot_pool_notes": "Class loadouts per team."
+  },
+  "loot": {
+    "starting_loadout": [
+      "it_assault_rifle",
+      "it_pump_shotgun",
+      "it_submachine_gun",
+      "it_small_shield_potion",
+      "it_med_kit"
+    ],
+    "pool": [
+      "it_rocket_launcher",
+      "it_grenade",
+      "it_shield_potion"
+    ],
+    "chests": [
+      "ammo_box",
+      "weapon_rack"
+    ],
+    "vehicles": [],
+    "creatures": []
+  },
+  "publish": {
+    "title": "Lagoon Showdown",
+    "description": "Steal the enemy flag and bring it home. Theme: pirate bay",
+    "tags": [
+      "capture the flag",
+      "objective",
+      "teams"
+    ],
+    "release_notes": "First release."
+  },
+  "devices": [
+    {
+      "id": "island_settings-1",
+      "device": "island_settings",
+      "label": "Island Settings",
+      "x": 0.53,
+      "y": 0.5,
+      "settings": {
+        "Max Players": 16,
+        "Spawn Location": "Player Spawn Pads",
+        "Allow Building": "All",
+        "Team Size": 8,
+        "Teams": 2,
+        "Respawn": "On (5s)",
+        "Starting Materials": 0,
+        "Round Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "day_sequence-1",
+      "device": "day_sequence",
+      "label": "Day Sequence",
+      "x": 0.5229813332935693,
+      "y": 0.5192836282905962,
+      "settings": {
+        "Time Of Day": "day"
+      },
+      "enabled": true
+    },
+    {
+      "id": "skydome-1",
+      "device": "skydome",
+      "label": "Skydome",
+      "x": 0.5052094453300079,
+      "y": 0.5295442325903662,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "map_indicator-1",
+      "device": "map_indicator",
+      "label": "Map Indicator",
+      "x": 0.485,
+      "y": 0.5259807621135332,
+      "settings": {
+        "Icon": "Default"
+      },
+      "enabled": true
+    },
+    {
+      "id": "team_settings_inventory-1",
+      "device": "team_settings_inventory",
+      "label": "Team Settings & Inventory",
+      "x": 0.4718092213764227,
+      "y": 0.51026060429977,
+      "settings": {
+        "Team Name": "Team 1",
+        "Team Color": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "capture_item_spawner-1",
+      "device": "capture_item_spawner",
+      "label": "Capture Item Spawner",
+      "x": 0.4718092213764227,
+      "y": 0.48973939570022995,
+      "settings": {
+        "Item": "Flag",
+        "Team": "Any"
+      },
+      "enabled": true
+    },
+    {
+      "id": "score_manager-1",
+      "device": "score_manager",
+      "label": "Score Manager",
+      "x": 0.485,
+      "y": 0.4740192378864668,
+      "settings": {
+        "Score Value": 1,
+        "Score To Win": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "end_game-1",
+      "device": "end_game",
+      "label": "End Game",
+      "x": 0.5052094453300079,
+      "y": 0.47045576740963374,
+      "settings": {
+        "Activating Team": "Any",
+        "Ends": "Round"
+      },
+      "enabled": true
+    },
+    {
+      "id": "hud_message-1",
+      "device": "hud_message",
+      "label": "HUD Message",
+      "x": 0.5229813332935693,
+      "y": 0.4807163717094038,
+      "settings": {
+        "Display Time": 4
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-1",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Red Base",
+      "x": 0.14,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-2",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Red Base",
+      "x": 0.14,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-3",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Blue Base",
+      "x": 0.86,
+      "y": 0.4999999999999999,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-4",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Blue Base",
+      "x": 0.86,
+      "y": 0.4999999999999999,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-5",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×4 — Lazy Arena",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-6",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Lazy Arena",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-7",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Pleasant Resort",
+      "x": 0.6678628943860532,
+      "y": 0.6330282299220562,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-8",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Pleasant Resort",
+      "x": 0.6678628943860532,
+      "y": 0.6330282299220562,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-9",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Pirate Village",
+      "x": 0.8175833271443844,
+      "y": 0.7893897734582425,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-10",
+      "device": "chest_spawner",
+      "label": "Weapon Rack ×2 — Pirate Village",
+      "x": 0.8175833271443844,
+      "y": 0.7893897734582425,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Weapon Rack",
+        "Count": 2,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-1",
+      "device": "item_granter",
+      "label": "Loadout — Assault Rifle",
+      "x": 0.5700000000000001,
+      "y": 0.5,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Assault Rifle",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-2",
+      "device": "item_granter",
+      "label": "Loadout — Pump Shotgun",
+      "x": 0.5492705098312485,
+      "y": 0.5285316954888546,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Pump Shotgun",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-3",
+      "device": "item_granter",
+      "label": "Loadout — Submachine Gun",
+      "x": 0.5157294901687516,
+      "y": 0.5176335575687742,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Submachine Gun",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-4",
+      "device": "item_granter",
+      "label": "Loadout — Small Shield Potion",
+      "x": 0.5157294901687516,
+      "y": 0.48236644243122584,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Small Shield Potion",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-5",
+      "device": "item_granter",
+      "label": "Loadout — Med Kit",
+      "x": 0.5492705098312485,
+      "y": 0.4714683045111454,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All",
+        "Item": "Med Kit",
+        "Grant On": "Spawn"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-1",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.18000985098347472,
+      "y": 0.5070320259364355,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-2",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.822960630558544,
+      "y": 0.4889189273690389,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-3",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.12470772678470704,
+      "y": 0.5004431938827256,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-4",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.8963647127210624,
+      "y": 0.4789537479458548,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-5",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.1602418331460129,
+      "y": 0.5163234253143267,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-6",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.8358993515475865,
+      "y": 0.517970165089764,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-7",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.17775193582988358,
+      "y": 0.5233459688543629,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-8",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.8688858493060996,
+      "y": 0.5313187910873234,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-9",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.1559692042418157,
+      "y": 0.5150298140578209,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-10",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.8400386699373255,
+      "y": 0.5034612730908745,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-11",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.15427849392673437,
+      "y": 0.5204742548542313,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-12",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.8207443912706657,
+      "y": 0.48560844636867,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-13",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.09573295257980147,
+      "y": 0.5035206812749837,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-14",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.8620101841262793,
+      "y": 0.5385893509694458,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-15",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Red",
+      "x": 0.15839012751113707,
+      "y": 0.4902738679004494,
+      "settings": {
+        "Player Team": "Red",
+        "Visible In Game": false,
+        "Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-16",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad — Blue",
+      "x": 0.8276791271783454,
+      "y": 0.5212623079880707,
+      "settings": {
+        "Player Team": "Blue",
+        "Visible In Game": false,
+        "Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "capture_item_spawner-2",
+      "device": "capture_item_spawner",
+      "label": "Capture Item Spawner — Red — Red flag",
+      "x": 0.14,
+      "y": 0.5,
+      "settings": {
+        "Item": "Flag",
+        "Team": "Red",
+        "Player Team": "Red"
+      },
+      "enabled": true
+    },
+    {
+      "id": "capture_item_spawner-3",
+      "device": "capture_item_spawner",
+      "label": "Capture Item Spawner — Blue — Blue flag",
+      "x": 0.86,
+      "y": 0.4999999999999999,
+      "settings": {
+        "Item": "Flag",
+        "Team": "Blue",
+        "Player Team": "Blue"
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_spawner-1",
+      "device": "item_spawner",
+      "label": "Item Spawner",
+      "x": 0.325207904484123,
+      "y": 0.15316124245524407,
+      "settings": {
+        "Respawn Item On Timer": true,
+        "Time Between Spawns": 30
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_spawner-2",
+      "device": "item_spawner",
+      "label": "Item Spawner",
+      "x": 0.24254788104444747,
+      "y": 0.11458289239555597,
+      "settings": {
+        "Respawn Item On Timer": true,
+        "Time Between Spawns": 30
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_spawner-3",
+      "device": "item_spawner",
+      "label": "Item Spawner",
+      "x": 0.9036139817349613,
+      "y": 0.27860445719212296,
+      "settings": {
+        "Respawn Item On Timer": true,
+        "Time Between Spawns": 30
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_spawner-4",
+      "device": "item_spawner",
+      "label": "Item Spawner",
+      "x": 0.35507614803500476,
+      "y": 0.1984992548264563,
+      "settings": {
+        "Respawn Item On Timer": true,
+        "Time Between Spawns": 30
+      },
+      "enabled": true
+    },
+    {
+      "id": "launch_pad-1",
+      "device": "launch_pad",
+      "label": "Launch Pad",
+      "x": 0.7304882521834225,
+      "y": 0.7100432359799743,
+      "settings": {
+        "Launch Strength": "Normal"
+      },
+      "enabled": true
+    },
+    {
+      "id": "launch_pad-2",
+      "device": "launch_pad",
+      "label": "Launch Pad",
+      "x": 0.6551097425352782,
+      "y": 0.7981051975861192,
+      "settings": {
+        "Launch Strength": "Normal"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-1",
+      "device": "verse_device",
+      "label": "Verse — lagoon_showdown_layout_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "lagoon_showdown_layout.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-2",
+      "device": "verse_device",
+      "label": "Verse — lagoon_showdown_loadout_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "lagoon_showdown_loadout.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-3",
+      "device": "verse_device",
+      "label": "Verse — lagoon_showdown_elimination_scoring_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "lagoon_showdown_elimination_scoring.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-4",
+      "device": "verse_device",
+      "label": "Verse — lagoon_showdown_hud_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "lagoon_showdown_hud.verse"
+      },
+      "enabled": true
+    }
+  ]
+}

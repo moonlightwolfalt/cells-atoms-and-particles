@@ -1,0 +1,587 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Island Forge map (AI answer)",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Island name, 1-4 words."
+    },
+    "tagline": {
+      "type": "string",
+      "description": "One punchy line for the island thumbnail."
+    },
+    "description": {
+      "type": "string",
+      "description": "2-3 sentences for the island description."
+    },
+    "theme": {
+      "type": "string"
+    },
+    "time_of_day": {
+      "type": "string",
+      "enum": [
+        "day",
+        "dawn",
+        "dusk",
+        "night"
+      ]
+    },
+    "base_biome": {
+      "type": "string",
+      "enum": [
+        "grassland",
+        "forest",
+        "desert",
+        "snow",
+        "swamp",
+        "jungle",
+        "volcanic",
+        "beach",
+        "mountain",
+        "urban",
+        "autumn",
+        "candy"
+      ]
+    },
+    "biomes": {
+      "type": "array",
+      "description": "Biome regions. x,y are 0..1 across the map (0,0 = north-west corner). radius is 0..1.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "grassland",
+              "forest",
+              "desert",
+              "snow",
+              "swamp",
+              "jungle",
+              "volcanic",
+              "beach",
+              "mountain",
+              "urban",
+              "autumn",
+              "candy"
+            ]
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "radius": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "x",
+          "y",
+          "radius"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "pois": {
+      "type": "array",
+      "description": "Named locations / areas. Spread them out and keep them on land (about 0.12..0.88).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "town",
+              "city",
+              "industrial",
+              "landmark",
+              "fort",
+              "ruins",
+              "farm",
+              "resort",
+              "military",
+              "cave",
+              "castle",
+              "lab",
+              "docks",
+              "temple",
+              "arena",
+              "base",
+              "plaza",
+              "course"
+            ]
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "small",
+              "medium",
+              "large"
+            ]
+          },
+          "loot_tier": {
+            "type": "integer",
+            "description": "1 = light, 3 = hot drop."
+          },
+          "elevation": {
+            "type": "number",
+            "description": "0 = sea level, 1 = mountain top."
+          },
+          "description": {
+            "type": "string"
+          },
+          "prefab": {
+            "type": "string",
+            "description": "Prefab id from the catalog list, or \"\" to build by hand."
+          },
+          "galleries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "1-3 gallery ids from the catalog list."
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "x",
+          "y",
+          "size",
+          "loot_tier",
+          "elevation",
+          "description",
+          "prefab",
+          "galleries"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "lakes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "radius": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "radius"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rivers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "points"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "roads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "points"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "features": {
+      "type": "array",
+      "description": "Gameplay objects. team: 0 none, 1 red, 2 blue, 3+ more teams. order: sequence for checkpoints/race gates/upgrades, else 0.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "reboot_van",
+              "vault",
+              "boss",
+              "medallion",
+              "vending_machine",
+              "launch_pad",
+              "supply_drop",
+              "campfire",
+              "zipline",
+              "rift",
+              "spawn_pad",
+              "team_spawn",
+              "capture_zone",
+              "flag",
+              "bomb_site",
+              "checkpoint",
+              "finish_line",
+              "race_checkpoint",
+              "tycoon_plot",
+              "shop",
+              "upgrade_button",
+              "creature_spawner",
+              "guard_spawner",
+              "vehicle_spawner",
+              "teleporter",
+              "trap",
+              "collectible",
+              "hiding_spot",
+              "item_spawner",
+              "minigame_pad",
+              "npc",
+              "wildlife",
+              "objective",
+              "sentry",
+              "bouncer",
+              "moving_platform",
+              "speed_boost",
+              "powerup",
+              "turret"
+            ]
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "note": {
+            "type": "string"
+          },
+          "team": {
+            "type": "integer"
+          },
+          "order": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "x",
+          "y",
+          "note",
+          "team",
+          "order"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "bus_route": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ],
+          "additionalProperties": false
+        },
+        "end": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false,
+      "description": "Only used by modes with a Battle Bus."
+    },
+    "storm": {
+      "type": "object",
+      "properties": {
+        "final_x": {
+          "type": "number"
+        },
+        "final_y": {
+          "type": "number"
+        },
+        "phases": {
+          "type": "array",
+          "description": "Empty for modes without a storm.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "wait_s": {
+                "type": "integer"
+              },
+              "shrink_s": {
+                "type": "integer"
+              },
+              "end_radius_pct": {
+                "type": "number",
+                "description": "Radius after this phase as a fraction of map width."
+              },
+              "damage_per_tick": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "wait_s",
+              "shrink_s",
+              "end_radius_pct",
+              "damage_per_tick"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "final_x",
+        "final_y",
+        "phases"
+      ],
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "max_players": {
+          "type": "integer"
+        },
+        "team_size": {
+          "type": "integer"
+        },
+        "team_count": {
+          "type": "integer",
+          "description": "0 = free for all / squads decided by team_size."
+        },
+        "respawn_enabled": {
+          "type": "boolean"
+        },
+        "respawn_delay_s": {
+          "type": "integer"
+        },
+        "respawn_cutoff_phase": {
+          "type": "integer",
+          "description": "Storm phase when respawns stop. 0 = never."
+        },
+        "rounds": {
+          "type": "integer"
+        },
+        "round_time_s": {
+          "type": "integer"
+        },
+        "score_to_win": {
+          "type": "integer",
+          "description": "0 = no score limit."
+        },
+        "starting_materials": {
+          "type": "integer"
+        },
+        "build_mode": {
+          "type": "string",
+          "enum": [
+            "build",
+            "zero_build",
+            "edit_only"
+          ]
+        },
+        "loot_pool_notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "max_players",
+        "team_size",
+        "team_count",
+        "respawn_enabled",
+        "respawn_delay_s",
+        "respawn_cutoff_phase",
+        "rounds",
+        "round_time_s",
+        "score_to_win",
+        "starting_materials",
+        "build_mode",
+        "loot_pool_notes"
+      ],
+      "additionalProperties": false
+    },
+    "loot": {
+      "type": "object",
+      "properties": {
+        "starting_loadout": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Item ids every player spawns with (empty for loot-only modes)."
+        },
+        "pool": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Item ids found in chests / on the floor / on the weapon ladder (Gun Game: in ladder order)."
+        },
+        "chests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Chest / container ids used on the island."
+        },
+        "vehicles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Vehicle ids."
+        },
+        "creatures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Creature / NPC ids."
+        }
+      },
+      "required": [
+        "starting_loadout",
+        "pool",
+        "chests",
+        "vehicles",
+        "creatures"
+      ],
+      "additionalProperties": false
+    },
+    "publish": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Island title for Discover, max 40 characters."
+        },
+        "description": {
+          "type": "string",
+          "description": "Island description, max 3 short lines."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Up to 4 short genre tags."
+        },
+        "release_notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "tags",
+        "release_notes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "name",
+    "tagline",
+    "description",
+    "theme",
+    "time_of_day",
+    "base_biome",
+    "biomes",
+    "pois",
+    "lakes",
+    "rivers",
+    "roads",
+    "features",
+    "bus_route",
+    "storm",
+    "rules",
+    "loot",
+    "publish"
+  ],
+  "additionalProperties": false
+}

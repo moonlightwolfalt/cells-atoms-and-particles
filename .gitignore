@@ -29,3 +29,12 @@ game28.dta
 
 # Log files
 warnings.log
+
+# Island Forge
+node_modules/
+island-forge/web/dist/
+.expo/
+dist/
+__pycache__/
+*.egg-info/
+.pytest_cache/

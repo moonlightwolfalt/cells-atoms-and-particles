@@ -1,0 +1,35 @@
+{
+  "name": "island-forge",
+  "version": "2.0.0",
+  "description": "AI Fortnite / UEFN island generator: every game type, devices, Verse, heightmaps, WebGL preview, with Python, Ruby and React Native clients.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/dev.ts",
+    "build": "vite build --config web/vite.config.ts",
+    "start": "node server/server.ts",
+    "test": "node --test \"core/test/*.test.ts\" \"server/test/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "schema": "node scripts/schema.ts"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.6"
+  }
+}
