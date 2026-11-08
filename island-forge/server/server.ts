@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { generateMap, PROVIDERS, providerStatus, httpError, accessPolicy } from './providers.ts';
+import { generateMap, listModels, PROVIDERS, providerStatus, httpError, accessPolicy } from './providers.ts';
 import {
   MODE_LIST, MODE_CATEGORIES, DEVICES, DEVICE_CATEGORIES, VERSE_MODULES, MAP_SCHEMA,
   normalizeSpec, generateVerseFiles, generateReadme, buildPackageZip, slug,
@@ -136,6 +136,11 @@ export const server = http.createServer(async (req, res) => {
       });
     }
     if (url.pathname === '/api/schema') return send(res, 200, MAP_SCHEMA);
+    if (req.method === 'POST' && url.pathname === '/api/models') {
+      const body = await readJson(req);
+      const passcode = req.headers['x-island-forge-passcode'];
+      return send(res, 200, await listModels(body, { passcode: typeof passcode === 'string' ? passcode : undefined }));
+    }
     if (req.method === 'POST' && url.pathname === '/api/jobs') {
       const body = await readJson(req);
       const ip = visitorIp(req);

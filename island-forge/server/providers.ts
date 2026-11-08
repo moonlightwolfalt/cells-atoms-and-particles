@@ -1,7 +1,7 @@
 // AI providers. Claude is the recommended default; any of the others (or the offline
 // generator) can be picked. Every provider's answer goes through the same normalizer.
 import Anthropic from '@anthropic-ai/sdk';
-import { timingSafeEqual } from 'node:crypto';
+import { timingSafeEqual, createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -16,6 +16,8 @@ export interface ProviderInfo {
   env?: string;
   keyHint?: string;
   baseUrl?: string;
+  /** The app can load this provider's full, live model list with the user's key. */
+  liveModels?: boolean;
 }
 
 export const PROVIDERS: ProviderInfo[] = [
@@ -41,21 +43,23 @@ export const PROVIDERS: ProviderInfo[] = [
     id: 'openai',
     label: 'ChatGPT (OpenAI)',
     defaultModel: 'gpt-5',
-    models: ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-4.1', 'gpt-4o'],
+    models: ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-5-chat-latest', 'gpt-4.1', 'gpt-4.1-mini', 'gpt-4.1-nano', 'gpt-4o', 'gpt-4o-mini', 'chatgpt-4o-latest', 'o3', 'o3-mini', 'o4-mini', 'o1', 'gpt-4-turbo', 'gpt-3.5-turbo'],
     needsKey: true,
     env: 'OPENAI_API_KEY',
     keyHint: 'sk-...',
     baseUrl: 'https://api.openai.com/v1',
+    liveModels: true,
   },
   {
     id: 'gemini',
     label: 'Google Gemini',
     defaultModel: 'gemini-2.5-flash',
-    models: ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'],
+    models: ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-flash-latest', 'gemini-flash-lite-latest', 'gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemma-3-27b-it', 'gemma-3-12b-it'],
     needsKey: true,
     env: 'GEMINI_API_KEY',
     keyHint: 'AIza...',
     baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
+    liveModels: true,
   },
   {
     id: 'deepseek',
@@ -400,36 +404,105 @@ async function fetchJson(url: string, init: RequestInit, label: string): Promise
   return data;
 }
 
-/** Chat-completions call shared by ChatGPT, DeepSeek and any OpenAI-compatible service. */
-function openAICompatible(opts: { label: string; env: string; defaultBase: string; keyRequired: boolean; extraBody?: (model: string) => Record<string, unknown> }) {
+/** True when a provider's 4xx message says the request used something this model doesn't accept. */
+const says = (err: any, re: RegExp) => err?.status === 502 && re.test(String(err.message));
+
+/**
+ * Chat-completions call shared by ChatGPT, DeepSeek and any OpenAI-compatible service. Model
+ * families differ (no system role, no JSON mode, max_completion_tokens, Responses-only models),
+ * so a rejected request is adjusted and retried instead of failing.
+ */
+function openAICompatible(opts: {
+  label: string;
+  env: string;
+  defaultBase: string;
+  keyRequired: boolean;
+  extraBody?: (model: string) => Record<string, unknown>;
+  /** OpenAI: models that only work on /v1/responses are retried there. */
+  responsesFallback?: boolean;
+}) {
   return async ({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> => {
     const key = apiKey || (useEnvKeys ? process.env[opts.env] : '');
     const base = (baseUrl || opts.defaultBase).replace(/\/+$/, '');
     if (!key && opts.keyRequired) throw httpError(400, `Add your ${opts.label} API key (or set ${opts.env}).`);
     if (!model) throw httpError(400, `Type a model name for ${opts.label}.`);
-    const data = await fetchJson(
-      `${base}/chat/completions`,
-      {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', ...(key ? { authorization: `Bearer ${key}` } : {}) },
-        body: JSON.stringify({
-          model,
-          messages: [
-            { role: 'system', content: `${buildSystemPrompt()}\n\n${schemaInstructions()}` },
-            { role: 'user', content: buildUserPrompt(idea, mode) },
-          ],
-          ...(opts.extraBody ? opts.extraBody(model) : { response_format: { type: 'json_object' } }),
-        }),
-      },
-      opts.label,
-    );
-    const choice = data?.choices?.[0];
-    if (choice?.finish_reason === 'length') return salvageOrThrow(choice?.message?.content, opts.label);
-    return extractJson(choice?.message?.content);
+    const system = `${buildSystemPrompt()}\n\n${schemaInstructions()}`;
+    const user = buildUserPrompt(idea, mode);
+    const headers = { 'content-type': 'application/json', ...(key ? { authorization: `Bearer ${key}` } : {}) };
+    const tried = { mergeSystem: false, noJson: false, completionTokens: false, noLimit: false };
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const body: Record<string, any> = {
+        model,
+        messages: tried.mergeSystem
+          ? [{ role: 'user', content: `${system}\n\n${user}` }]
+          : [{ role: 'system', content: system }, { role: 'user', content: user }],
+        ...(opts.extraBody ? opts.extraBody(model) : { response_format: { type: 'json_object' } }),
+      };
+      if (tried.noJson) delete body.response_format;
+      if (tried.completionTokens && body.max_tokens) {
+        body.max_completion_tokens = body.max_tokens;
+        delete body.max_tokens;
+      }
+      if (tried.noLimit) {
+        delete body.max_tokens;
+        delete body.max_completion_tokens;
+      }
+      let data: any;
+      try {
+        data = await fetchJson(`${base}/chat/completions`, { method: 'POST', headers, body: JSON.stringify(body) }, opts.label);
+      } catch (err: any) {
+        if (opts.responsesFallback && says(err, /v1\/responses|only supported in|not supported (in|with) the v1\/chat\/completions|not a chat model|use the responses api/i)) {
+          return callOpenAIResponses(base, headers, model, opts.label, system, user);
+        }
+        if (!tried.mergeSystem && says(err, /'system'|role.{0,20}system|system (message|role|prompt)s? (is|are) not|developer/i)) tried.mergeSystem = true;
+        else if (!tried.noJson && says(err, /response_format|json_object|json mode|json output/i)) tried.noJson = true;
+        else if (!tried.completionTokens && says(err, /max_completion_tokens/i)) tried.completionTokens = true;
+        else if (!tried.noLimit && says(err, /max_tokens|max_completion_tokens|maximum.{0,20}tokens/i)) tried.noLimit = true;
+        else throw err;
+        continue;
+      }
+      const choice = data?.choices?.[0];
+      if (choice?.finish_reason === 'length') return salvageOrThrow(choice?.message?.content, opts.label);
+      return extractJson(choice?.message?.content);
+    }
+    throw httpError(502, `${opts.label} kept rejecting the request for model "${model}". Try another model.`);
   };
 }
 
-const callOpenAI = openAICompatible({ label: 'ChatGPT (OpenAI)', env: 'OPENAI_API_KEY', defaultBase: 'https://api.openai.com/v1', keyRequired: true });
+/** OpenAI Responses API, for models that aren't available on chat completions. */
+async function callOpenAIResponses(base: string, headers: Record<string, string>, model: string, label: string, system: string, user: string): Promise<unknown> {
+  let json = true;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const data = await fetchJson(
+        `${base}/responses`,
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ model, instructions: system, input: user, max_output_tokens: 32000, ...(json ? { text: { format: { type: 'json_object' } } } : {}) }),
+        },
+        label,
+      );
+      const text =
+        (data?.output || [])
+          .flatMap((o: any) => o?.content || [])
+          .filter((c: any) => c?.type === 'output_text')
+          .map((c: any) => c.text)
+          .join('') || data?.output_text;
+      if (data?.status === 'incomplete' && data?.incomplete_details?.reason === 'max_output_tokens') return salvageOrThrow(text, label);
+      return extractJson(text);
+    } catch (err: any) {
+      if (json && says(err, /format|json/i)) {
+        json = false;
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw httpError(502, `${label} rejected model "${model}".`);
+}
+
+const callOpenAI = openAICompatible({ label: 'ChatGPT (OpenAI)', env: 'OPENAI_API_KEY', defaultBase: 'https://api.openai.com/v1', keyRequired: true, responsesFallback: true });
 
 // DeepSeek: OpenAI-compatible. deepseek-chat supports JSON mode; deepseek-reasoner answers in plain text.
 const callDeepSeek = openAICompatible({
@@ -485,23 +558,97 @@ async function callGemini({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: Ca
   const key = apiKey || (useEnvKeys ? process.env.GEMINI_API_KEY : '');
   if (!key) throw httpError(400, 'Add your Gemini API key (or set GEMINI_API_KEY).');
   const base = (baseUrl || 'https://generativelanguage.googleapis.com/v1beta').replace(/\/+$/, '');
-  const data = await fetchJson(
-    `${base}/models/${encodeURIComponent(model)}:generateContent`,
-    {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: `${buildSystemPrompt()}\n\n${schemaInstructions()}` }] },
-        contents: [{ role: 'user', parts: [{ text: buildUserPrompt(idea, mode) }] }],
-        generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 32768 },
-      }),
-    },
-    'Gemini',
-  );
-  const candidate = data?.candidates?.[0];
-  if (candidate?.finishReason === 'MAX_TOKENS') return salvageOrThrow(candidate?.content?.parts?.map((p: any) => p.text).join(''), 'Gemini');
-  if (candidate?.finishReason === 'SAFETY') throw httpError(422, 'Gemini declined this prompt. Try rewording your island idea.');
-  return extractJson(candidate?.content?.parts?.map((p: any) => p.text).join(''));
+  const system = `${buildSystemPrompt()}\n\n${schemaInstructions()}`;
+  const user = buildUserPrompt(idea, mode);
+  // Gemma and older models reject system instructions, JSON mode or big output limits: adjust and retry.
+  const tried = { mergeSystem: /^gemma/i.test(model), noJson: false, limit: 32768 as number | null };
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const generationConfig: Record<string, unknown> = {};
+    if (!tried.noJson) generationConfig.responseMimeType = 'application/json';
+    if (tried.limit) generationConfig.maxOutputTokens = tried.limit;
+    const body = {
+      ...(tried.mergeSystem ? {} : { systemInstruction: { parts: [{ text: system }] } }),
+      contents: [{ role: 'user', parts: [{ text: tried.mergeSystem ? `${system}\n\n${user}` : user }] }],
+      generationConfig,
+    };
+    let data: any;
+    try {
+      data = await fetchJson(`${base}/models/${encodeURIComponent(model)}:generateContent`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body) }, 'Gemini');
+    } catch (err: any) {
+      if (!tried.mergeSystem && says(err, /system.?instruction|developer instruction/i)) tried.mergeSystem = true;
+      else if (!tried.noJson && says(err, /response.?mime.?type|json mode|mime type/i)) tried.noJson = true;
+      else if (tried.limit && says(err, /max.?output.?tokens/i)) tried.limit = tried.limit > 8192 ? 8192 : null;
+      else throw err;
+      continue;
+    }
+    const candidate = data?.candidates?.[0];
+    const text = candidate?.content?.parts?.filter((p: any) => !p.thought).map((p: any) => p.text).join('');
+    if (candidate?.finishReason === 'MAX_TOKENS') return salvageOrThrow(text, 'Gemini');
+    if (candidate?.finishReason === 'SAFETY' || data?.promptFeedback?.blockReason) throw httpError(422, 'Gemini declined this prompt. Try rewording your island idea.');
+    return extractJson(text);
+  }
+  throw httpError(502, `Gemini kept rejecting the request for model "${model}". Try another model.`);
+}
+
+// ---------------------------------------------------------------- Live model lists
+// "All models" changes constantly, so ask the provider which text models this key can use.
+
+export interface ModelInfo {
+  id: string;
+  label?: string;
+}
+
+const OPENAI_NOT_TEXT = /embedding|whisper|tts|dall-e|davinci|babbage|moderation|audio|realtime|transcribe|image|search|computer-use|sora|instruct/i;
+const GEMINI_NOT_TEXT = /embedding|aqa|imagen|veo|tts|native-audio|live|image|robotics|computer-use|lyria/i;
+
+async function listOpenAIModels(base: string, key: string): Promise<ModelInfo[]> {
+  const data = await fetchJson(`${base}/models`, { headers: { authorization: `Bearer ${key}` } }, 'ChatGPT (OpenAI)');
+  return (data?.data || [])
+    .filter((m: any) => typeof m?.id === 'string' && /^(gpt|o\d|chatgpt)/i.test(m.id) && !OPENAI_NOT_TEXT.test(m.id))
+    .sort((a: any, b: any) => (b.created || 0) - (a.created || 0) || String(a.id).localeCompare(String(b.id)))
+    .map((m: any) => ({ id: m.id }));
+}
+
+async function listGeminiModels(base: string, key: string): Promise<ModelInfo[]> {
+  const out: ModelInfo[] = [];
+  let pageToken = '';
+  for (let page = 0; page < 10; page++) {
+    const data = await fetchJson(`${base}/models?pageSize=1000${pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : ''}`, { headers: { 'x-goog-api-key': key } }, 'Gemini');
+    for (const m of data?.models || []) {
+      const id = String(m?.name || '').replace(/^models\//, '');
+      if (!id || !(m.supportedGenerationMethods || []).includes('generateContent') || GEMINI_NOT_TEXT.test(id)) continue;
+      out.push({ id, label: m.displayName && m.displayName !== id ? `${m.displayName}` : undefined });
+    }
+    pageToken = data?.nextPageToken || '';
+    if (!pageToken) break;
+  }
+  // Gemini before Gemma, newest version first.
+  const rank = (id: string) => (id.startsWith('gemini') ? 0 : 1);
+  return out.sort((a, b) => rank(a.id) - rank(b.id) || b.id.localeCompare(a.id, undefined, { numeric: true }));
+}
+
+const LISTERS: Record<string, { list: (base: string, key: string) => Promise<ModelInfo[]>; base: string; env: string; label: string }> = {
+  openai: { list: listOpenAIModels, base: 'https://api.openai.com/v1', env: 'OPENAI_API_KEY', label: 'ChatGPT (OpenAI)' },
+  gemini: { list: listGeminiModels, base: 'https://generativelanguage.googleapis.com/v1beta', env: 'GEMINI_API_KEY', label: 'Gemini' },
+};
+
+const modelCache = new Map<string, { at: number; models: ModelInfo[] }>();
+
+/** Every text model the given key can use, straight from the provider (cached 10 minutes). */
+export async function listModels(body: Record<string, any> = {}, request: { passcode?: string } = {}): Promise<{ models: ModelInfo[]; source: 'live' }> {
+  const lister = LISTERS[body.provider];
+  if (!lister) throw httpError(400, 'Live model lists are available for ChatGPT (OpenAI) and Gemini.');
+  const { apiKey, baseUrl, useEnvKeys } = resolveAccess(String(body.provider), body, request);
+  const key = apiKey || (useEnvKeys ? process.env[lister.env] || '' : '');
+  if (!key) throw httpError(400, `Add your ${lister.label} API key to load its models.`);
+  const base = (baseUrl || lister.base).replace(/\/+$/, '');
+  const cacheKey = `${body.provider}|${base}|${createHash('sha256').update(key).digest('hex')}`;
+  const hit = modelCache.get(cacheKey);
+  if (hit && Date.now() - hit.at < 10 * 60 * 1000) return { models: hit.models, source: 'live' };
+  const models = await lister.list(base, key);
+  if (modelCache.size > 200) modelCache.clear();
+  modelCache.set(cacheKey, { at: Date.now(), models });
+  return { models, source: 'live' };
 }
 
 async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
@@ -529,16 +676,10 @@ async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unk
 export type Caller = (args: CallArgs) => Promise<unknown>;
 const CALLERS: Record<string, Caller> = { anthropic: callClaude, claude_code: callClaudeCode, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, qwen: callQwen, kimi: callKimi, compatible: callCompatible, ollama: callOllama };
 
-export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS, request: { passcode?: string } = {}): Promise<MapSpec> {
+/** Applies the access policy: which key and base URL a request may use. */
+function resolveAccess(providerId: string, body: Record<string, any>, request: { passcode?: string }): { apiKey: string; baseUrl: string; useEnvKeys: boolean } {
   const policy = accessPolicy();
-  const mode = MODES[body.mode] ? body.mode : 'reload';
-  const idea = String(body.prompt || '').slice(0, 2000);
-  const providerId = PROVIDERS.some((p) => p.id === body.provider) ? body.provider : 'anthropic';
-  const provider = PROVIDERS.find((p) => p.id === providerId)!;
-  const model = String(body.model || provider.defaultModel).trim().slice(0, 120);
-
-  if (providerId === 'offline') return generateProcedural(idea, mode, body.seed ? Number(body.seed) >>> 0 : undefined);
-
+  const provider = PROVIDERS.find((p) => p.id === providerId) || PROVIDERS[0];
   const apiKey = typeof body.apiKey === 'string' ? body.apiKey.trim() : '';
   let baseUrl = typeof body.baseUrl === 'string' ? trimUrl(body.baseUrl) : '';
   if (policy.public) {
@@ -558,6 +699,20 @@ export async function generateMap(body: Record<string, any> = {}, callers: Recor
   if (!apiKey && policy.serverKeys === 'passcode' && !useEnvKeys && provider.env && process.env[provider.env]) {
     throw httpError(401, request.passcode ? 'Wrong server passcode.' : 'This server has a shared key — enter the server passcode, or paste your own API key.');
   }
+
+  return { apiKey, baseUrl, useEnvKeys };
+}
+
+export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS, request: { passcode?: string } = {}): Promise<MapSpec> {
+  const mode = MODES[body.mode] ? body.mode : 'reload';
+  const idea = String(body.prompt || '').slice(0, 2000);
+  const providerId = PROVIDERS.some((p) => p.id === body.provider) ? body.provider : 'anthropic';
+  const provider = PROVIDERS.find((p) => p.id === providerId)!;
+  const model = String(body.model || provider.defaultModel).trim().slice(0, 120);
+
+  if (providerId === 'offline') return generateProcedural(idea, mode, body.seed ? Number(body.seed) >>> 0 : undefined);
+
+  const { apiKey, baseUrl, useEnvKeys } = resolveAccess(providerId, body, request);
 
   const raw = (await callers[providerId]({
     apiKey,

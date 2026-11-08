@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MODES } from '../../../core/src/index.ts';
-import type { ProviderInfo, Access, ProviderStatus } from '../api.ts';
+import { loadModels, type ProviderInfo, type Access, type ProviderStatus, type ModelInfo } from '../api.ts';
 import { store } from '../storage.ts';
 import { ModePicker } from './ModePicker.tsx';
 
@@ -50,6 +50,9 @@ export function GeneratorPanel(p: Props) {
   const [baseUrl, setBaseUrl] = useState('');
   const [remember, setRemember] = useState(false);
   const [passcode, setPasscode] = useState(() => store.get('passcode', ''));
+  const [liveModels, setLiveModels] = useState<ModelInfo[] | null>(null);
+  const [modelsBusy, setModelsBusy] = useState(false);
+  const [modelsNote, setModelsNote] = useState('');
   const needsPasscode = p.access.serverKeys === 'passcode' && Boolean(p.envKeys[provider?.id]?.envKey);
 
   useEffect(() => {
@@ -60,7 +63,26 @@ export function GeneratorPanel(p: Props) {
     const saved = store.get(`key:${provider.id}`, '');
     setApiKey(saved);
     setRemember(Boolean(saved));
+    setLiveModels(store.get<ModelInfo[] | null>(`liveModels:${provider.id}`, null));
+    setModelsNote('');
   }, [provider?.id, p.providers]);
+
+  const fetchModels = async () => {
+    if (!provider) return;
+    setModelsBusy(true);
+    setModelsNote('');
+    try {
+      const models = await loadModels({ provider: provider.id, apiKey, baseUrl: p.access.customBaseUrls === 'off' ? '' : baseUrl, passcode: needsPasscode && !apiKey ? passcode : '' });
+      setLiveModels(models);
+      store.set(`liveModels:${provider.id}`, models);
+      setModelsNote(`${models.length} models available to your key.`);
+      if (models.length && !models.some((m) => m.id === model)) setModel(models[0].id);
+    } catch (e: any) {
+      setModelsNote(e?.message || 'Could not load models.');
+    } finally {
+      setModelsBusy(false);
+    }
+  };
 
   const examples = EXAMPLES[MODES[p.mode].category] || EXAMPLES.default;
 
@@ -109,10 +131,26 @@ export function GeneratorPanel(p: Props) {
           </select>
           {provider?.id !== 'offline' && (
             <>
-              <input className="input" list="model-list" value={model} onChange={(e) => setModel(e.target.value)} aria-label="Model" />
+              <div className="flex gap-2">
+                <input className="input" list="model-list" value={model} onChange={(e) => setModel(e.target.value)} aria-label="Model" />
+                {provider?.liveModels && (
+                  <button type="button" className="btn shrink-0 px-2" disabled={modelsBusy} onClick={fetchModels} title="Load every model your key can use">
+                    {modelsBusy ? 'Loading…' : liveModels ? 'Refresh models' : 'Load all models'}
+                  </button>
+                )}
+              </div>
               <datalist id="model-list">
-                {provider?.models.map((m) => <option key={m} value={m} />)}
+                {(liveModels?.map((m) => m.id) || provider?.models || []).map((m) => <option key={m} value={m} />)}
               </datalist>
+              {liveModels && liveModels.length > 0 && (
+                <select className="input" value={liveModels.some((m) => m.id === model) ? model : ''} onChange={(e) => e.target.value && setModel(e.target.value)} aria-label="All models">
+                  <option value="">Pick from {liveModels.length} models…</option>
+                  {liveModels.map((m) => (
+                    <option key={m.id} value={m.id}>{m.label ? `${m.label} (${m.id})` : m.id}</option>
+                  ))}
+                </select>
+              )}
+              {modelsNote && <p className="text-xs text-mute">{modelsNote}</p>}
             </>
           )}
           {provider?.baseUrl && p.access.customBaseUrls !== 'off' && <input className="input" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} aria-label="Base URL" placeholder="Base URL" />}
