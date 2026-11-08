@@ -1,6 +1,7 @@
 // AI providers. Claude is the recommended default; any of the others (or the offline
 // generator) can be picked. Every provider's answer goes through the same normalizer.
 import Anthropic from '@anthropic-ai/sdk';
+import { timingSafeEqual } from 'node:crypto';
 import { MAP_SCHEMA, MODES, normalizeSpec, generateProcedural, buildSystemPrompt, buildUserPrompt, schemaInstructions, type MapSpec } from '../core/src/index.ts';
 
 export interface ProviderInfo {
@@ -118,9 +119,48 @@ export const PROVIDERS: ProviderInfo[] = [
   { id: 'offline', label: 'Offline generator (no AI, instant)', defaultModel: 'procedural', models: [], needsKey: false },
 ];
 
-export function providerStatus(): Record<string, { envKey: boolean }> {
-  const out: Record<string, { envKey: boolean }> = {};
-  for (const p of PROVIDERS) out[p.id] = { envKey: Boolean(p.env && process.env[p.env]) };
+// ---------------------------------------------------------------- Access policy
+// ISLAND_FORGE_PUBLIC=1 (set in the Docker image) hardens the server for the internet:
+//  - API keys set on the server are only used by visitors who send ISLAND_FORGE_PASSCODE
+//    (or by everyone if ALLOW_SHARED_KEYS=1). With neither set, visitors bring their own key.
+//  - Custom base URLs are refused unless listed in ALLOWED_BASE_URLS (comma-separated),
+//    so visitors can't make the server call internal addresses.
+
+export type ServerKeys = 'open' | 'passcode' | 'off';
+
+export interface AccessPolicy {
+  public: boolean;
+  serverKeys: ServerKeys;
+  allowedBaseUrls: string[] | null;
+}
+
+const trimUrl = (u: string) => u.trim().replace(/\/+$/, '');
+
+export function accessPolicy(env: NodeJS.ProcessEnv = process.env): AccessPolicy {
+  const isPublic = env.ISLAND_FORGE_PUBLIC === '1' || env.ISLAND_FORGE_PUBLIC === 'true';
+  if (!isPublic) return { public: false, serverKeys: 'open', allowedBaseUrls: null };
+  const serverKeys: ServerKeys = env.ALLOW_SHARED_KEYS === '1' ? 'open' : env.ISLAND_FORGE_PASSCODE ? 'passcode' : 'off';
+  const allowedBaseUrls = (env.ALLOWED_BASE_URLS || '').split(',').map(trimUrl).filter(Boolean);
+  return { public: true, serverKeys, allowedBaseUrls };
+}
+
+function passcodeMatches(given: string | undefined, env: NodeJS.ProcessEnv = process.env): boolean {
+  const want = env.ISLAND_FORGE_PASSCODE || '';
+  if (!want || !given) return false;
+  const a = Buffer.from(given);
+  const b = Buffer.from(want);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+export function providerStatus(): Record<string, { envKey: boolean; available: boolean }> {
+  const policy = accessPolicy();
+  const out: Record<string, { envKey: boolean; available: boolean }> = {};
+  for (const p of PROVIDERS) {
+    const envKey = Boolean(p.env && process.env[p.env]) && policy.serverKeys !== 'off';
+    // On a public server Ollama (localhost) only works if its address is allow-listed.
+    const available = !policy.public || p.id !== 'ollama' || Boolean(policy.allowedBaseUrls?.length);
+    out[p.id] = { envKey, available };
+  }
   return out;
 }
 
@@ -145,6 +185,8 @@ export function extractJson(text: unknown): unknown {
 
 interface CallArgs {
   apiKey: string;
+  /** Whether keys set on the server (environment variables) may be used for this request. */
+  useEnvKeys: boolean;
   baseUrl: string;
   model: string;
   idea: string;
@@ -155,8 +197,8 @@ interface CallArgs {
 const FALLBACK_MODELS = new Set(['claude-opus-5-5', 'claude-opus-5', 'claude-fable-5-1', 'claude-sonnet-5-5']);
 const NO_EFFORT_MODELS = /claude-(haiku-4-5|sonnet-4-5|3)/;
 
-async function callClaude({ apiKey, model, idea, mode }: CallArgs): Promise<unknown> {
-  const key = apiKey || process.env.ANTHROPIC_API_KEY;
+async function callClaude({ apiKey, useEnvKeys, model, idea, mode }: CallArgs): Promise<unknown> {
+  const key = apiKey || (useEnvKeys ? process.env.ANTHROPIC_API_KEY : '');
   if (!key) throw httpError(400, 'Add your Anthropic API key (or set ANTHROPIC_API_KEY before starting the server).');
   const client = new Anthropic({ apiKey: key });
   const params = {
@@ -211,8 +253,8 @@ async function fetchJson(url: string, init: RequestInit, label: string): Promise
 
 /** Chat-completions call shared by ChatGPT, DeepSeek and any OpenAI-compatible service. */
 function openAICompatible(opts: { label: string; env: string; defaultBase: string; keyRequired: boolean; extraBody?: (model: string) => Record<string, unknown> }) {
-  return async ({ apiKey, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> => {
-    const key = apiKey || process.env[opts.env];
+  return async ({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> => {
+    const key = apiKey || (useEnvKeys ? process.env[opts.env] : '');
     const base = (baseUrl || opts.defaultBase).replace(/\/+$/, '');
     if (!key && opts.keyRequired) throw httpError(400, `Add your ${opts.label} API key (or set ${opts.env}).`);
     if (!model) throw httpError(400, `Type a model name for ${opts.label}.`);
@@ -290,8 +332,8 @@ const callKimi = openAICompatible({
 
 const callCompatible = openAICompatible({ label: 'OpenAI-compatible API', env: 'OPENAI_COMPATIBLE_API_KEY', defaultBase: 'https://openrouter.ai/api/v1', keyRequired: false });
 
-async function callGemini({ apiKey, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
-  const key = apiKey || process.env.GEMINI_API_KEY;
+async function callGemini({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
+  const key = apiKey || (useEnvKeys ? process.env.GEMINI_API_KEY : '');
   if (!key) throw httpError(400, 'Add your Gemini API key (or set GEMINI_API_KEY).');
   const base = (baseUrl || 'https://generativelanguage.googleapis.com/v1beta').replace(/\/+$/, '');
   const data = await fetchJson(
@@ -338,7 +380,8 @@ async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unk
 export type Caller = (args: CallArgs) => Promise<unknown>;
 const CALLERS: Record<string, Caller> = { anthropic: callClaude, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, qwen: callQwen, kimi: callKimi, compatible: callCompatible, ollama: callOllama };
 
-export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS): Promise<MapSpec> {
+export async function generateMap(body: Record<string, any> = {}, callers: Record<string, Caller> = CALLERS, request: { passcode?: string } = {}): Promise<MapSpec> {
+  const policy = accessPolicy();
   const mode = MODES[body.mode] ? body.mode : 'reload';
   const idea = String(body.prompt || '').slice(0, 2000);
   const providerId = PROVIDERS.some((p) => p.id === body.provider) ? body.provider : 'anthropic';
@@ -347,9 +390,29 @@ export async function generateMap(body: Record<string, any> = {}, callers: Recor
 
   if (providerId === 'offline') return generateProcedural(idea, mode, body.seed ? Number(body.seed) >>> 0 : undefined);
 
+  const apiKey = typeof body.apiKey === 'string' ? body.apiKey.trim() : '';
+  let baseUrl = typeof body.baseUrl === 'string' ? trimUrl(body.baseUrl) : '';
+  if (policy.public) {
+    const fallback = trimUrl(provider.baseUrl || '');
+    const target = baseUrl || fallback;
+    const allowed = policy.allowedBaseUrls || [];
+    const isDefault = target === fallback && !/^http:\/\/(localhost|127\.)/.test(fallback);
+    if (target && !isDefault && !allowed.includes(target)) {
+      throw httpError(403, providerId === 'ollama'
+        ? 'Ollama runs on your own computer, so it is turned off on this public server. Run Island Forge locally to use it.'
+        : 'Custom base URLs are turned off on this server. Clear the Base URL field, or ask the owner to add it to ALLOWED_BASE_URLS.');
+    }
+    baseUrl = target === fallback ? '' : target;
+  }
+  const useEnvKeys = policy.serverKeys === 'open' || (policy.serverKeys === 'passcode' && passcodeMatches(request.passcode));
+  if (!apiKey && policy.serverKeys === 'passcode' && !useEnvKeys && provider.env && process.env[provider.env]) {
+    throw httpError(401, request.passcode ? 'Wrong server passcode.' : 'This server has a shared key — enter the server passcode, or paste your own API key.');
+  }
+
   const raw = (await callers[providerId]({
-    apiKey: typeof body.apiKey === 'string' ? body.apiKey.trim() : '',
-    baseUrl: typeof body.baseUrl === 'string' ? body.baseUrl.trim() : '',
+    apiKey,
+    useEnvKeys,
+    baseUrl,
     model,
     idea,
     mode,

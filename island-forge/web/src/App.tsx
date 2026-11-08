@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MODES, MODE_LIST, DEVICES, VERSE_MODULES, CATALOG, generateProcedural, generateVerseFiles, readZip, type MapSpec } from '../../core/src/index.ts';
-import { loadProviders, generate, OFFLINE, type ProviderInfo } from './api.ts';
+import { loadProviders, generate, OFFLINE, type ProviderInfo, type Access, type ProviderStatus } from './api.ts';
 import { store } from './storage.ts';
 import { useIsland, replan } from './useIsland.ts';
 import { GeneratorPanel, type AiSettings } from './components/GeneratorPanel.tsx';
@@ -37,7 +37,8 @@ export default function App() {
   const [mode, setModeState] = useState(() => (MODES[store.get('mode', 'reload')] ? store.get('mode', 'reload') : 'reload'));
   const [prompt, setPromptState] = useState(() => store.get('prompt', 'Frozen volcano island with a neon city in the middle and pirate docks on the coast'));
   const [providers, setProviders] = useState<ProviderInfo[]>([OFFLINE]);
-  const [envKeys, setEnvKeys] = useState<Record<string, { envKey: boolean }>>({});
+  const [envKeys, setEnvKeys] = useState<ProviderStatus>({});
+  const [access, setAccess] = useState<Access>({ public: false, serverKeys: 'open', customBaseUrls: 'any' });
   const [online, setOnline] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatusState] = useState<{ text: string; kind: '' | 'error' | 'success' }>({ text: '', kind: '' });
@@ -62,6 +63,7 @@ export default function App() {
       setProviders(r.providers);
       setEnvKeys(r.envKeys);
       setOnline(r.online);
+      setAccess(r.access);
     });
     if (!island.spec) island.replace(generateProcedural(prompt, mode));
   }, []);
@@ -183,6 +185,7 @@ export default function App() {
           setPrompt={setPrompt}
           providers={providers}
           envKeys={envKeys}
+          access={access}
           online={online}
           busy={busy}
           status={status}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MODES } from '../../../core/src/index.ts';
-import type { ProviderInfo } from '../api.ts';
+import type { ProviderInfo, Access, ProviderStatus } from '../api.ts';
 import { store } from '../storage.ts';
 import { ModePicker } from './ModePicker.tsx';
 
@@ -24,6 +24,7 @@ export interface AiSettings {
   model: string;
   apiKey: string;
   baseUrl: string;
+  passcode: string;
 }
 
 interface Props {
@@ -32,7 +33,8 @@ interface Props {
   prompt: string;
   setPrompt: (p: string) => void;
   providers: ProviderInfo[];
-  envKeys: Record<string, { envKey: boolean }>;
+  envKeys: ProviderStatus;
+  access: Access;
   online: boolean;
   busy: boolean;
   status: { text: string; kind: '' | 'error' | 'success' };
@@ -47,6 +49,8 @@ export function GeneratorPanel(p: Props) {
   const [apiKey, setApiKey] = useState('');
   const [baseUrl, setBaseUrl] = useState('');
   const [remember, setRemember] = useState(false);
+  const [passcode, setPasscode] = useState(() => store.get('passcode', ''));
+  const needsPasscode = p.access.serverKeys === 'passcode' && Boolean(p.envKeys[provider?.id]?.envKey);
 
   useEffect(() => {
     if (!provider) return;
@@ -65,7 +69,8 @@ export function GeneratorPanel(p: Props) {
     if (provider.baseUrl) store.set(`baseurl:${provider.id}`, baseUrl);
     if (remember && apiKey) store.set(`key:${provider.id}`, apiKey);
     else store.del(`key:${provider.id}`);
-    p.onGenerate({ provider: provider.id, model, apiKey, baseUrl });
+    if (needsPasscode) store.set('passcode', passcode);
+    p.onGenerate({ provider: provider.id, model, apiKey, baseUrl: p.access.customBaseUrls === 'off' ? '' : baseUrl, passcode: needsPasscode && !apiKey ? passcode : '' });
   };
 
   return (
@@ -99,7 +104,7 @@ export function GeneratorPanel(p: Props) {
         <div className="space-y-2">
           <select className="input" value={provider?.id} onChange={(e) => setProviderId(e.target.value)} aria-label="AI provider">
             {p.providers.map((x) => (
-              <option key={x.id} value={x.id}>{x.label}</option>
+              <option key={x.id} value={x.id} disabled={p.envKeys[x.id]?.available === false}>{x.label}{p.envKeys[x.id]?.available === false ? ' — not on this server' : ''}</option>
             ))}
           </select>
           {provider?.id !== 'offline' && (
@@ -110,7 +115,7 @@ export function GeneratorPanel(p: Props) {
               </datalist>
             </>
           )}
-          {provider?.baseUrl && <input className="input" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} aria-label="Base URL" placeholder="Base URL" />}
+          {provider?.baseUrl && p.access.customBaseUrls !== 'off' && <input className="input" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} aria-label="Base URL" placeholder="Base URL" />}
           {(provider?.needsKey || provider?.id === 'openai') && (
             <>
               <input className="input" type="password" autoComplete="off" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder={provider.keyHint} aria-label="API key" />
@@ -118,8 +123,11 @@ export function GeneratorPanel(p: Props) {
                 <label className="flex items-center gap-1.5">
                   <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> Remember key in this browser
                 </label>
-                {p.envKeys[provider.id]?.envKey && <span className="text-ok">key set on server</span>}
+                {p.envKeys[provider.id]?.envKey && <span className="text-ok">{needsPasscode ? 'shared key on server' : 'key set on server'}</span>}
               </div>
+              {needsPasscode && !apiKey && (
+                <input className="input" type="password" autoComplete="off" value={passcode} onChange={(e) => setPasscode(e.target.value)} placeholder="Server passcode (to use the shared key)" aria-label="Server passcode" />
+              )}
             </>
           )}
         </div>

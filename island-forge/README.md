@@ -12,6 +12,10 @@ Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI (
 | **Mobile app** | React Native and Expo (iOS, Android, web) | [`mobile/`](mobile/) |
 | **Shared schema**: map format, modes, devices | JSON Schema | [`schema/`](schema/) |
 
+## Deploy
+
+A root `Dockerfile` builds a production image; see [DEPLOY.md](../DEPLOY.md) for Sevalla (or any Docker host). The image runs in public mode: server-side AI keys need a passcode, custom base URLs are blocked, and AI generation is rate limited.
+
 ## Quick start
 
 ```bash
