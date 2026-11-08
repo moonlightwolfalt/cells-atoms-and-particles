@@ -367,7 +367,7 @@ test('all OpenAI and Gemini models: live lists are filtered, and quirky model fa
     const gemini = await listModels({ provider: 'gemini', apiKey: 'k', baseUrl: base });
     assert.deepEqual(gemini.models.map((m) => m.id), ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemma-3-27b-it'], 'both pages, text models only, Gemini before Gemma');
     assert.equal(gemini.models[0].label, 'Gemini 2.5 Pro');
-    await assert.rejects(listModels({ provider: 'deepseek', apiKey: 'k' }), /available for ChatGPT \(OpenAI\) and Gemini/);
+    await assert.rejects(listModels({ provider: 'deepseek', apiKey: 'k' }), /available for Claude, Claude Code, ChatGPT \(OpenAI\) and Gemini/);
     await assert.rejects(listModels({ provider: 'openai', baseUrl: base }), /Add your ChatGPT \(OpenAI\) API key/);
 
     assert.equal((await gen('openai', 'o1-pro')).name, 'Any Model Isle');
@@ -389,6 +389,89 @@ test('all OpenAI and Gemini models: live lists are filtered, and quirky model fa
     calls.length = 0;
     await gen('gemini', 'gemini-small');
     assert.equal(calls.at(-1)!.body.generationConfig.maxOutputTokens, 8192);
+  } finally {
+    fake.close();
+  }
+});
+
+test('all Claude models: live list from the Models API, and each request fits what the model supports', async () => {
+  const http = await import('node:http');
+  const { listModels } = await import('../providers.ts');
+  const layout = JSON.stringify({ name: 'Claude Isle', pois: [{ name: 'Cove', kind: 'docks', x: 0.4, y: 0.5 }] });
+  const messages: any[] = [];
+  const caps = (structured: boolean, effort: boolean) => ({ structured_outputs: { supported: structured }, effort: { supported: effort, medium: { supported: effort } } });
+  const INFO: Record<string, any> = {
+    'claude-opus-5-5': { max_tokens: 128000, capabilities: caps(true, true) },
+    'claude-old': { max_tokens: 4096, capabilities: caps(false, false) },
+  };
+  const fail = (res: any, status: number, type: string, message: string) => { res.statusCode = status; res.setHeader('content-type', 'application/json'); res.end(JSON.stringify({ type: 'error', error: { type, message } })); };
+  const fake = http.createServer(async (req, res) => {
+    let raw = '';
+    for await (const c of req) raw += c;
+    const url = new URL(req.url || '/', 'http://x');
+    if (url.pathname === '/v1/models') {
+      res.setHeader('content-type', 'application/json');
+      const page2 = url.searchParams.get('after_id') === 'claude-3-opus';
+      return res.end(JSON.stringify(page2
+        ? { data: [{ type: 'model', id: 'claude-sonnet-4-6', display_name: 'Claude Sonnet 4.6', lifecycle: 'active' }], has_more: false, first_id: 'claude-sonnet-4-6', last_id: 'claude-sonnet-4-6' }
+        : { data: [
+            { type: 'model', id: 'claude-opus-5-5', display_name: 'Claude Opus 5.5', lifecycle: 'active' },
+            { type: 'model', id: 'claude-3-7-sonnet', display_name: 'Claude Sonnet 3.7', lifecycle: 'deprecated' },
+            { type: 'model', id: 'claude-3-opus', display_name: 'Claude Opus 3', lifecycle: 'retired' },
+          ], has_more: true, first_id: 'claude-opus-5-5', last_id: 'claude-3-opus' }));
+    }
+    if (url.pathname.startsWith('/v1/models/')) {
+      const id = decodeURIComponent(url.pathname.slice('/v1/models/'.length));
+      if (id === 'claude-missing') return fail(res, 404, 'not_found_error', `model: ${id}`);
+      if (!INFO[id]) return fail(res, 500, 'api_error', 'Internal error');
+      res.setHeader('content-type', 'application/json');
+      return res.end(JSON.stringify({ type: 'model', id, display_name: id, lifecycle: 'active', ...INFO[id] }));
+    }
+    if (url.pathname === '/v1/messages') {
+      const body = JSON.parse(raw);
+      messages.push(body);
+      if (body.model === 'claude-noinfo' && body.output_config?.effort) return fail(res, 400, 'invalid_request_error', 'output_config.effort: Extra inputs are not permitted');
+      res.setHeader('content-type', 'text/event-stream');
+      const ev = (type: string, data: unknown) => res.write(`event: ${type}\ndata: ${JSON.stringify(data)}\n\n`);
+      ev('message_start', { type: 'message_start', message: { id: 'msg_1', type: 'message', role: 'assistant', model: body.model, content: [], stop_reason: null, stop_sequence: null, usage: { input_tokens: 10, output_tokens: 1 } } });
+      ev('content_block_start', { type: 'content_block_start', index: 0, content_block: { type: 'text', text: '' } });
+      ev('content_block_delta', { type: 'content_block_delta', index: 0, delta: { type: 'text_delta', text: layout } });
+      ev('content_block_stop', { type: 'content_block_stop', index: 0 });
+      ev('message_delta', { type: 'message_delta', delta: { stop_reason: 'end_turn', stop_sequence: null }, usage: { output_tokens: 50 } });
+      ev('message_stop', { type: 'message_stop' });
+      return res.end();
+    }
+    fail(res, 404, 'not_found_error', 'nope');
+  });
+  await new Promise<void>((r) => fake.listen(0, '127.0.0.1', r));
+  const base = `http://127.0.0.1:${(fake.address() as AddressInfo).port}`;
+  const gen = (model: string) => generateMap({ provider: 'anthropic', model, apiKey: 'sk-ant-test', baseUrl: base, prompt: 'x', mode: 'blitz' });
+  try {
+    const list = await listModels({ provider: 'anthropic', apiKey: 'sk-ant-test', baseUrl: base });
+    assert.deepEqual(list.models.map((m) => m.id), ['claude-opus-5-5', 'claude-3-7-sonnet', 'claude-sonnet-4-6'], 'both pages, retired models dropped');
+    assert.equal(list.models[1].label, 'Claude Sonnet 3.7 (deprecated)');
+    const cc = await listModels({ provider: 'claude_code', apiKey: 'sk-ant-test-2', baseUrl: base });
+    assert.equal(cc.models[0].id, 'default');
+
+    assert.equal((await gen('claude-opus-5-5')).name, 'Claude Isle');
+    const modern = messages.at(-1);
+    assert.equal(modern.output_config.format.type, 'json_schema');
+    assert.equal(modern.output_config.effort, 'medium');
+    assert.equal(modern.max_tokens, 32000);
+    assert.equal(modern.fallbacks, 'default');
+
+    await gen('claude-old');
+    const old = messages.at(-1);
+    assert.equal(old.output_config, undefined, 'no structured outputs or effort for a model without them');
+    assert.equal(old.max_tokens, 4096, "capped at the model's own output limit");
+    assert.match(old.system, /JSON Schema/, 'schema moves into the prompt instead');
+
+    messages.length = 0;
+    await gen('claude-noinfo');
+    assert.equal(messages.length, 2, 'rejected effort is dropped and the request retried');
+    assert.equal(messages[1].output_config?.effort, undefined);
+
+    await assert.rejects(gen('claude-missing'), /Model "claude-missing" was not found/);
   } finally {
     fake.close();
   }

@@ -25,10 +25,11 @@ export const PROVIDERS: ProviderInfo[] = [
     id: 'anthropic',
     label: 'Claude (Anthropic) — recommended',
     defaultModel: 'claude-opus-5-5',
-    models: ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5', 'claude-fable-5-1'],
+    models: ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5', 'claude-fable-5-1', 'claude-fable-5', 'claude-opus-5', 'claude-sonnet-5', 'claude-opus-4-8', 'claude-opus-4-7', 'claude-opus-4-6', 'claude-sonnet-4-6', 'claude-haiku-4-5'],
     needsKey: true,
     env: 'ANTHROPIC_API_KEY',
     keyHint: 'sk-ant-...',
+    liveModels: true,
   },
   {
     id: 'claude_code',
@@ -38,6 +39,7 @@ export const PROVIDERS: ProviderInfo[] = [
     needsKey: true,
     env: 'ANTHROPIC_API_KEY',
     keyHint: 'sk-ant-... (Anthropic API key)',
+    liveModels: true,
   },
   {
     id: 'openai',
@@ -270,38 +272,97 @@ interface CallArgs {
 
 // Models that accept the server-side refusal fallback ("default" form).
 const FALLBACK_MODELS = new Set(['claude-opus-5-5', 'claude-opus-5', 'claude-fable-5-1', 'claude-sonnet-5-5']);
-const NO_EFFORT_MODELS = /claude-(haiku-4-5|sonnet-4-5|3)/;
+// Used only when the Models API can't be reached: older models without effort / structured outputs.
+const NO_EFFORT_MODELS = /claude-(haiku-4-5|sonnet-4-5|opus-4-5|opus-4-1|opus-4-0|sonnet-4-0|3)/;
+const NO_STRUCTURED_MODELS = /claude-(3|sonnet-4-0|opus-4-0|opus-4-1|sonnet-4-2)/;
 
-async function callClaude({ apiKey, useEnvKeys, model, idea, mode }: CallArgs): Promise<unknown> {
+function anthropicClient(key: string, baseUrl: string) {
+  return new Anthropic({ apiKey: key, ...(baseUrl ? { baseURL: baseUrl } : {}) });
+}
+
+function anthropicError(err: any, model?: string): Error & { status: number } {
+  if (err instanceof Anthropic.AuthenticationError) return httpError(401, 'Anthropic rejected the API key.');
+  if (err instanceof Anthropic.PermissionDeniedError) return httpError(403, model ? `This API key can't use "${model}".` : 'This API key lacks permission.');
+  if (err instanceof Anthropic.RateLimitError) return httpError(429, 'Anthropic rate limit hit — wait a moment and try again.');
+  if (err instanceof Anthropic.NotFoundError) return httpError(400, model ? `Model "${model}" was not found for this API key.` : 'Not found.');
+  if (err instanceof Anthropic.APIError) return httpError(err.status && err.status < 500 ? 400 : 502, `Anthropic API error: ${err.message}`);
+  return httpError(502, `Could not reach Anthropic: ${err?.message}`);
+}
+
+interface ClaudeModelFacts {
+  maxTokens: number | null;
+  structured: boolean;
+  effort: boolean;
+}
+
+const claudeFactsCache = new Map<string, { at: number; facts: ClaudeModelFacts }>();
+
+/** What a Claude model supports, from the Models API (cached); falls back to known model families. */
+async function claudeModelFacts(client: Anthropic, key: string, model: string): Promise<ClaudeModelFacts> {
+  const cacheKey = `${createHash('sha256').update(key).digest('hex')}|${model}`;
+  const hit = claudeFactsCache.get(cacheKey);
+  if (hit && Date.now() - hit.at < 60 * 60 * 1000) return hit.facts;
+  let facts: ClaudeModelFacts;
+  try {
+    const info: any = await client.models.retrieve(model);
+    const caps = info?.capabilities;
+    facts = {
+      maxTokens: typeof info?.max_tokens === 'number' ? info.max_tokens : null,
+      structured: caps ? Boolean(caps.structured_outputs?.supported) : !NO_STRUCTURED_MODELS.test(model),
+      effort: caps ? Boolean(caps.effort?.supported && caps.effort?.medium?.supported) : !NO_EFFORT_MODELS.test(model),
+    };
+  } catch (err: any) {
+    if (err instanceof Anthropic.AuthenticationError || err instanceof Anthropic.NotFoundError || err instanceof Anthropic.PermissionDeniedError) throw anthropicError(err, model);
+    facts = { maxTokens: null, structured: !NO_STRUCTURED_MODELS.test(model), effort: !NO_EFFORT_MODELS.test(model) };
+  }
+  if (claudeFactsCache.size > 500) claudeFactsCache.clear();
+  claudeFactsCache.set(cacheKey, { at: Date.now(), facts });
+  return facts;
+}
+
+async function callClaude({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
   const key = apiKey || (useEnvKeys ? process.env.ANTHROPIC_API_KEY : '');
   if (!key) throw httpError(400, 'Add your Anthropic API key (or set ANTHROPIC_API_KEY before starting the server).');
-  const client = new Anthropic({ apiKey: key });
-  const params = {
-    model,
-    max_tokens: 32000,
-    system: buildSystemPrompt(),
-    messages: [{ role: 'user' as const, content: buildUserPrompt(idea, mode) }],
-    output_config: {
-      format: { type: 'json_schema' as const, schema: MAP_SCHEMA },
-      ...(NO_EFFORT_MODELS.test(model) ? {} : { effort: 'medium' as const }),
-    },
-  };
-  let message: { stop_reason: string | null; content: { type: string; text?: string }[] };
-  try {
-    const stream = FALLBACK_MODELS.has(model)
-      ? client.beta.messages.stream({ ...params, betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' } as any)
-      : client.messages.stream(params as any);
-    message = (await stream.finalMessage()) as any;
-  } catch (err: any) {
-    if (err instanceof Anthropic.AuthenticationError) throw httpError(401, 'Anthropic rejected the API key.');
-    if (err instanceof Anthropic.RateLimitError) throw httpError(429, 'Anthropic rate limit hit — wait a moment and try again.');
-    if (err instanceof Anthropic.NotFoundError) throw httpError(400, `Model "${model}" was not found for this API key.`);
-    if (err instanceof Anthropic.APIError) throw httpError(err.status && err.status < 500 ? 400 : 502, `Anthropic API error: ${err.message}`);
-    throw httpError(502, `Could not reach Anthropic: ${err?.message}`);
+  const client = anthropicClient(key, baseUrl);
+  // Build the request from what this model supports: its output limit, structured outputs
+  // (otherwise the schema goes in the prompt) and effort. A rejected option is dropped and retried.
+  const facts = await claudeModelFacts(client, key, model);
+  const use = { structured: facts.structured, effort: facts.effort, maxTokens: Math.min(32000, facts.maxTokens || 32000), fallback: FALLBACK_MODELS.has(model) };
+  let message: { stop_reason: string | null; content: { type: string; text?: string }[] } | null = null;
+  for (let attempt = 0; attempt < 4 && !message; attempt++) {
+    const outputConfig: Record<string, unknown> = {};
+    if (use.structured) outputConfig.format = { type: 'json_schema', schema: MAP_SCHEMA };
+    if (use.effort) outputConfig.effort = 'medium';
+    const params: Record<string, unknown> = {
+      model,
+      max_tokens: use.maxTokens,
+      system: use.structured ? buildSystemPrompt() : `${buildSystemPrompt()}\n\n${schemaInstructions()}`,
+      messages: [{ role: 'user', content: buildUserPrompt(idea, mode) }],
+      ...(Object.keys(outputConfig).length ? { output_config: outputConfig } : {}),
+    };
+    try {
+      const stream = use.fallback
+        ? client.beta.messages.stream({ ...params, betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' } as any)
+        : client.messages.stream(params as any);
+      message = (await stream.finalMessage()) as any;
+    } catch (err: any) {
+      const text = String(err?.message || '');
+      if (err instanceof Anthropic.BadRequestError) {
+        if (use.fallback && /fallback/i.test(text)) use.fallback = false;
+        else if (use.structured && /output_config\.format|structured output|json_schema|format/i.test(text)) use.structured = false;
+        else if (use.effort && /effort/i.test(text)) use.effort = false;
+        else if (use.maxTokens > 4096 && /max_tokens/i.test(text)) use.maxTokens = use.maxTokens > 8192 ? 8192 : 4096;
+        else throw anthropicError(err, model);
+        continue;
+      }
+      throw anthropicError(err, model);
+    }
   }
+  if (!message) throw httpError(502, `Claude kept rejecting the request for model "${model}". Try another model.`);
   if (message.stop_reason === 'refusal') throw httpError(422, 'Claude declined this prompt. Try rewording your island idea.');
-  if (message.stop_reason === 'max_tokens') return salvageOrThrow(message.content.filter((b) => b.type === 'text').map((b) => b.text).join(''), 'Claude');
-  return extractJson(message.content.filter((b) => b.type === 'text').map((b) => b.text).join(''));
+  const text = message.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
+  if (message.stop_reason === 'max_tokens') return salvageOrThrow(text, 'Claude');
+  return extractJson(text);
 }
 
 // ---------------------------------------------------------------- Claude Code (Agent SDK)
@@ -627,7 +688,27 @@ async function listGeminiModels(base: string, key: string): Promise<ModelInfo[]>
   return out.sort((a, b) => rank(a.id) - rank(b.id) || b.id.localeCompare(a.id, undefined, { numeric: true }));
 }
 
+async function listClaudeModels(base: string, key: string): Promise<ModelInfo[]> {
+  const out: ModelInfo[] = [];
+  try {
+    for await (const m of anthropicClient(key, base).models.list({ limit: 100 } as any) as any) {
+      if (m?.lifecycle === 'retired') continue;
+      out.push({ id: m.id, label: `${m.display_name || m.id}${m.lifecycle === 'deprecated' ? ' (deprecated)' : ''}` });
+      if (out.length >= 500) break;
+    }
+  } catch (err) {
+    throw anthropicError(err);
+  }
+  return out;
+}
+
+async function listClaudeCodeModels(base: string, key: string): Promise<ModelInfo[]> {
+  return [{ id: 'default', label: "Claude Code's default model" }, ...(await listClaudeModels(base, key))];
+}
+
 const LISTERS: Record<string, { list: (base: string, key: string) => Promise<ModelInfo[]>; base: string; env: string; label: string }> = {
+  anthropic: { list: listClaudeModels, base: '', env: 'ANTHROPIC_API_KEY', label: 'Claude (Anthropic)' },
+  claude_code: { list: listClaudeCodeModels, base: '', env: 'ANTHROPIC_API_KEY', label: 'Claude Code' },
   openai: { list: listOpenAIModels, base: 'https://api.openai.com/v1', env: 'OPENAI_API_KEY', label: 'ChatGPT (OpenAI)' },
   gemini: { list: listGeminiModels, base: 'https://generativelanguage.googleapis.com/v1beta', env: 'GEMINI_API_KEY', label: 'Gemini' },
 };
@@ -637,7 +718,7 @@ const modelCache = new Map<string, { at: number; models: ModelInfo[] }>();
 /** Every text model the given key can use, straight from the provider (cached 10 minutes). */
 export async function listModels(body: Record<string, any> = {}, request: { passcode?: string } = {}): Promise<{ models: ModelInfo[]; source: 'live' }> {
   const lister = LISTERS[body.provider];
-  if (!lister) throw httpError(400, 'Live model lists are available for ChatGPT (OpenAI) and Gemini.');
+  if (!lister) throw httpError(400, 'Live model lists are available for Claude, Claude Code, ChatGPT (OpenAI) and Gemini.');
   const { apiKey, baseUrl, useEnvKeys } = resolveAccess(String(body.provider), body, request);
   const key = apiKey || (useEnvKeys ? process.env[lister.env] || '' : '');
   if (!key) throw httpError(400, `Add your ${lister.label} API key to load its models.`);
