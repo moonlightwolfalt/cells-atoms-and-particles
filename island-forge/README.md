@@ -1,89 +1,132 @@
 # Island Forge
 
-Type an island idea, pick **Reload**, **Battle Royale** or **Blitz**, and an AI designs a full Fortnite-style island layout: named locations, biomes, roads, rivers, lakes, reboot vans, vaults, bosses, medallions, the battle bus route, the storm phases and the match rules. Then export it for UEFN.
+Describe an island, pick one of **31 Fortnite / UEFN island types**, and an AI designs the whole thing. You get the layout, terrain, every UEFN device it needs with settings, the Verse code for the game mode, a 3D preview, the island image and the publish text. Then you export all of it for UEFN.
 
-![modes](https://img.shields.io/badge/modes-Reload%20%C2%B7%20Battle%20Royale%20%C2%B7%20Blitz-ffd60a)
+| Part | Tech | Folder |
+|---|---|---|
+| **Web app** (main app) | TypeScript, React 19, Tailwind CSS 4, WebGL (three.js), HTML5 Canvas, Vite | [`web/`](web/) |
+| **Shared core**: island types, devices, Verse library, terrain, exporters | TypeScript (runs in browsers, Node and React Native) | [`core/`](core/) |
+| **Server**: AI providers and HTTP API | TypeScript on Node 22+, Anthropic SDK | [`server/`](server/) |
+| **Python** toolkit and CLI | Python 3.10+, optional Anthropic SDK and Pillow | [`python/`](python/) |
+| **Ruby** gem and CLI | Ruby 3 (standard library only) | [`ruby/`](ruby/) |
+| **Mobile app** | React Native and Expo (iOS, Android, web) | [`mobile/`](mobile/) |
+| **Shared schema**: map format, modes, devices | JSON Schema | [`schema/`](schema/) |
 
 ## Quick start
 
 ```bash
 cd island-forge
 npm install
+npm run build        # builds the web app
 npm start            # http://localhost:5173
 ```
 
-Optional: set your key before starting so you don't have to paste it in the app:
+During development, `npm run dev` runs the API on :5174 and the Vite dev server on :5173 with hot reload.
+
+To use Claude without pasting a key into the app, set it before starting:
 
 ```bash
 ANTHROPIC_API_KEY=sk-ant-... npm start
 ```
 
-## Choosing the AI
+## What you can make: 31 island types
 
-| Provider | Default model | Key |
-|---|---|---|
-| **Claude (Anthropic)**, recommended default | `claude-opus-5-5` (also `claude-sonnet-5-5`, `claude-haiku-5-5`, `claude-fable-5-1`) | `ANTHROPIC_API_KEY` or paste it in the app |
-| OpenAI or any OpenAI-compatible API (OpenRouter, LM Studio, Groq…) | `gpt-5` (type any model, change the base URL) | `OPENAI_API_KEY` or in the app |
-| Google Gemini | `gemini-2.5-flash` | `GEMINI_API_KEY` or in the app |
-| Ollama (local) | `llama3.1` | none |
-| Offline generator | — | none. Instant, works with no server. |
+| Category | Island types |
+|---|---|
+| Battle Royale | Battle Royale · Reload · Blitz · Zero Build BR · Zone Wars |
+| Combat | Box Fights · 1v1 Build Fights · Red vs Blue · Free For All · Gun Game · Sniper Duel |
+| Objective | Capture the Flag · King of the Hill · Domination · Search & Destroy |
+| Party & Social | Prop Hunt · Hide & Seek · Infected · Murder Mystery · Party Games · Hangout / Roleplay |
+| Parkour & Racing | Deathrun / Parkour · Obstacle Party · Racing · Edit / Aim Course |
+| Survival & Horror | Wave Defense · Horror Escape · Escape Room · Survival Island |
+| Tycoon & Sim | Tycoon · Simulator / Clicker |
 
-Claude gets the map schema as a structured output format, so its answer always parses. The other providers get the schema in the prompt, and every answer goes through the same normalizer, which fixes out-of-range values.
+Each type has its own layout style:
+- **Island:** a coastline with named locations (POIs).
+- **Arena:** team bases on opposite sides.
+- **Course:** a winding path with ordered checkpoints, or a race loop.
+- **Plots:** a tycoon hub with plots around it.
+- **Hub:** a town for social and party modes.
 
-Keys typed in the app go only to your local server for that one request. They're saved in your browser only if you tick **Remember key**.
+Each type also comes with its own rules, storm (or none), features, devices and Verse modules.
 
-## Game modes
+## What the web app does
 
-| | Reload | Battle Royale | Blitz |
-|---|---|---|---|
-| Island size | ~1000 m | ~2500 m | ~750 m |
-| Players / teams | 40, squads | 100, squads | 36, solos |
-| POIs | 5–8 | 12–18 | 4–6 |
-| Respawn | on while a teammate lives, stops at storm phase 4 | off, reboot vans | off |
-| Storm | 6 phases | 9 phases | 5 fast phases |
-| Extras | vault, launch pads, rift | vaults, bosses, 8 reboot vans | medallion bosses |
+- **Generate** with Claude (the default, `claude-opus-5-5`), OpenAI or any OpenAI-compatible API, Gemini, Ollama, or the instant offline generator.
+- **Map editor:** drag locations and features around, add new ones from 37 feature types, edit team, order and size, and delete. Undo and redo with Ctrl+Z and Ctrl+Shift+Z.
+- **3D view (WebGL):** terrain from the same height field the heightmap export uses, plus water, buildings, labels, feature beacons, the storm ring and the Battle Bus.
+- **Island image:** a 1920×1080 thumbnail. It can use a shot of the 3D view as its picture.
+- **Devices:** the planned UEFN devices for the island, which you can turn on or off and change settings for. The full catalog of 80 devices is there to add more.
+- **Verse:** the generated Verse devices for the island type, with syntax colouring, copy, download and step-by-step wiring instructions.
+- **Details and rules:** name, time of day, biome, map size, players, teams, respawns, rounds, score, building, loot and storm.
+- **Publish:** title (40 characters max), description, tags and release notes.
+- **Export:** the full UEFN package or any single file.
+- **Import:** load a `.json` or `.zip` you exported before, or drop it on the page.
 
-These are starting presets. The AI adjusts them when your prompt asks for something different, and you can edit the rules, island name, tagline and POI names in the **Details** tab.
+## The UEFN package
 
-## Exporting to UEFN
+| File | Use in UEFN |
+|---|---|
+| `README.md` | Step-by-step import guide with coordinates for every location and the device and storm settings |
+| `heightmap-1009.png` | 16-bit grayscale heightmap, 1009×1009 (a standard Unreal landscape size), for Landscape import or as a sculpting reference |
+| `biome-paint.png` | Shows which landscape material goes where |
+| `Verse/*.verse` | Verse devices for the island type (see below) |
+| `devices.csv` | Every device with UEFN world coordinates and settings |
+| `publish.txt` | Title, description, tags and release notes |
+| `thumbnail.jpg` / `minimap.png` | Island image (1920×1080, under 1 MB) and top-down map |
+| `map-spec.json` | The full island, which you can re-import into any Island Forge client |
 
-In the **UEFN** tab:
+### Verse library (13 modules)
 
-- **UEFN package (.zip):** everything below plus `README.md`, a step-by-step guide with world coordinates for every POI and feature, and the device settings for Island Settings and the storm phases.
-- **Island image (.jpg):** a 1920×1080 thumbnail for publishing, kept under 1 MB.
-- **Minimap (.png):** a 1024×1024 top-down layout with an A–J / 1–10 grid.
-- **Verse device (.verse):** a `creative_device` holding every marker position. Place it at your island's centre, pick a marker prop, and press play. It spawns a prop at each POI, feature, bus point and the final circle.
-- **Map spec (.json):** the full layout.
-
-### Importing into a new UEFN island
-
-1. Create a new UEFN project (Blank island template).
-2. Copy the `.verse` file into your project's Verse folder and **Build Verse Code**.
-3. Drag the generated `*_layout_device` into the level at the island centre and choose marker props.
-4. Launch a session. Markers show where to build each location. Shape the terrain to match `minimap.png`.
-5. Set the devices from the package README and upload `thumbnail.jpg` when you publish.
-
-To load a map back into Island Forge, use **Import .json / .zip** or drag the file onto the page.
+| Module | Used by |
+|---|---|
+| Layout markers: spawns a prop at every location so you can build on the layout | every island type |
+| Elimination scoring: points per elimination, ends the game at the score limit | BR, combat and objective modes |
+| Match HUD: custom on-screen title, countdown and hint built with Verse UI | every island type |
+| Round manager: pre-round barrier countdown and round timer | Zone Wars, Box Fights, party modes |
+| Reload respawns: respawn only while a teammate lives, stopping at a storm phase | Reload |
+| Gun Game ladder: an elimination moves you to the next weapon | Gun Game |
+| Zone control: King of the Hill and Domination scoring | KotH, Domination |
+| Course timer: in-order checkpoints, finish times, best times | Deathrun, Obstacle Party, Racing, Edit Course |
+| Tycoon economy: claimable plot, income, upgrade buttons that reveal buildings | Tycoon, Simulator |
+| Creature waves: escalating waves with breaks between them | Wave Defense, Survival |
+| Collect to escape: collect items to open the exit | Horror, Escape Room |
+| Team swap: caught players join the hunters | Prop Hunt, Hide & Seek, Infected |
+| Persistent stats: matches and eliminations saved across sessions | many island types |
 
 ### Limits
 
-- UEFN has no public file format for injecting a finished level, so no tool can write a ready-made `.umap`. This one gives you the layout, positions, rules and Verse markers, and you build the terrain and buildings in UEFN.
-- The Verse file is generated, not compiled here. It uses the standard `SpawnProp` API. If a UEFN update renames something, the compiler error points at the line to fix.
+- **No finished level file.** UEFN has no public file format for injecting a finished level, so no tool can write a ready-made `.umap`. Island Forge gives you everything around it, and you build the terrain and buildings in UEFN using the markers, heightmap and guide.
+- **Verse is generated, not compiled.** The Verse files use long-standing Fortnite Verse APIs but haven't been compiled in UEFN by this tool. If a UEFN update renames something, the compiler error points at the line to fix.
+
+## Other clients
+
+- **Python:** `pip install -e python[claude,render]`, then `island-forge generate "pizza tycoon" --mode tycoon`. See [python/README.md](python/README.md).
+- **Ruby:** `ruby ruby/bin/island-forge-rb generate "haunted hospital" --mode horror`. See [ruby/README.md](ruby/README.md).
+- **Mobile:** `cd mobile && npm install && npm start`. See [mobile/README.md](mobile/README.md).
+
+## API
+
+| Route | What it does |
+|---|---|
+| `GET /api/providers` | AI providers, and which have keys set on the server |
+| `GET /api/catalog` | Island types, devices, Verse modules |
+| `GET /api/schema` | JSON schema the AI answers in |
+| `POST /api/generate` | `{prompt, mode, provider, model?, apiKey?, baseUrl?}` → `{spec}` |
+| `POST /api/verse` | `{spec}` → `{files}` |
+| `POST /api/readme` | `{spec}` → setup guide (Markdown) |
+| `POST /api/package` | `{spec}` → UEFN package (.zip, without the browser-rendered images) |
 
 ## Development
 
 ```bash
-npm test     # node --test: generator, normalizer, Verse/README output, zip, provider routing
+npm test             # core and server tests (node --test)
+npm run typecheck    # TypeScript for core, server and scripts
+npx tsc -p web/tsconfig.json
+npm run schema       # regenerate /schema and the Python/Ruby data copies after changing the core
+cd python && pytest  # Python tests
+ruby -Ilib ruby/test/test_island_forge.rb   # Ruby tests (run from island-forge/)
+cd mobile && npx tsc --noEmit               # React Native typecheck
 ```
-
-| File | What it does |
-|---|---|
-| `server.js` | Static server and `/api/generate` |
-| `providers.js` | Claude (Anthropic SDK), OpenAI-compatible, Gemini, Ollama, offline |
-| `public/lib/modes.js` | Mode presets, the JSON schema, the normalizer |
-| `public/lib/procedural.js` | Offline generator |
-| `public/lib/render.js` | Minimap and thumbnail renderer (canvas) |
-| `public/lib/uefn.js` | Verse device and setup guide |
-| `public/lib/zip.js` | Dependency-free zip writer and reader |
 
 Not affiliated with or endorsed by Epic Games. Fortnite and UEFN are trademarks of Epic Games, Inc.

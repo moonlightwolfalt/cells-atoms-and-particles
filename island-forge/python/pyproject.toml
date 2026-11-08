@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "island-forge"
+version = "2.0.0"
+description = "Python toolkit for Island Forge: generate Fortnite/UEFN island layouts, render minimaps, export UEFN packages."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+claude = ["anthropic>=1.0"]
+render = ["Pillow>=10"]
+dev = ["pytest>=8", "Pillow>=10"]
+
+[project.scripts]
+island-forge = "island_forge.cli:main"
+
+[tool.setuptools]
+packages = ["island_forge"]
+
+[tool.setuptools.package-data]
+island_forge = ["data/*.json"]

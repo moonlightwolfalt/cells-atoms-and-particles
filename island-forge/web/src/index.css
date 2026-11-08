@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: #0b0c24;
+  --color-ink-900: #11133a;
+  --color-ink-850: #161a4a;
+  --color-ink-800: #1d2056;
+  --color-ink-700: #272c6e;
+  --color-ink-600: #343a88;
+  --color-mute: #a9addb;
+  --color-sun: #ffd60a;
+  --color-sun-ink: #1b1b3a;
+  --color-sky: #2f7bff;
+  --color-ok: #58e08a;
+  --color-bad: #ff6b6b;
+  --font-display: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  html { color-scheme: dark; }
+  body {
+    @apply min-h-screen text-white antialiased;
+    background: radial-gradient(1200px 700px at 80% -10%, #3b1d8f 0%, transparent 60%), linear-gradient(180deg, #171a45, #0b0c24);
+    background-attachment: fixed;
+  }
+  :focus-visible { outline: 3px solid #8ab4ff; outline-offset: 2px; }
+}
+
+@layer components {
+  .panel { @apply rounded-2xl border border-white/10 bg-gradient-to-b from-ink-800 to-ink-850 shadow-2xl shadow-black/30; }
+  .label { @apply mb-2 block text-xs font-extrabold uppercase tracking-wider text-mute; }
+  .input { @apply w-full rounded-xl border border-white/10 bg-ink-950/70 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-transparent focus:outline-2 focus:outline-sky; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-ink-700 px-3 py-2 text-sm font-bold text-white transition hover:brightness-125 disabled:cursor-wait disabled:opacity-50; }
+  .btn-primary { @apply border-sun bg-sun text-sun-ink; }
+  .btn-ghost { @apply bg-transparent; }
+  .chip { @apply rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs hover:bg-white/15; }
+  .tab { @apply rounded-full border border-white/10 px-3 py-1.5 text-sm font-bold text-mute hover:text-white; }
+  .tab-on { @apply bg-white text-sun-ink hover:text-sun-ink; }
+  .table-x { @apply w-full border-collapse text-left text-sm; }
+  .table-x th { @apply border-b border-white/10 px-2 py-1.5 text-xs font-bold uppercase text-mute; }
+  .table-x td { @apply border-b border-white/5 px-2 py-1.5 align-top; }
+}

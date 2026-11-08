@@ -1,0 +1,1199 @@
+{
+  "format": "island-forge/map@2",
+  "mode": "tycoon",
+  "seed": 1914325160,
+  "prompt": "pizza tycoon on a beach",
+  "generator": "offline-procedural",
+  "map_size_m": 400,
+  "name": "Shell Empire",
+  "tagline": "Tycoon: pizza tycoon on a beach",
+  "description": "pizza tycoon on a beach — Every player owns a plot: earn gold, buy upgrades, build an empire.",
+  "theme": "beach",
+  "time_of_day": "day",
+  "base_biome": "beach",
+  "biomes": [
+    {
+      "type": "beach",
+      "x": 0.8617424046620726,
+      "y": 0.279732683300972,
+      "radius": 0.22668765716254713
+    },
+    {
+      "type": "jungle",
+      "x": 0.7113047711551189,
+      "y": 0.5275388628244401,
+      "radius": 0.23742977577261626
+    },
+    {
+      "type": "grassland",
+      "x": 0.5971435556188226,
+      "y": 0.1590401390567422,
+      "radius": 0.23163120491430164
+    },
+    {
+      "type": "beach",
+      "x": 0.5615973519161344,
+      "y": 0.8671080583706499,
+      "radius": 0.2294076986797154
+    },
+    {
+      "type": "jungle",
+      "x": 0.21506545022130014,
+      "y": 0.6028436724096536,
+      "radius": 0.2251403281930834
+    }
+  ],
+  "pois": [
+    {
+      "name": "Lucky Plaza",
+      "kind": "plaza",
+      "x": 0.5,
+      "y": 0.5,
+      "size": "large",
+      "loot_tier": 1,
+      "elevation": 0.2,
+      "description": "Central hub with shops."
+    }
+  ],
+  "lakes": [],
+  "rivers": [],
+  "roads": [
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.8,
+          "y": 0.5
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.7121320343559643,
+          "y": 0.7121320343559643
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.5,
+          "y": 0.8
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.2878679656440358,
+          "y": 0.7121320343559643
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.2,
+          "y": 0.5
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.2878679656440357,
+          "y": 0.2878679656440358
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.49999999999999994,
+          "y": 0.2
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.7121320343559642,
+          "y": 0.2878679656440357
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "type": "tycoon_plot",
+      "x": 0.8,
+      "y": 0.5,
+      "note": "Plot 1",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "tycoon_plot",
+      "x": 0.7121320343559643,
+      "y": 0.7121320343559643,
+      "note": "Plot 2",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "tycoon_plot",
+      "x": 0.5,
+      "y": 0.8,
+      "note": "Plot 3",
+      "team": 0,
+      "order": 3
+    },
+    {
+      "type": "tycoon_plot",
+      "x": 0.2878679656440358,
+      "y": 0.7121320343559643,
+      "note": "Plot 4",
+      "team": 0,
+      "order": 4
+    },
+    {
+      "type": "tycoon_plot",
+      "x": 0.2,
+      "y": 0.5,
+      "note": "Plot 5",
+      "team": 0,
+      "order": 5
+    },
+    {
+      "type": "tycoon_plot",
+      "x": 0.2878679656440357,
+      "y": 0.2878679656440358,
+      "note": "Plot 6",
+      "team": 0,
+      "order": 6
+    },
+    {
+      "type": "tycoon_plot",
+      "x": 0.49999999999999994,
+      "y": 0.2,
+      "note": "Plot 7",
+      "team": 0,
+      "order": 7
+    },
+    {
+      "type": "tycoon_plot",
+      "x": 0.7121320343559642,
+      "y": 0.2878679656440357,
+      "note": "Plot 8",
+      "team": 0,
+      "order": 8
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.8364916612725143,
+      "y": 0.5349452529951545,
+      "note": "Plot 1 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.7562712937764738,
+      "y": 0.7083751963315779,
+      "note": "Plot 2 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.5272462824587729,
+      "y": 0.77223546992773,
+      "note": "Plot 3 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.27847139201729104,
+      "y": 0.6789651712307744,
+      "note": "Plot 4 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.18299807602934448,
+      "y": 0.48852437654897607,
+      "note": "Plot 5 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.2715399429061589,
+      "y": 0.33963623871739745,
+      "note": "Plot 6 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.5265574125425521,
+      "y": 0.18016894971831268,
+      "note": "Plot 7 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.7341746183277685,
+      "y": 0.28997650302729944,
+      "note": "Plot 8 upgrade",
+      "team": 0,
+      "order": 1
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.8378878793219731,
+      "y": 0.5064627229737858,
+      "note": "Plot 1 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.7302669229172265,
+      "y": 0.7486044682519356,
+      "note": "Plot 2 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.4576447697876002,
+      "y": 0.7974774664503779,
+      "note": "Plot 3 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.24900271440247054,
+      "y": 0.711304657747895,
+      "note": "Plot 4 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.17529286342030723,
+      "y": 0.45756648375714737,
+      "note": "Plot 5 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.25171425828273264,
+      "y": 0.24748966596486827,
+      "note": "Plot 6 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.4562622623400461,
+      "y": 0.19196284663501567,
+      "note": "Plot 7 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "upgrade_button",
+      "x": 0.6791759752360836,
+      "y": 0.33159248614787235,
+      "note": "Plot 8 upgrade",
+      "team": 0,
+      "order": 2
+    },
+    {
+      "type": "collectible",
+      "x": 0.36271740048192447,
+      "y": 0.2828731193579734,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "collectible",
+      "x": 0.15122037472203376,
+      "y": 0.7882618062756956,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "collectible",
+      "x": 0.5868020674027503,
+      "y": 0.24492948028258982,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "collectible",
+      "x": 0.7530197453126312,
+      "y": 0.4131536952592433,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "collectible",
+      "x": 0.12262491453438998,
+      "y": 0.26276257590390745,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "collectible",
+      "x": 0.4978201630618424,
+      "y": 0.08349096664227545,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "collectible",
+      "x": 0.6116116095706821,
+      "y": 0.8705619312729687,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "collectible",
+      "x": 0.5370452767796815,
+      "y": 0.23808178862556817,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "shop",
+      "x": 0.30329171555116774,
+      "y": 0.13586442002095284,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "shop",
+      "x": 0.31290352990850806,
+      "y": 0.5445596340857447,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.7660682522091781,
+      "y": 0.4916870091707974,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.7319858151362638,
+      "y": 0.7099503369838889,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.509077680695613,
+      "y": 0.8315676633706196,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.28502268683127846,
+      "y": 0.7004132138994613,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.2144385497908967,
+      "y": 0.5266829635494509,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.29345815895034827,
+      "y": 0.2574088382978538,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.48069848876257015,
+      "y": 0.18573860353868216,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "spawn_pad",
+      "x": 0.7250075265148751,
+      "y": 0.28877576957540185,
+      "note": "",
+      "team": 0,
+      "order": 0
+    }
+  ],
+  "bus_route": null,
+  "storm": {
+    "final_x": 0.5,
+    "final_y": 0.5,
+    "phases": []
+  },
+  "rules": {
+    "max_players": 8,
+    "team_size": 1,
+    "team_count": 0,
+    "respawn_enabled": true,
+    "respawn_delay_s": 3,
+    "respawn_cutoff_phase": 0,
+    "rounds": 1,
+    "round_time_s": 3600,
+    "score_to_win": 0,
+    "starting_materials": 0,
+    "build_mode": "zero_build",
+    "loot_pool_notes": "Gold from income ticks and collectibles; weapons unlocked by upgrades."
+  },
+  "publish": {
+    "title": "Shell Empire",
+    "description": "Every player owns a plot: earn gold, buy upgrades, build an empire. Theme: pizza tycoon on a beach",
+    "tags": [
+      "tycoon",
+      "simulator",
+      "economy"
+    ],
+    "release_notes": "First release."
+  },
+  "devices": [
+    {
+      "id": "island_settings-1",
+      "device": "island_settings",
+      "label": "Island Settings",
+      "x": 0.53,
+      "y": 0.5,
+      "settings": {
+        "Max Players": 8,
+        "Spawn Location": "Player Spawn Pads",
+        "Allow Building": "None",
+        "Team Size": 1,
+        "Teams": "Squads",
+        "Respawn": "On (3s)",
+        "Starting Materials": 0,
+        "Round Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "day_sequence-1",
+      "device": "day_sequence",
+      "label": "Day Sequence",
+      "x": 0.5242705098312485,
+      "y": 0.5176335575687742,
+      "settings": {
+        "Time Of Day": "day"
+      },
+      "enabled": true
+    },
+    {
+      "id": "skydome-1",
+      "device": "skydome",
+      "label": "Skydome",
+      "x": 0.5092705098312484,
+      "y": 0.5285316954888546,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "map_indicator-1",
+      "device": "map_indicator",
+      "label": "Map Indicator",
+      "x": 0.49072949016875156,
+      "y": 0.5285316954888546,
+      "settings": {
+        "Icon": "Default"
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-1",
+      "device": "button",
+      "label": "Button",
+      "x": 0.4757294901687516,
+      "y": 0.5176335575687742,
+      "settings": {
+        "Interaction Time": 0.5
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-1",
+      "device": "conditional_button",
+      "label": "Conditional Button",
+      "x": 0.47,
+      "y": 0.5,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100
+      },
+      "enabled": true
+    },
+    {
+      "id": "item_granter-1",
+      "device": "item_granter",
+      "label": "Item Granter",
+      "x": 0.4757294901687516,
+      "y": 0.48236644243122584,
+      "settings": {
+        "Grant": "Current Item",
+        "On Grant Action": "Keep All"
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-1",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.49072949016875156,
+      "y": 0.4714683045111454,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-1",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.5092705098312484,
+      "y": 0.4714683045111454,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "billboard-1",
+      "device": "billboard",
+      "label": "Billboard",
+      "x": 0.5242705098312485,
+      "y": 0.4823664424312258,
+      "settings": {
+        "Text": "Welcome!"
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-2",
+      "device": "button",
+      "label": "Button — #1 — Plot 1",
+      "x": 0.8,
+      "y": 0.5,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-3",
+      "device": "button",
+      "label": "Button — #2 — Plot 2",
+      "x": 0.7121320343559643,
+      "y": 0.7121320343559643,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-4",
+      "device": "button",
+      "label": "Button — #3 — Plot 3",
+      "x": 0.5,
+      "y": 0.8,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-5",
+      "device": "button",
+      "label": "Button — #4 — Plot 4",
+      "x": 0.2878679656440358,
+      "y": 0.7121320343559643,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 4
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-6",
+      "device": "button",
+      "label": "Button — #5 — Plot 5",
+      "x": 0.2,
+      "y": 0.5,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 5
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-7",
+      "device": "button",
+      "label": "Button — #6 — Plot 6",
+      "x": 0.2878679656440357,
+      "y": 0.2878679656440358,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 6
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-8",
+      "device": "button",
+      "label": "Button — #7 — Plot 7",
+      "x": 0.49999999999999994,
+      "y": 0.2,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 7
+      },
+      "enabled": true
+    },
+    {
+      "id": "button-9",
+      "device": "button",
+      "label": "Button — #8 — Plot 8",
+      "x": 0.7121320343559642,
+      "y": 0.2878679656440357,
+      "settings": {
+        "Interaction Time": 0.5,
+        "Checkpoint Order": 8
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-2",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 1 upgrade",
+      "x": 0.8364916612725143,
+      "y": 0.5349452529951545,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-3",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 2 upgrade",
+      "x": 0.7562712937764738,
+      "y": 0.7083751963315779,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-4",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 3 upgrade",
+      "x": 0.5272462824587729,
+      "y": 0.77223546992773,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-5",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 4 upgrade",
+      "x": 0.27847139201729104,
+      "y": 0.6789651712307744,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-6",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 5 upgrade",
+      "x": 0.18299807602934448,
+      "y": 0.48852437654897607,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-7",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 6 upgrade",
+      "x": 0.2715399429061589,
+      "y": 0.33963623871739745,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-8",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 7 upgrade",
+      "x": 0.5265574125425521,
+      "y": 0.18016894971831268,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-9",
+      "device": "conditional_button",
+      "label": "Conditional Button — #1 — Plot 8 upgrade",
+      "x": 0.7341746183277685,
+      "y": 0.28997650302729944,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 50,
+        "Checkpoint Order": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-10",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 1 upgrade",
+      "x": 0.8378878793219731,
+      "y": 0.5064627229737858,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-11",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 2 upgrade",
+      "x": 0.7302669229172265,
+      "y": 0.7486044682519356,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-12",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 3 upgrade",
+      "x": 0.4576447697876002,
+      "y": 0.7974774664503779,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-13",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 4 upgrade",
+      "x": 0.24900271440247054,
+      "y": 0.711304657747895,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-14",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 5 upgrade",
+      "x": 0.17529286342030723,
+      "y": 0.45756648375714737,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-15",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 6 upgrade",
+      "x": 0.25171425828273264,
+      "y": 0.24748966596486827,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-16",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 7 upgrade",
+      "x": 0.4562622623400461,
+      "y": 0.19196284663501567,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "conditional_button-17",
+      "device": "conditional_button",
+      "label": "Conditional Button — #2 — Plot 8 upgrade",
+      "x": 0.6791759752360836,
+      "y": 0.33159248614787235,
+      "settings": {
+        "Key Item": "Gold",
+        "Item Count": 100,
+        "Checkpoint Order": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-2",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.36271740048192447,
+      "y": 0.2828731193579734,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-3",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.15122037472203376,
+      "y": 0.7882618062756956,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-4",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.5868020674027503,
+      "y": 0.24492948028258982,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-5",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.7530197453126312,
+      "y": 0.4131536952592433,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-6",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.12262491453438998,
+      "y": 0.26276257590390745,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-7",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.4978201630618424,
+      "y": 0.08349096664227545,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-8",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.6116116095706821,
+      "y": 0.8705619312729687,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "collectible_object-9",
+      "device": "collectible_object",
+      "label": "Collectible Object",
+      "x": 0.5370452767796815,
+      "y": 0.23808178862556817,
+      "settings": {
+        "Score": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-2",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.30329171555116774,
+      "y": 0.13586442002095284,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-3",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.31290352990850806,
+      "y": 0.5445596340857447,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-1",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.7660682522091781,
+      "y": 0.4916870091707974,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-2",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.7319858151362638,
+      "y": 0.7099503369838889,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-3",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.509077680695613,
+      "y": 0.8315676633706196,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-4",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.28502268683127846,
+      "y": 0.7004132138994613,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-5",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.2144385497908967,
+      "y": 0.5266829635494509,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-6",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.29345815895034827,
+      "y": 0.2574088382978538,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-7",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.48069848876257015,
+      "y": 0.18573860353868216,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "player_spawner-8",
+      "device": "player_spawner",
+      "label": "Player Spawn Pad",
+      "x": 0.7250075265148751,
+      "y": 0.28877576957540185,
+      "settings": {
+        "Player Team": "Any",
+        "Visible In Game": false
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-1",
+      "device": "verse_device",
+      "label": "Verse — shell_empire_layout_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "shell_empire_layout.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-2",
+      "device": "verse_device",
+      "label": "Verse — shell_empire_tycoon_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "shell_empire_tycoon.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-3",
+      "device": "verse_device",
+      "label": "Verse — shell_empire_hud_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "shell_empire_hud.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-4",
+      "device": "verse_device",
+      "label": "Verse — shell_empire_stats_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "shell_empire_stats.verse"
+      },
+      "enabled": true
+    }
+  ]
+}

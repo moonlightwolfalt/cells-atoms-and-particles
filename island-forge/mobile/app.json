@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Island Forge",
+    "slug": "island-forge",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0b0c24",
+    "ios": { "supportsTablet": true, "infoPlist": { "NSAppTransportSecurity": { "NSAllowsLocalNetworking": true } } },
+    "android": { "usesCleartextTraffic": true }
+  }
+}

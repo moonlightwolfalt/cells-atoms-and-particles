@@ -1,0 +1,375 @@
+// Every kind of island Island Forge can make. Each mode is a starting preset: layout style,
+// player counts, rules, storm, which features to place, which devices and Verse modules to generate.
+import type { ModeDef, Rules, StormPhase } from './types.ts';
+
+const rules = (r: Partial<Rules>): Rules => ({
+  max_players: 16,
+  team_size: 1,
+  team_count: 0,
+  respawn_enabled: true,
+  respawn_delay_s: 3,
+  respawn_cutoff_phase: 0,
+  rounds: 1,
+  round_time_s: 600,
+  score_to_win: 0,
+  starting_materials: 0,
+  build_mode: 'build',
+  loot_pool_notes: '',
+  ...r,
+});
+
+const storm = (rows: [number, number, number, number][]): StormPhase[] =>
+  rows.map(([wait_s, shrink_s, end_radius_pct, damage_per_tick]) => ({ wait_s, shrink_s, end_radius_pct, damage_per_tick }));
+
+const BR_STORM = storm([
+  [150, 180, 0.45, 1], [120, 120, 0.33, 1], [90, 90, 0.24, 2], [80, 80, 0.16, 5], [70, 70, 0.1, 8],
+  [60, 60, 0.06, 10], [45, 60, 0.035, 10], [30, 45, 0.015, 10], [0, 60, 0, 10],
+]);
+const RELOAD_STORM = storm([[60, 90, 0.42, 1], [60, 75, 0.3, 2], [50, 60, 0.2, 5], [45, 50, 0.12, 8], [40, 45, 0.06, 10], [30, 40, 0, 10]]);
+const BLITZ_STORM = storm([[30, 45, 0.35, 2], [30, 40, 0.22, 4], [25, 35, 0.12, 8], [20, 30, 0.05, 10], [15, 30, 0, 10]]);
+const ZONE_WARS_STORM = storm([[10, 30, 0.3, 5], [5, 25, 0.2, 8], [5, 20, 0.12, 10], [5, 20, 0.06, 10], [5, 15, 0.02, 15], [0, 15, 0, 20]]);
+
+const BASE_DEVICES = ['island_settings', 'day_sequence', 'skydome', 'map_indicator', 'verse_device'];
+const ROUNDS = ['round_settings', 'end_game', 'score_manager', 'hud_message', 'barrier'];
+
+export const MODE_LIST: ModeDef[] = [
+  // ---------------- Battle Royale ----------------
+  {
+    id: 'battle_royale', label: 'Battle Royale', category: 'Battle Royale', layout: 'island', busRoute: true,
+    blurb: 'Full-size island, 100 players, one life — reboot vans bring squadmates back.',
+    mapSizeM: 2500, poiMin: 12, poiMax: 18,
+    rules: rules({ max_players: 100, team_size: 4, respawn_enabled: false, respawn_delay_s: 0, round_time_s: 1500, loot_pool_notes: 'Full loot pool across all rarities; vaults and bosses hold mythics.' }),
+    storm: BR_STORM,
+    features: { reboot_van: 8, vault: 2, boss: 2, vending_machine: 6, launch_pad: 4, supply_drop: 4, campfire: 4, zipline: 3, rift: 2, vehicle_spawner: 4 },
+    devices: [...BASE_DEVICES, 'battle_bus', 'advanced_storm_controller', 'advanced_storm_beacon', 'chest_spawner', 'water', 'elimination_manager', 'end_game', 'map_controller'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud', 'player_stats'], tags: ['battle royale', 'squads', 'action'],
+  },
+  {
+    id: 'reload', label: 'Reload', category: 'Battle Royale', layout: 'island', busRoute: true,
+    blurb: 'Small island, squads, respawn while a teammate is still alive — until the late storm.',
+    mapSizeM: 1000, poiMin: 5, poiMax: 8,
+    rules: rules({ max_players: 40, team_size: 4, respawn_enabled: true, respawn_delay_s: 15, respawn_cutoff_phase: 4, round_time_s: 900, starting_materials: 300, loot_pool_notes: 'Classic-style loot pool, floor loot heavy, chests in every named location.' }),
+    storm: RELOAD_STORM,
+    features: { vault: 1, vending_machine: 3, launch_pad: 2, supply_drop: 2, campfire: 2, zipline: 1, rift: 1 },
+    devices: [...BASE_DEVICES, 'battle_bus', 'advanced_storm_controller', 'advanced_storm_beacon', 'chest_spawner', 'player_spawner', 'teleporter', 'elimination_manager', 'end_game'],
+    verse: ['layout_markers', 'reload_respawn', 'elimination_scoring', 'match_hud'], tags: ['battle royale', 'squads', 'respawn'],
+  },
+  {
+    id: 'blitz', label: 'Blitz', category: 'Battle Royale', layout: 'island', busRoute: true,
+    blurb: 'Tiny, fast and chaotic — short matches, a quick storm and medallion bosses.',
+    mapSizeM: 750, poiMin: 4, poiMax: 6,
+    rules: rules({ max_players: 36, team_size: 1, respawn_enabled: false, respawn_delay_s: 0, round_time_s: 420, starting_materials: 100, loot_pool_notes: 'Boosted rarity, faster chests, medallions grant mobility or healing perks.' }),
+    storm: BLITZ_STORM,
+    features: { boss: 2, medallion: 2, vending_machine: 2, launch_pad: 1, supply_drop: 1, campfire: 1, rift: 1 },
+    devices: [...BASE_DEVICES, 'battle_bus', 'advanced_storm_controller', 'advanced_storm_beacon', 'chest_spawner', 'guard_spawner', 'item_granter', 'end_game'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud'], tags: ['battle royale', 'solos', 'fast'],
+  },
+  {
+    id: 'zero_build_br', label: 'Zero Build BR', category: 'Battle Royale', layout: 'island', busRoute: true,
+    blurb: 'No building — overshields, cover-rich POIs, mantling and sprinting.',
+    mapSizeM: 1800, poiMin: 9, poiMax: 13,
+    rules: rules({ max_players: 60, team_size: 2, respawn_enabled: false, respawn_delay_s: 0, round_time_s: 1200, build_mode: 'zero_build', loot_pool_notes: 'Overshield on spawn, more cover props, mobility items.' }),
+    storm: BR_STORM.slice(1),
+    features: { reboot_van: 5, vault: 1, boss: 1, vending_machine: 4, launch_pad: 3, supply_drop: 3, zipline: 4, vehicle_spawner: 3 },
+    devices: [...BASE_DEVICES, 'battle_bus', 'advanced_storm_controller', 'advanced_storm_beacon', 'chest_spawner', 'end_game'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud'], tags: ['zero build', 'battle royale', 'duos'],
+  },
+  {
+    id: 'zone_wars', label: 'Zone Wars', category: 'Battle Royale', layout: 'island', busRoute: false,
+    blurb: 'Late-game practice: moving zones, fast rotations, many short rounds.',
+    mapSizeM: 500, poiMin: 3, poiMax: 5,
+    rules: rules({ max_players: 16, respawn_enabled: false, respawn_delay_s: 0, rounds: 7, round_time_s: 240, starting_materials: 999, loot_pool_notes: 'Fixed loadout: AR, shotgun, SMG, heals, mobility.' }),
+    storm: ZONE_WARS_STORM,
+    features: { spawn_pad: 16, launch_pad: 2, item_spawner: 4 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'advanced_storm_controller', 'advanced_storm_beacon', 'player_spawner', 'item_granter', 'class_designer'],
+    verse: ['layout_markers', 'round_manager', 'elimination_scoring', 'match_hud', 'player_stats'], tags: ['zone wars', 'practice', 'competitive'],
+  },
+
+  // ---------------- Combat ----------------
+  {
+    id: 'box_fights', label: 'Box Fights', category: 'Combat', layout: 'arena', busRoute: false,
+    blurb: 'Two teams start in boxes — edit, build and win the round.',
+    mapSizeM: 120, poiMin: 1, poiMax: 2,
+    rules: rules({ max_players: 8, team_size: 4, team_count: 2, respawn_enabled: false, rounds: 9, round_time_s: 180, score_to_win: 5, starting_materials: 500, loot_pool_notes: 'Shotgun, SMG, AR, 2 heals per round.' }),
+    storm: [],
+    features: { team_spawn: 8, item_spawner: 2 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'team_settings_inventory', 'item_granter', 'class_designer', 'mutator_zone'],
+    verse: ['layout_markers', 'round_manager', 'elimination_scoring', 'match_hud'], tags: ['box fights', 'build fights', 'competitive'],
+  },
+  {
+    id: 'build_fights', label: '1v1 Build Fights', category: 'Combat', layout: 'arena', busRoute: false,
+    blurb: 'Duel arena for 1v1s with instant respawn and loadout reset.',
+    mapSizeM: 150, poiMin: 1, poiMax: 1,
+    rules: rules({ max_players: 2, team_count: 2, respawn_delay_s: 1, rounds: 1, round_time_s: 900, score_to_win: 10, starting_materials: 999, loot_pool_notes: 'Pump, AR, SMG, heals refilled on respawn.' }),
+    storm: [],
+    features: { team_spawn: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'item_granter', 'score_manager', 'end_game', 'hud_message'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud', 'player_stats'], tags: ['1v1', 'build fights', 'practice'],
+  },
+  {
+    id: 'red_vs_blue', label: 'Red vs Blue', category: 'Combat', layout: 'arena', busRoute: false,
+    blurb: 'Team deathmatch between two bases — first to the score wins.',
+    mapSizeM: 300, poiMin: 3, poiMax: 5,
+    rules: rules({ max_players: 16, team_size: 8, team_count: 2, respawn_delay_s: 3, round_time_s: 600, score_to_win: 50, starting_materials: 200, loot_pool_notes: 'Shared weapon racks and item spawners in each base.' }),
+    storm: [],
+    features: { team_spawn: 16, item_spawner: 6, launch_pad: 2, vending_machine: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'team_settings_inventory', 'item_spawner', 'score_manager', 'end_game', 'hud_message', 'timer'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud', 'player_stats'], tags: ['red vs blue', 'team deathmatch', 'pvp'],
+  },
+  {
+    id: 'free_for_all', label: 'Free For All', category: 'Combat', layout: 'arena', busRoute: false,
+    blurb: 'Everyone for themselves — most eliminations when the timer ends wins.',
+    mapSizeM: 250, poiMin: 3, poiMax: 5,
+    rules: rules({ max_players: 16, respawn_delay_s: 2, round_time_s: 600, score_to_win: 30, loot_pool_notes: 'Floor loot and item spawners around the arena.' }),
+    storm: [],
+    features: { spawn_pad: 16, item_spawner: 8, launch_pad: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'item_spawner', 'score_manager', 'end_game', 'timer', 'hud_message'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud', 'player_stats'], tags: ['ffa', 'pvp', 'deathmatch'],
+  },
+  {
+    id: 'gun_game', label: 'Gun Game', category: 'Combat', layout: 'arena', busRoute: false,
+    blurb: 'Each elimination upgrades your weapon. First through every gun wins.',
+    mapSizeM: 220, poiMin: 2, poiMax: 4,
+    rules: rules({ max_players: 16, respawn_delay_s: 2, round_time_s: 900, score_to_win: 15, build_mode: 'zero_build', loot_pool_notes: 'Weapon ladder: pistol → SMG → shotgun → AR → sniper → … → pickaxe.' }),
+    storm: [],
+    features: { spawn_pad: 16, launch_pad: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'item_granter', 'item_remover', 'end_game', 'hud_message'],
+    verse: ['layout_markers', 'gun_game', 'match_hud', 'player_stats'], tags: ['gun game', 'arsenal', 'ffa'],
+  },
+  {
+    id: 'sniper_duel', label: 'Sniper Duel', category: 'Combat', layout: 'arena', busRoute: false,
+    blurb: 'Long sight lines and towers — snipers only.',
+    mapSizeM: 400, poiMin: 3, poiMax: 5,
+    rules: rules({ max_players: 12, team_size: 6, team_count: 2, respawn_delay_s: 5, round_time_s: 600, score_to_win: 25, build_mode: 'zero_build', loot_pool_notes: 'Sniper rifles and pistols only.' }),
+    storm: [],
+    features: { team_spawn: 12, zipline: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'item_granter', 'class_designer', 'score_manager', 'end_game'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud'], tags: ['sniper', 'pvp', 'teams'],
+  },
+
+  // ---------------- Objective ----------------
+  {
+    id: 'capture_the_flag', label: 'Capture the Flag', category: 'Objective', layout: 'arena', busRoute: false,
+    blurb: 'Steal the enemy flag and bring it home.',
+    mapSizeM: 350, poiMin: 3, poiMax: 5,
+    rules: rules({ max_players: 16, team_size: 8, team_count: 2, respawn_delay_s: 5, round_time_s: 900, score_to_win: 3, loot_pool_notes: 'Class loadouts per team.' }),
+    storm: [],
+    features: { team_spawn: 16, flag: 2, item_spawner: 4, launch_pad: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'team_settings_inventory', 'capture_item_spawner', 'score_manager', 'end_game', 'hud_message'],
+    verse: ['layout_markers', 'elimination_scoring', 'match_hud'], tags: ['capture the flag', 'objective', 'teams'],
+  },
+  {
+    id: 'king_of_the_hill', label: 'King of the Hill', category: 'Objective', layout: 'arena', busRoute: false,
+    blurb: 'Hold the hill alone to earn points every second.',
+    mapSizeM: 250, poiMin: 2, poiMax: 4,
+    rules: rules({ max_players: 16, respawn_delay_s: 3, round_time_s: 600, score_to_win: 120, loot_pool_notes: 'Mid-tier weapons around the hill.' }),
+    storm: [],
+    features: { spawn_pad: 16, capture_zone: 1, item_spawner: 4, launch_pad: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'mutator_zone', 'capture_area', 'score_manager', 'end_game', 'hud_message'],
+    verse: ['layout_markers', 'zone_control', 'match_hud'], tags: ['king of the hill', 'objective', 'ffa'],
+  },
+  {
+    id: 'domination', label: 'Domination', category: 'Objective', layout: 'arena', busRoute: false,
+    blurb: 'Two teams fight over three capture points.',
+    mapSizeM: 350, poiMin: 3, poiMax: 5,
+    rules: rules({ max_players: 16, team_size: 8, team_count: 2, respawn_delay_s: 5, round_time_s: 900, score_to_win: 200, loot_pool_notes: 'Class loadouts; heavy weapons near B.' }),
+    storm: [],
+    features: { team_spawn: 16, capture_zone: 3, item_spawner: 4 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'team_settings_inventory', 'mutator_zone', 'capture_area', 'score_manager', 'end_game', 'hud_message'],
+    verse: ['layout_markers', 'zone_control', 'match_hud'], tags: ['domination', 'objective', 'teams'],
+  },
+  {
+    id: 'search_and_destroy', label: 'Search & Destroy', category: 'Objective', layout: 'arena', busRoute: false,
+    blurb: 'Attackers plant at A or B, defenders stop them. One life per round.',
+    mapSizeM: 300, poiMin: 3, poiMax: 4,
+    rules: rules({ max_players: 10, team_size: 5, team_count: 2, respawn_enabled: false, respawn_delay_s: 0, rounds: 12, round_time_s: 150, score_to_win: 7, build_mode: 'zero_build', loot_pool_notes: 'Buy phase at the start of each round.' }),
+    storm: [],
+    features: { team_spawn: 10, bomb_site: 2, shop: 2 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'team_settings_inventory', 'bomb', 'vending_machine'],
+    verse: ['layout_markers', 'round_manager', 'elimination_scoring', 'match_hud'], tags: ['search and destroy', 'tactical', 'teams'],
+  },
+
+  // ---------------- Party & Social ----------------
+  {
+    id: 'prop_hunt', label: 'Prop Hunt', category: 'Party & Social', layout: 'hub', busRoute: false,
+    blurb: 'Props hide as objects, hunters seek. Found props join the hunters.',
+    mapSizeM: 250, poiMin: 4, poiMax: 7,
+    rules: rules({ max_players: 16, team_count: 2, respawn_delay_s: 5, rounds: 5, round_time_s: 300, build_mode: 'zero_build', loot_pool_notes: 'Hunters get shotguns; props get the Prop-o-Matic.' }),
+    storm: [],
+    features: { team_spawn: 4, hiding_spot: 12, teleporter: 2 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'prop_manipulator', 'team_settings_inventory', 'item_granter', 'timer'],
+    verse: ['layout_markers', 'team_swap', 'round_manager', 'match_hud'], tags: ['prop hunt', 'party', 'hide and seek'],
+  },
+  {
+    id: 'hide_and_seek', label: 'Hide & Seek', category: 'Party & Social', layout: 'hub', busRoute: false,
+    blurb: 'Seekers count down, hiders scatter. Tagged hiders become seekers.',
+    mapSizeM: 300, poiMin: 4, poiMax: 7,
+    rules: rules({ max_players: 16, team_count: 2, respawn_delay_s: 3, rounds: 5, round_time_s: 300, build_mode: 'zero_build', loot_pool_notes: 'Seekers get a tag weapon; hiders get mobility items.' }),
+    storm: [],
+    features: { team_spawn: 4, hiding_spot: 14, teleporter: 2 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'team_settings_inventory', 'timer', 'item_granter'],
+    verse: ['layout_markers', 'team_swap', 'round_manager', 'match_hud'], tags: ['hide and seek', 'party', 'casual'],
+  },
+  {
+    id: 'infected', label: 'Infected', category: 'Party & Social', layout: 'hub', busRoute: false,
+    blurb: 'One infected player turns survivors until nobody is left.',
+    mapSizeM: 300, poiMin: 4, poiMax: 6,
+    rules: rules({ max_players: 16, team_count: 2, respawn_delay_s: 3, rounds: 5, round_time_s: 300, build_mode: 'edit_only', loot_pool_notes: 'Survivors: shotguns. Infected: melee + speed.' }),
+    storm: [],
+    features: { team_spawn: 6, item_spawner: 6, hiding_spot: 6 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'team_settings_inventory', 'class_designer', 'item_granter'],
+    verse: ['layout_markers', 'team_swap', 'round_manager', 'match_hud'], tags: ['infection', 'zombies', 'party'],
+  },
+  {
+    id: 'murder_mystery', label: 'Murder Mystery', category: 'Party & Social', layout: 'hub', busRoute: false,
+    blurb: 'One hidden murderer, one sheriff, everyone else survives and solves it.',
+    mapSizeM: 200, poiMin: 5, poiMax: 8,
+    rules: rules({ max_players: 12, team_count: 0, respawn_enabled: false, respawn_delay_s: 0, rounds: 5, round_time_s: 300, build_mode: 'zero_build', loot_pool_notes: 'Roles assigned secretly at round start.' }),
+    storm: [],
+    features: { spawn_pad: 12, collectible: 10, hiding_spot: 6 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'class_designer', 'item_granter', 'popup_dialog'],
+    verse: ['layout_markers', 'round_manager', 'match_hud'], tags: ['murder mystery', 'roleplay', 'party'],
+  },
+  {
+    id: 'party_games', label: 'Party Games', category: 'Party & Social', layout: 'hub', busRoute: false,
+    blurb: 'A hub with minigame pads — vote, play, collect crowns.',
+    mapSizeM: 300, poiMin: 5, poiMax: 8,
+    rules: rules({ max_players: 16, respawn_delay_s: 2, rounds: 6, round_time_s: 120, build_mode: 'zero_build', loot_pool_notes: 'Each minigame grants its own items.' }),
+    storm: [],
+    features: { spawn_pad: 8, minigame_pad: 6, teleporter: 6, collectible: 8 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'teleporter', 'popup_dialog', 'audio_player', 'player_reference'],
+    verse: ['layout_markers', 'round_manager', 'match_hud', 'player_stats'], tags: ['party', 'minigames', 'casual'],
+  },
+  {
+    id: 'hangout', label: 'Hangout / Roleplay', category: 'Party & Social', layout: 'hub', busRoute: false,
+    blurb: 'A social space or roleplay town with shops, jobs and music.',
+    mapSizeM: 400, poiMin: 6, poiMax: 10,
+    rules: rules({ max_players: 50, respawn_delay_s: 1, round_time_s: 3600, build_mode: 'zero_build', loot_pool_notes: 'Cosmetic items, emote spots, vehicles.' }),
+    storm: [],
+    features: { spawn_pad: 8, npc: 4, shop: 3, vehicle_spawner: 4, teleporter: 4, collectible: 6 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'npc_spawner', 'vending_machine', 'radio', 'billboard', 'popup_dialog', 'matchmaking_portal'],
+    verse: ['layout_markers', 'match_hud', 'player_stats'], tags: ['roleplay', 'hangout', 'social'],
+  },
+
+  // ---------------- Parkour & Racing ----------------
+  {
+    id: 'deathrun', label: 'Deathrun / Parkour', category: 'Parkour & Racing', layout: 'course', busRoute: false,
+    blurb: 'A long obstacle course with checkpoints, traps and a finish timer.',
+    mapSizeM: 500, poiMin: 4, poiMax: 6,
+    rules: rules({ max_players: 16, respawn_delay_s: 0, round_time_s: 1800, build_mode: 'zero_build', loot_pool_notes: 'No weapons. Movement items only.' }),
+    storm: [],
+    features: { spawn_pad: 4, checkpoint: 8, trap: 10, bouncer: 4, moving_platform: 4, finish_line: 1 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'checkpoint_pad', 'damage_volume', 'bouncer', 'prop_mover', 'trigger', 'timer', 'end_game'],
+    verse: ['layout_markers', 'checkpoint_course', 'match_hud', 'player_stats'], tags: ['deathrun', 'parkour', 'obby'],
+  },
+  {
+    id: 'obstacle_party', label: 'Obstacle Party', category: 'Parkour & Racing', layout: 'course', busRoute: false,
+    blurb: 'Bouncy party course — sweepers, slime and a race to the crown.',
+    mapSizeM: 300, poiMin: 3, poiMax: 5,
+    rules: rules({ max_players: 32, respawn_delay_s: 0, rounds: 3, round_time_s: 300, build_mode: 'zero_build', loot_pool_notes: 'No weapons.' }),
+    storm: [],
+    features: { spawn_pad: 8, checkpoint: 5, trap: 8, bouncer: 6, moving_platform: 6, speed_boost: 3, finish_line: 1 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'checkpoint_pad', 'damage_volume', 'bouncer', 'prop_mover', 'speed_boost', 'trigger'],
+    verse: ['layout_markers', 'checkpoint_course', 'round_manager', 'match_hud'], tags: ['obstacle course', 'party', 'race'],
+  },
+  {
+    id: 'racing', label: 'Racing', category: 'Parkour & Racing', layout: 'course', busRoute: false,
+    blurb: 'Vehicle race track with gates, boosts and laps.',
+    mapSizeM: 1200, poiMin: 3, poiMax: 6,
+    rules: rules({ max_players: 12, respawn_delay_s: 2, rounds: 3, round_time_s: 420, build_mode: 'zero_build', loot_pool_notes: 'Everyone gets the same car.' }),
+    storm: [],
+    features: { spawn_pad: 12, race_checkpoint: 10, speed_boost: 6, vehicle_spawner: 12, finish_line: 1 },
+    devices: [...BASE_DEVICES, ...ROUNDS, 'player_spawner', 'race_manager', 'race_checkpoint', 'vehicle_spawner', 'speed_boost'],
+    verse: ['layout_markers', 'checkpoint_course', 'match_hud', 'player_stats'], tags: ['racing', 'vehicles', 'driving'],
+  },
+  {
+    id: 'edit_course', label: 'Edit / Aim Course', category: 'Parkour & Racing', layout: 'course', busRoute: false,
+    blurb: 'Practice course: edit walls and hit targets against the clock.',
+    mapSizeM: 200, poiMin: 2, poiMax: 4,
+    rules: rules({ max_players: 4, respawn_delay_s: 0, round_time_s: 1800, starting_materials: 999, loot_pool_notes: 'Infinite materials; targets drop nothing.' }),
+    storm: [],
+    features: { spawn_pad: 2, checkpoint: 6, finish_line: 1, collectible: 10 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'checkpoint_pad', 'trigger', 'timer', 'tracker'],
+    verse: ['layout_markers', 'checkpoint_course', 'match_hud', 'player_stats'], tags: ['practice', 'edit course', 'aim training'],
+  },
+
+  // ---------------- Survival & Horror ----------------
+  {
+    id: 'wave_defense', label: 'Wave Defense', category: 'Survival & Horror', layout: 'arena', busRoute: false,
+    blurb: 'Hold out against waves of creatures with your squad.',
+    mapSizeM: 300, poiMin: 2, poiMax: 4,
+    rules: rules({ max_players: 4, team_size: 4, respawn_delay_s: 10, rounds: 10, round_time_s: 90, loot_pool_notes: 'Buy upgrades between waves with gold.' }),
+    storm: [],
+    features: { spawn_pad: 4, creature_spawner: 6, shop: 2, sentry: 2, item_spawner: 3 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'creature_spawner', 'vending_machine', 'sentry', 'end_game', 'hud_message', 'timer'],
+    verse: ['layout_markers', 'wave_spawner', 'match_hud', 'player_stats'], tags: ['wave defense', 'pve', 'co-op'],
+  },
+  {
+    id: 'horror', label: 'Horror Escape', category: 'Survival & Horror', layout: 'hub', busRoute: false,
+    blurb: 'Find the keys in the dark while something hunts you.',
+    mapSizeM: 250, poiMin: 4, poiMax: 7,
+    rules: rules({ max_players: 4, team_size: 4, respawn_enabled: false, respawn_delay_s: 0, round_time_s: 1200, build_mode: 'zero_build', loot_pool_notes: 'Flashlights, a few heals, no weapons.' }),
+    storm: [],
+    features: { spawn_pad: 4, collectible: 6, guard_spawner: 2, trap: 4, finish_line: 1 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'guard_spawner', 'collectible_object', 'conditional_button', 'fog', 'post_process', 'audio_player', 'end_game'],
+    verse: ['layout_markers', 'collect_to_escape', 'match_hud'], tags: ['horror', 'escape', 'co-op'],
+  },
+  {
+    id: 'escape_room', label: 'Escape Room', category: 'Survival & Horror', layout: 'hub', busRoute: false,
+    blurb: 'Puzzle rooms opened by buttons, keys and codes.',
+    mapSizeM: 120, poiMin: 4, poiMax: 6,
+    rules: rules({ max_players: 4, team_size: 4, respawn_delay_s: 1, round_time_s: 1800, build_mode: 'zero_build', loot_pool_notes: 'Keys and puzzle items only.' }),
+    storm: [],
+    features: { spawn_pad: 4, collectible: 8, upgrade_button: 4, teleporter: 4, finish_line: 1 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'conditional_button', 'button', 'lock', 'switch', 'collectible_object', 'popup_dialog', 'end_game'],
+    verse: ['layout_markers', 'collect_to_escape', 'match_hud'], tags: ['escape room', 'puzzle', 'co-op'],
+  },
+  {
+    id: 'survival', label: 'Survival Island', category: 'Survival & Horror', layout: 'island', busRoute: false,
+    blurb: 'Gather, craft and survive wildlife and night raids — no storm.',
+    mapSizeM: 1200, poiMin: 6, poiMax: 10,
+    rules: rules({ max_players: 16, team_size: 4, respawn_delay_s: 15, round_time_s: 3600, loot_pool_notes: 'Crafting materials, wildlife drops, campfires.' }),
+    storm: [],
+    features: { spawn_pad: 4, wildlife: 6, creature_spawner: 3, campfire: 5, item_spawner: 8, shop: 2 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'wildlife_spawner', 'creature_spawner', 'item_spawner', 'vending_machine', 'water'],
+    verse: ['layout_markers', 'wave_spawner', 'match_hud', 'player_stats'], tags: ['survival', 'pve', 'crafting'],
+  },
+
+  // ---------------- Tycoon & Sim ----------------
+  {
+    id: 'tycoon', label: 'Tycoon', category: 'Tycoon & Sim', layout: 'plots', busRoute: false,
+    blurb: 'Every player owns a plot: earn gold, buy upgrades, build an empire.',
+    mapSizeM: 400, poiMin: 1, poiMax: 2,
+    rules: rules({ max_players: 8, respawn_delay_s: 3, round_time_s: 3600, build_mode: 'zero_build', loot_pool_notes: 'Gold from income ticks and collectibles; weapons unlocked by upgrades.' }),
+    storm: [],
+    features: { tycoon_plot: 8, upgrade_button: 16, collectible: 8, shop: 2, spawn_pad: 8 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'button', 'conditional_button', 'item_granter', 'collectible_object', 'vending_machine', 'billboard'],
+    verse: ['layout_markers', 'tycoon_economy', 'match_hud', 'player_stats'], tags: ['tycoon', 'simulator', 'economy'],
+  },
+  {
+    id: 'simulator', label: 'Simulator / Clicker', category: 'Tycoon & Sim', layout: 'hub', busRoute: false,
+    blurb: 'Collect, upgrade, rebirth — zones unlock as you get stronger.',
+    mapSizeM: 500, poiMin: 4, poiMax: 7,
+    rules: rules({ max_players: 16, respawn_delay_s: 1, round_time_s: 3600, build_mode: 'zero_build', loot_pool_notes: 'Currency from collectibles; zones gated by conditional buttons.' }),
+    storm: [],
+    features: { spawn_pad: 6, collectible: 20, upgrade_button: 6, shop: 3, teleporter: 4 },
+    devices: [...BASE_DEVICES, 'player_spawner', 'collectible_object', 'conditional_button', 'barrier', 'teleporter', 'billboard'],
+    verse: ['layout_markers', 'tycoon_economy', 'match_hud', 'player_stats'], tags: ['simulator', 'tycoon', 'casual'],
+  },
+];
+
+export const MODES: Record<string, ModeDef> = Object.fromEntries(MODE_LIST.map((m) => [m.id, m]));
+export const MODE_IDS = MODE_LIST.map((m) => m.id);
+export const MODE_CATEGORIES = [...new Set(MODE_LIST.map((m) => m.category))];
+
+export const BIOMES = ['grassland', 'forest', 'desert', 'snow', 'swamp', 'jungle', 'volcanic', 'beach', 'mountain', 'urban', 'autumn', 'candy'];
+export const POI_KINDS = ['town', 'city', 'industrial', 'landmark', 'fort', 'ruins', 'farm', 'resort', 'military', 'cave', 'castle', 'lab', 'docks', 'temple', 'arena', 'base', 'plaza', 'course'];
+export const FEATURE_TYPES = [
+  'reboot_van', 'vault', 'boss', 'medallion', 'vending_machine', 'launch_pad', 'supply_drop', 'campfire', 'zipline', 'rift',
+  'spawn_pad', 'team_spawn', 'capture_zone', 'flag', 'bomb_site', 'checkpoint', 'finish_line', 'race_checkpoint',
+  'tycoon_plot', 'shop', 'upgrade_button', 'creature_spawner', 'guard_spawner', 'vehicle_spawner', 'teleporter', 'trap',
+  'collectible', 'hiding_spot', 'item_spawner', 'minigame_pad', 'npc', 'wildlife', 'objective', 'sentry', 'bouncer',
+  'moving_platform', 'speed_boost',
+];
+export const TIMES_OF_DAY = ['day', 'dawn', 'dusk', 'night'] as const;
+export const BUILD_MODES = ['build', 'zero_build', 'edit_only'] as const;

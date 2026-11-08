@@ -1,0 +1,745 @@
+[
+  {
+    "id": "island_settings",
+    "name": "Island Settings",
+    "category": "Game Rules",
+    "description": "Match-wide rules: players, teams, respawn, building, spawn location.",
+    "settings": {
+      "Max Players": 16,
+      "Spawn Location": "Player Spawn Pads",
+      "Allow Building": "All"
+    }
+  },
+  {
+    "id": "round_settings",
+    "name": "Round Settings",
+    "category": "Game Rules",
+    "description": "Per-round overrides such as round time limits and win conditions.",
+    "verse": "round_settings_device",
+    "settings": {
+      "Round Time Limit": "5 min"
+    }
+  },
+  {
+    "id": "end_game",
+    "name": "End Game",
+    "category": "Game Rules",
+    "description": "Ends the round or game for a player or team when activated.",
+    "verse": "end_game_device",
+    "settings": {
+      "Activating Team": "Any",
+      "Ends": "Round"
+    }
+  },
+  {
+    "id": "team_settings_inventory",
+    "name": "Team Settings & Inventory",
+    "category": "Game Rules",
+    "description": "Team names, colours, starting inventory and team-only rules.",
+    "verse": "team_settings_and_inventory_device",
+    "settings": {
+      "Team Name": "Team 1",
+      "Team Color": "Red"
+    }
+  },
+  {
+    "id": "class_designer",
+    "name": "Class Designer",
+    "category": "Game Rules",
+    "description": "Defines a loadout class (health, shields, items).",
+    "verse": "class_designer_device",
+    "settings": {
+      "Class Name": "Default",
+      "Starting Health": 100
+    }
+  },
+  {
+    "id": "class_selector",
+    "name": "Class Selector",
+    "category": "Game Rules",
+    "description": "Switches the player who uses it to a class.",
+    "verse": "class_and_team_selector_device",
+    "settings": {
+      "Class To Switch To": 1
+    }
+  },
+  {
+    "id": "score_manager",
+    "name": "Score Manager",
+    "category": "Game Rules",
+    "description": "Awards score to the activating player or team.",
+    "verse": "score_manager_device",
+    "settings": {
+      "Score Value": 1
+    }
+  },
+  {
+    "id": "elimination_manager",
+    "name": "Elimination Manager",
+    "category": "Game Rules",
+    "description": "Reacts to eliminations, drops items, grants rewards.",
+    "verse": "elimination_manager_device",
+    "settings": {
+      "Target Type": "Player"
+    }
+  },
+  {
+    "id": "timer",
+    "name": "Timer",
+    "category": "Game Rules",
+    "description": "Countdown or stopwatch with success/failure events.",
+    "verse": "timer_device",
+    "settings": {
+      "Duration": 300,
+      "Visible During Game": true
+    }
+  },
+  {
+    "id": "tracker",
+    "name": "Tracker",
+    "category": "Game Rules",
+    "description": "Counts stats (eliminations, items, anything) toward a goal.",
+    "verse": "tracker_device",
+    "settings": {
+      "Stat To Track": "Eliminations",
+      "Target Value": 10
+    }
+  },
+  {
+    "id": "accolades",
+    "name": "Accolades",
+    "category": "Game Rules",
+    "description": "Grants XP accolades to players for achievements.",
+    "verse": "accolades_device",
+    "settings": {
+      "XP Award": "Small"
+    }
+  },
+  {
+    "id": "player_counter",
+    "name": "Player Counter",
+    "category": "Game Rules",
+    "description": "Counts players in an area or the whole game and fires events at a threshold.",
+    "verse": "player_counter_device",
+    "settings": {
+      "Target Player Count": 1
+    }
+  },
+  {
+    "id": "player_spawner",
+    "name": "Player Spawn Pad",
+    "category": "Spawning",
+    "description": "Where players spawn. Use team-specific pads for team modes.",
+    "verse": "player_spawner_device",
+    "settings": {
+      "Player Team": "Any",
+      "Visible In Game": false
+    }
+  },
+  {
+    "id": "battle_bus",
+    "name": "Battle Bus",
+    "category": "Spawning",
+    "description": "Flies the bus across the island; players skydive from it.",
+    "settings": {
+      "Bus Route": "From layout",
+      "Jump Delay": 5
+    }
+  },
+  {
+    "id": "reboot_van",
+    "name": "Reboot Van",
+    "category": "Spawning",
+    "description": "Reboots eliminated teammates with their reboot card.",
+    "settings": {
+      "Reboot Time": 10
+    }
+  },
+  {
+    "id": "checkpoint_pad",
+    "name": "Checkpoint Pad",
+    "category": "Spawning",
+    "description": "Sets a player's respawn point when they touch it.",
+    "settings": {
+      "Visible In Game": true
+    }
+  },
+  {
+    "id": "item_granter",
+    "name": "Item Granter",
+    "category": "Items",
+    "description": "Grants items to a player (loadouts, rewards, weapon levels).",
+    "verse": "item_granter_device",
+    "settings": {
+      "Grant": "Current Item",
+      "On Grant Action": "Keep All"
+    }
+  },
+  {
+    "id": "item_spawner",
+    "name": "Item Spawner",
+    "category": "Items",
+    "description": "Spawns items in the world on a timer.",
+    "verse": "item_spawner_device",
+    "settings": {
+      "Respawn Item On Timer": true,
+      "Time Between Spawns": 30
+    }
+  },
+  {
+    "id": "item_remover",
+    "name": "Item Remover",
+    "category": "Items",
+    "description": "Removes items from a player.",
+    "verse": "item_remover_device",
+    "settings": {
+      "Affected Items": "All"
+    }
+  },
+  {
+    "id": "chest_spawner",
+    "name": "Chest & Ammo Spawner",
+    "category": "Items",
+    "description": "Loot chests and ammo boxes placed around POIs.",
+    "settings": {
+      "Chest Spawn Chance": "100%"
+    }
+  },
+  {
+    "id": "vending_machine",
+    "name": "Vending Machine",
+    "category": "Items",
+    "description": "Sells items for gold or materials.",
+    "verse": "vending_machine_device",
+    "settings": {
+      "Cost": 200
+    }
+  },
+  {
+    "id": "capture_item_spawner",
+    "name": "Capture Item Spawner",
+    "category": "Items",
+    "description": "Spawns a capturable item such as a flag.",
+    "verse": "capture_item_spawner_device",
+    "settings": {
+      "Item": "Flag",
+      "Team": "Any"
+    }
+  },
+  {
+    "id": "collectible_object",
+    "name": "Collectible Object",
+    "category": "Items",
+    "description": "A coin/gem players collect for score or currency.",
+    "verse": "collectible_object_device",
+    "settings": {
+      "Score": 1
+    }
+  },
+  {
+    "id": "supply_drop",
+    "name": "Supply Drop Spawner",
+    "category": "Items",
+    "description": "Drops a balloon crate with loot from the sky.",
+    "verse": "supply_drop_spawner_device",
+    "settings": {
+      "Drop Count": 1
+    }
+  },
+  {
+    "id": "storm_controller",
+    "name": "Storm Controller",
+    "category": "Storm & Zones",
+    "description": "A simple shrinking storm.",
+    "verse": "storm_controller_device",
+    "settings": {
+      "Phases": 5
+    }
+  },
+  {
+    "id": "advanced_storm_controller",
+    "name": "Advanced Storm Controller",
+    "category": "Storm & Zones",
+    "description": "Fully custom storm driven by Advanced Storm Beacons.",
+    "verse": "advanced_storm_controller_device",
+    "settings": {
+      "Generate Storm On Game Start": true
+    }
+  },
+  {
+    "id": "advanced_storm_beacon",
+    "name": "Advanced Storm Beacon",
+    "category": "Storm & Zones",
+    "description": "One storm phase: radius, wait time, shrink time, damage.",
+    "verse": "advanced_storm_beacon_device",
+    "settings": {}
+  },
+  {
+    "id": "capture_area",
+    "name": "Capture Area",
+    "category": "Storm & Zones",
+    "description": "A zone teams capture and hold for points.",
+    "verse": "capture_area_device",
+    "settings": {
+      "Capture Time": 10,
+      "Score While Held": 1
+    }
+  },
+  {
+    "id": "mutator_zone",
+    "name": "Mutator Zone",
+    "category": "Storm & Zones",
+    "description": "Changes rules inside a volume and reports who enters/leaves.",
+    "verse": "mutator_zone_device",
+    "settings": {
+      "Allow Building": false
+    }
+  },
+  {
+    "id": "damage_volume",
+    "name": "Damage Volume",
+    "category": "Storm & Zones",
+    "description": "Hurts or eliminates anything inside (lava, kill floors, traps).",
+    "verse": "damage_volume_device",
+    "settings": {
+      "Damage Type": "Elimination"
+    }
+  },
+  {
+    "id": "barrier",
+    "name": "Barrier",
+    "category": "Storm & Zones",
+    "description": "Invisible or visible wall that can be turned on/off (pre-round cages).",
+    "verse": "barrier_device",
+    "settings": {
+      "Barrier Material": "Glass"
+    }
+  },
+  {
+    "id": "fog",
+    "name": "Fog Device",
+    "category": "Storm & Zones",
+    "description": "Atmospheric fog for mood (horror, night).",
+    "settings": {
+      "Fog Density": 0.4
+    }
+  },
+  {
+    "id": "water",
+    "name": "Water Device",
+    "category": "Storm & Zones",
+    "description": "Swimmable water volumes for lakes and rivers.",
+    "settings": {
+      "Shape": "From layout"
+    }
+  },
+  {
+    "id": "trigger",
+    "name": "Trigger",
+    "category": "Logic",
+    "description": "Fires when a player steps on it or another device signals it.",
+    "verse": "trigger_device",
+    "settings": {
+      "Visible In Game": false,
+      "Times Can Trigger": "Infinite"
+    }
+  },
+  {
+    "id": "button",
+    "name": "Button",
+    "category": "Logic",
+    "description": "Interactable button (purchases, doors, minigame starts).",
+    "verse": "button_device",
+    "settings": {
+      "Interaction Time": 0.5
+    }
+  },
+  {
+    "id": "conditional_button",
+    "name": "Conditional Button",
+    "category": "Logic",
+    "description": "Button that requires items (keys, gold) to activate.",
+    "verse": "conditional_button_device",
+    "settings": {
+      "Key Item": "Gold",
+      "Item Count": 100
+    }
+  },
+  {
+    "id": "switch",
+    "name": "Switch",
+    "category": "Logic",
+    "description": "Toggle on/off state for levers.",
+    "verse": "switch_device",
+    "settings": {}
+  },
+  {
+    "id": "lock",
+    "name": "Lock",
+    "category": "Logic",
+    "description": "Locks and unlocks doors.",
+    "verse": "lock_device",
+    "settings": {}
+  },
+  {
+    "id": "input_trigger",
+    "name": "Input Trigger",
+    "category": "Logic",
+    "description": "Fires when a player presses a chosen input (abilities, menus).",
+    "verse": "input_trigger_device",
+    "settings": {
+      "Input": "Crouch"
+    }
+  },
+  {
+    "id": "signal_remote",
+    "name": "Signal Remote Manager",
+    "category": "Logic",
+    "description": "Hand-held remote that sends signals.",
+    "verse": "signal_remote_manager_device",
+    "settings": {}
+  },
+  {
+    "id": "sequencer",
+    "name": "Sequencer",
+    "category": "Logic",
+    "description": "Fires a chain of events over time.",
+    "settings": {
+      "Tempo": 60
+    }
+  },
+  {
+    "id": "channel_relay",
+    "name": "Relay / Channels",
+    "category": "Logic",
+    "description": "Relays and receivers to wire devices together.",
+    "settings": {}
+  },
+  {
+    "id": "teleporter",
+    "name": "Teleporter",
+    "category": "Movement",
+    "description": "Moves players between points (spawn rooms, spectator boxes).",
+    "verse": "teleporter_device",
+    "settings": {
+      "Teleporter Group": "A"
+    }
+  },
+  {
+    "id": "launch_pad",
+    "name": "Launch Pad",
+    "category": "Movement",
+    "description": "Launches players into the air.",
+    "settings": {
+      "Launch Strength": "Normal"
+    }
+  },
+  {
+    "id": "zipline",
+    "name": "Zipline",
+    "category": "Movement",
+    "description": "Fast travel between two points.",
+    "settings": {}
+  },
+  {
+    "id": "rift",
+    "name": "Rift / Rift Point",
+    "category": "Movement",
+    "description": "Sends players skydiving from high above.",
+    "settings": {}
+  },
+  {
+    "id": "speed_boost",
+    "name": "Speed Boost Pad",
+    "category": "Movement",
+    "description": "Speeds players up along a course.",
+    "settings": {
+      "Boost Strength": 2
+    }
+  },
+  {
+    "id": "bouncer",
+    "name": "Bouncer",
+    "category": "Movement",
+    "description": "Bounces players up — great for obstacle courses.",
+    "settings": {
+      "Bounce Height": "Medium"
+    }
+  },
+  {
+    "id": "prop_mover",
+    "name": "Prop Mover",
+    "category": "Movement",
+    "description": "Moves props back and forth (moving platforms, sweepers).",
+    "verse": "prop_mover_device",
+    "settings": {
+      "Distance": 1000,
+      "Speed": 2
+    }
+  },
+  {
+    "id": "race_manager",
+    "name": "Race Manager",
+    "category": "Racing & Vehicles",
+    "description": "Runs a race: laps, positions, finish.",
+    "verse": "race_manager_device",
+    "settings": {
+      "Laps": 3
+    }
+  },
+  {
+    "id": "race_checkpoint",
+    "name": "Race Checkpoint",
+    "category": "Racing & Vehicles",
+    "description": "A gate racers must pass, in order.",
+    "verse": "race_checkpoint_device",
+    "settings": {
+      "Checkpoint Order": 1
+    }
+  },
+  {
+    "id": "vehicle_spawner",
+    "name": "Vehicle Spawner",
+    "category": "Racing & Vehicles",
+    "description": "Spawns cars, boats, quads, etc.",
+    "settings": {
+      "Vehicle": "Sports Car",
+      "Respawn Time": 10
+    }
+  },
+  {
+    "id": "creature_spawner",
+    "name": "Creature Spawner",
+    "category": "AI",
+    "description": "Spawns hostile creatures in waves.",
+    "verse": "creature_spawner_device",
+    "settings": {
+      "Creature Type": "Fiend",
+      "Max Creatures": 6
+    }
+  },
+  {
+    "id": "guard_spawner",
+    "name": "Guard Spawner",
+    "category": "AI",
+    "description": "Spawns AI guards that patrol and fight.",
+    "verse": "guard_spawner_device",
+    "settings": {
+      "Guard Count": 3,
+      "Team": "Wildlife & Creatures"
+    }
+  },
+  {
+    "id": "wildlife_spawner",
+    "name": "Wildlife Spawner",
+    "category": "AI",
+    "description": "Spawns animals for survival islands.",
+    "verse": "wildlife_spawner_device",
+    "settings": {
+      "Wildlife": "Boar"
+    }
+  },
+  {
+    "id": "npc_spawner",
+    "name": "NPC Spawner",
+    "category": "AI",
+    "description": "Spawns a custom NPC character (shopkeepers, quest givers).",
+    "verse": "npc_spawner_device",
+    "settings": {}
+  },
+  {
+    "id": "sentry",
+    "name": "Sentry",
+    "category": "AI",
+    "description": "Stationary turret that shoots players.",
+    "verse": "sentry_device",
+    "settings": {}
+  },
+  {
+    "id": "boss_spawner",
+    "name": "Boss (Guard + Item Granter)",
+    "category": "AI",
+    "description": "A tough guard that drops a mythic/medallion on elimination.",
+    "settings": {
+      "Health": 1000
+    }
+  },
+  {
+    "id": "objective",
+    "name": "Objective",
+    "category": "Objectives",
+    "description": "Destructible objective for attack/defend.",
+    "verse": "objective_device",
+    "settings": {
+      "Health": 1000
+    }
+  },
+  {
+    "id": "bomb",
+    "name": "Explosive / Bomb Site",
+    "category": "Objectives",
+    "description": "Plant and defuse sites for Search & Destroy.",
+    "verse": "explosive_device",
+    "settings": {}
+  },
+  {
+    "id": "vault",
+    "name": "Vault (Lock + Keycard)",
+    "category": "Objectives",
+    "description": "Locked loot room opened with a keycard.",
+    "settings": {}
+  },
+  {
+    "id": "hud_message",
+    "name": "HUD Message",
+    "category": "UI",
+    "description": "Shows a message on players' screens.",
+    "verse": "hud_message_device",
+    "settings": {
+      "Display Time": 4
+    }
+  },
+  {
+    "id": "billboard",
+    "name": "Billboard",
+    "category": "UI",
+    "description": "Text sign in the world (instructions, shop names).",
+    "verse": "billboard_device",
+    "settings": {
+      "Text": "Welcome!"
+    }
+  },
+  {
+    "id": "map_indicator",
+    "name": "Map Indicator",
+    "category": "UI",
+    "description": "Marker/icon on the minimap and full map.",
+    "verse": "map_indicator_device",
+    "settings": {
+      "Icon": "Default"
+    }
+  },
+  {
+    "id": "map_controller",
+    "name": "Map Controller",
+    "category": "UI",
+    "description": "Captures the minimap for custom islands.",
+    "settings": {}
+  },
+  {
+    "id": "popup_dialog",
+    "name": "Popup Dialog",
+    "category": "UI",
+    "description": "Modal dialog with buttons (tutorials, shops, votes).",
+    "verse": "popup_dialog_device",
+    "settings": {}
+  },
+  {
+    "id": "hud_controller",
+    "name": "HUD Controller",
+    "category": "UI",
+    "description": "Shows/hides HUD elements.",
+    "settings": {}
+  },
+  {
+    "id": "leaderboard",
+    "name": "Leaderboard / Scoreboard",
+    "category": "UI",
+    "description": "Shows top players (uses island stats).",
+    "settings": {}
+  },
+  {
+    "id": "day_sequence",
+    "name": "Day Sequence",
+    "category": "Atmosphere",
+    "description": "Time of day, sun and sky colours.",
+    "settings": {
+      "Time Of Day": "From layout"
+    }
+  },
+  {
+    "id": "skydome",
+    "name": "Skydome",
+    "category": "Atmosphere",
+    "description": "Sky style and clouds.",
+    "settings": {}
+  },
+  {
+    "id": "post_process",
+    "name": "Post Process",
+    "category": "Atmosphere",
+    "description": "Colour grading and effects (horror, retro).",
+    "settings": {}
+  },
+  {
+    "id": "audio_player",
+    "name": "Audio Player",
+    "category": "Atmosphere",
+    "description": "Plays music or sound effects.",
+    "verse": "audio_player_device",
+    "settings": {
+      "Volume": 1
+    }
+  },
+  {
+    "id": "radio",
+    "name": "Radio",
+    "category": "Atmosphere",
+    "description": "Background music for lobbies and hangouts.",
+    "verse": "radio_device",
+    "settings": {}
+  },
+  {
+    "id": "cinematic_sequence",
+    "name": "Cinematic Sequence",
+    "category": "Atmosphere",
+    "description": "Plays a Sequencer cinematic (intros, outros).",
+    "verse": "cinematic_sequence_device",
+    "settings": {}
+  },
+  {
+    "id": "campfire",
+    "name": "Campfire",
+    "category": "Atmosphere",
+    "description": "Heals players nearby.",
+    "settings": {}
+  },
+  {
+    "id": "analytics",
+    "name": "Analytics",
+    "category": "Economy & Social",
+    "description": "Counts custom events for your island analytics.",
+    "verse": "analytics_device",
+    "settings": {}
+  },
+  {
+    "id": "matchmaking_portal",
+    "name": "Matchmaking Portal",
+    "category": "Economy & Social",
+    "description": "Sends players to another island (hubs).",
+    "settings": {}
+  },
+  {
+    "id": "player_reference",
+    "name": "Player Reference",
+    "category": "Economy & Social",
+    "description": "Shows a player statue (top player, winner).",
+    "verse": "player_reference_device",
+    "settings": {}
+  },
+  {
+    "id": "prop_manipulator",
+    "name": "Prop-o-Matic / Prop Manipulator",
+    "category": "Economy & Social",
+    "description": "Lets players disguise as props (Prop Hunt).",
+    "verse": "prop_manipulator_device",
+    "settings": {}
+  },
+  {
+    "id": "verse_device",
+    "name": "Verse Device (generated)",
+    "category": "Verse",
+    "description": "A custom device generated by Island Forge.",
+    "settings": {}
+  }
+]
