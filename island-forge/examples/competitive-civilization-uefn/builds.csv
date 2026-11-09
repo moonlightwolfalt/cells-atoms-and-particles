@@ -1,0 +1,14 @@
+location,kind,grid,world_x_cm,world_y_cm,world_z_cm,prefab,extra_prefabs,galleries,chests
+FNCS Headquarters,city,F6,0,0,1800,Agency Headquarters,Office Tower; Radio Tower; Lobby Hub,Office Gallery; Glass Gallery; Neon Sign Gallery,Treasure Chest x8; Rare Chest x2; Ammo Box x4; Vault Chest x3
+Victory Cup Practice Room,arena,D4,18330,-18330,1200,Box Fight Arena,1v1 Build Arena; Capture Point Plaza,Arena Gallery; Floor & Wall Gallery; Sports Prop Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Performance Eval Palace,castle,G4,18330,18330,4500,Hunters Haven,Observatory; Medieval Village; Finish Podium,Castle Gallery; Rock Gallery; Statue Gallery,Treasure Chest x8; Rare Chest x2; Ammo Box x4
+Ranked Cup Strategy Camp,military,G7,-18330,18330,2100,Military Outpost,Secret Bunker; Team Bases (Red & Blue),Military Gallery; Tree Gallery; Military Prop Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Cash Cup Ruins,ruins,D7,-18330,-18330,1500,Colossal Coliseum,Ancient Ruins; Desert Temple,Ruins Gallery; Stone Pillar Gallery; Desert Nature Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Icon Cup Gallery,landmark,F2,46800,0,3300,Museum,Nightclub; Apartment Block,Statue Gallery; Glass Gallery; Lighting Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Hype Cup Heights,town,H3,33150,33150,4200,Neon Arcade,Suburban House; Wind Farm,Neon Sign Gallery; Suburban Gallery; Rock Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Console Cash Cup Docks,docks,I6,0,46800,600,Dirty Docks,Lighthouse; Warehouse,Docks Gallery; Container Gallery; Barrels & Crates Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Last Chance Qualifier Lodge,resort,H8,-33150,33150,1800,Lonely Lodge,Treehouse Village; Motel,Cabin Gallery; Pine Tree Gallery; Furniture Gallery,Treasure Chest x2; Ammo Box x2
+World Cup Stadium,arena,F9,-46800,0,1200,Stadium,Train Station; Burger Restaurant; Finish Podium,Stadium Gallery; Sports Prop Gallery; Lighting Gallery,Treasure Chest x8; Rare Chest x2; Ammo Box x4
+Early Access Cup Lab,lab,C8,-33150,-33150,1200,Space Base,Water Treatment Plant; Factory,Lab Gallery; Sci-Fi Gallery; Sci-Fi Prop Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Skin Cup Boutique,city,B6,0,-46800,900,Retail Row,Toy Store; Diner,Retail Gallery; Shop Prop Gallery; Sign Gallery,Treasure Chest x5; Rare Chest x1; Ammo Box x3
+Global Championship Grounds,arena,C3,33150,-33150,2400,Neo Tilted,Finish Podium; Skate Park; Stadium,Arena Gallery; Statue Gallery; Stairs & Ramps Gallery,Treasure Chest x8; Rare Chest x2; Ammo Box x4

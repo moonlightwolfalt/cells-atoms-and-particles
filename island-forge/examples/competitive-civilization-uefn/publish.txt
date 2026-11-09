@@ -1,0 +1,14 @@
+TITLE (max 40): Competitive Civilization (Reload)
+
+DESCRIPTION:
+Tournament-themed Reload: FNCS Headquarters plus 12 Cup towns — Victory, Cash, Ranked, Hype, Skin, Icon, Early Access, Console Cash, Last Chance, World Cup and Global Championship. Squads, respawns until phase 4.
+
+TAGS: reload, competitive, tournament, squads
+MODE: Reload · 40 players · teams of 4
+
+RELEASE NOTES:
+Reload version with 13 locations.
+
+IMAGES:
+- thumbnail.jpg — 1920x1080 island thumbnail (under 1 MB)
+- minimap.png — 1024x1024 layout

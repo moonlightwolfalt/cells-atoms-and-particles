@@ -1,0 +1,76 @@
+id,device,label,grid,world_x_cm,world_y_cm,settings
+island_settings-1,Island Settings,Island Settings,F6,0,3900,Max Players=40; Spawn Location=Battle Bus; Allow Building=All; Team Size=4; Teams=Squads; Respawn=On (15s); Starting Materials=300; Round Count=1
+day_sequence-1,Day Sequence,Day Sequence,F6,-2507,2988,Time Of Day=day
+skydome-1,Skydome,Skydome,F6,-3841,677,
+map_indicator-1,Map Indicator,Map Indicator,E6,-3377,-1950,Icon=Default
+battle_bus-1,Battle Bus,Battle Bus,E6,-1334,-3665,Bus Route=From layout; Jump Delay=5
+advanced_storm_controller-1,Advanced Storm Controller,Advanced Storm Controller,E5,1334,-3665,Generate Storm On Game Start=true
+teleporter-1,Teleporter,Teleporter,E5,3377,-1950,Teleporter Group=A
+elimination_manager-1,Elimination Manager,Elimination Manager,F5,3841,677,Target Type=Player
+end_game-1,End Game,End Game,F5,2507,2988,Activating Team=Any; Ends=Round
+advanced_storm_beacon-1,Advanced Storm Beacon,Storm Beacon — Phase 1,E6,-1083,-650,Phase=1; End Radius (m)=546; Wait Time (s)=60; Shrink Time (s)=90; Damage Per Tick=1
+advanced_storm_beacon-2,Advanced Storm Beacon,Storm Beacon — Phase 2,E6,-2167,-1300,Phase=2; End Radius (m)=390; Wait Time (s)=60; Shrink Time (s)=75; Damage Per Tick=2
+advanced_storm_beacon-3,Advanced Storm Beacon,Storm Beacon — Phase 3,E6,-3250,-1950,Phase=3; End Radius (m)=260; Wait Time (s)=50; Shrink Time (s)=60; Damage Per Tick=5
+advanced_storm_beacon-4,Advanced Storm Beacon,Storm Beacon — Phase 4,E6,-4333,-2600,Phase=4; End Radius (m)=156; Wait Time (s)=45; Shrink Time (s)=50; Damage Per Tick=8
+advanced_storm_beacon-5,Advanced Storm Beacon,Storm Beacon — Phase 5,E6,-5417,-3250,Phase=5; End Radius (m)=78; Wait Time (s)=40; Shrink Time (s)=45; Damage Per Tick=10
+advanced_storm_beacon-6,Advanced Storm Beacon,Storm Beacon — Phase 6,E6,-6500,-3900,Phase=6; End Radius (m)=0; Wait Time (s)=30; Shrink Time (s)=40; Damage Per Tick=10
+chest_spawner-1,Chest & Ammo Spawner,Treasure Chest ×8 — FNCS Headquarters,F6,0,0,Chest Spawn Chance=100%; Container=Treasure Chest; Count=8; Tier=3
+chest_spawner-2,Chest & Ammo Spawner,Rare Chest ×2 — FNCS Headquarters,F6,0,0,Chest Spawn Chance=100%; Container=Rare Chest; Count=2; Tier=3
+chest_spawner-3,Chest & Ammo Spawner,Ammo Box ×4 — FNCS Headquarters,F6,0,0,Chest Spawn Chance=100%; Container=Ammo Box; Count=4; Tier=3
+chest_spawner-4,Chest & Ammo Spawner,Vault Chest ×3 — FNCS Headquarters,F6,0,0,Chest Spawn Chance=100%; Container=Vault Chest; Count=3; Tier=3
+chest_spawner-5,Chest & Ammo Spawner,Treasure Chest ×5 — Victory Cup Practice Room,D4,18330,-18330,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-6,Chest & Ammo Spawner,Rare Chest ×1 — Victory Cup Practice Room,D4,18330,-18330,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-7,Chest & Ammo Spawner,Ammo Box ×3 — Victory Cup Practice Room,D4,18330,-18330,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-8,Chest & Ammo Spawner,Treasure Chest ×8 — Performance Eval Palace,G4,18330,18330,Chest Spawn Chance=100%; Container=Treasure Chest; Count=8; Tier=3
+chest_spawner-9,Chest & Ammo Spawner,Rare Chest ×2 — Performance Eval Palace,G4,18330,18330,Chest Spawn Chance=100%; Container=Rare Chest; Count=2; Tier=3
+chest_spawner-10,Chest & Ammo Spawner,Ammo Box ×4 — Performance Eval Palace,G4,18330,18330,Chest Spawn Chance=100%; Container=Ammo Box; Count=4; Tier=3
+chest_spawner-11,Chest & Ammo Spawner,Treasure Chest ×5 — Ranked Cup Strategy Camp,G7,-18330,18330,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-12,Chest & Ammo Spawner,Rare Chest ×1 — Ranked Cup Strategy Camp,G7,-18330,18330,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-13,Chest & Ammo Spawner,Ammo Box ×3 — Ranked Cup Strategy Camp,G7,-18330,18330,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-14,Chest & Ammo Spawner,Treasure Chest ×5 — Cash Cup Ruins,D7,-18330,-18330,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-15,Chest & Ammo Spawner,Rare Chest ×1 — Cash Cup Ruins,D7,-18330,-18330,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-16,Chest & Ammo Spawner,Ammo Box ×3 — Cash Cup Ruins,D7,-18330,-18330,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-17,Chest & Ammo Spawner,Treasure Chest ×5 — Icon Cup Gallery,F2,46800,0,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-18,Chest & Ammo Spawner,Rare Chest ×1 — Icon Cup Gallery,F2,46800,0,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-19,Chest & Ammo Spawner,Ammo Box ×3 — Icon Cup Gallery,F2,46800,0,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-20,Chest & Ammo Spawner,Treasure Chest ×5 — Hype Cup Heights,H3,33150,33150,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-21,Chest & Ammo Spawner,Rare Chest ×1 — Hype Cup Heights,H3,33150,33150,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-22,Chest & Ammo Spawner,Ammo Box ×3 — Hype Cup Heights,H3,33150,33150,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-23,Chest & Ammo Spawner,Treasure Chest ×5 — Console Cash Cup Docks,I6,0,46800,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-24,Chest & Ammo Spawner,Rare Chest ×1 — Console Cash Cup Docks,I6,0,46800,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-25,Chest & Ammo Spawner,Ammo Box ×3 — Console Cash Cup Docks,I6,0,46800,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-26,Chest & Ammo Spawner,Treasure Chest ×2 — Last Chance Qualifier Lodge,H8,-33150,33150,Chest Spawn Chance=100%; Container=Treasure Chest; Count=2; Tier=1
+chest_spawner-27,Chest & Ammo Spawner,Ammo Box ×2 — Last Chance Qualifier Lodge,H8,-33150,33150,Chest Spawn Chance=100%; Container=Ammo Box; Count=2; Tier=1
+chest_spawner-28,Chest & Ammo Spawner,Treasure Chest ×8 — World Cup Stadium,F9,-46800,0,Chest Spawn Chance=100%; Container=Treasure Chest; Count=8; Tier=3
+chest_spawner-29,Chest & Ammo Spawner,Rare Chest ×2 — World Cup Stadium,F9,-46800,0,Chest Spawn Chance=100%; Container=Rare Chest; Count=2; Tier=3
+chest_spawner-30,Chest & Ammo Spawner,Ammo Box ×4 — World Cup Stadium,F9,-46800,0,Chest Spawn Chance=100%; Container=Ammo Box; Count=4; Tier=3
+chest_spawner-31,Chest & Ammo Spawner,Treasure Chest ×5 — Early Access Cup Lab,C8,-33150,-33150,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-32,Chest & Ammo Spawner,Rare Chest ×1 — Early Access Cup Lab,C8,-33150,-33150,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-33,Chest & Ammo Spawner,Ammo Box ×3 — Early Access Cup Lab,C8,-33150,-33150,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-34,Chest & Ammo Spawner,Treasure Chest ×5 — Skin Cup Boutique,B6,0,-46800,Chest Spawn Chance=100%; Container=Treasure Chest; Count=5; Tier=2
+chest_spawner-35,Chest & Ammo Spawner,Rare Chest ×1 — Skin Cup Boutique,B6,0,-46800,Chest Spawn Chance=100%; Container=Rare Chest; Count=1; Tier=2
+chest_spawner-36,Chest & Ammo Spawner,Ammo Box ×3 — Skin Cup Boutique,B6,0,-46800,Chest Spawn Chance=100%; Container=Ammo Box; Count=3; Tier=2
+chest_spawner-37,Chest & Ammo Spawner,Treasure Chest ×8 — Global Championship Grounds,C3,33150,-33150,Chest Spawn Chance=100%; Container=Treasure Chest; Count=8; Tier=3
+chest_spawner-38,Chest & Ammo Spawner,Rare Chest ×2 — Global Championship Grounds,C3,33150,-33150,Chest Spawn Chance=100%; Container=Rare Chest; Count=2; Tier=3
+chest_spawner-39,Chest & Ammo Spawner,Ammo Box ×4 — Global Championship Grounds,C3,33150,-33150,Chest Spawn Chance=100%; Container=Ammo Box; Count=4; Tier=3
+vault-1,Vault (Lock + Keycard),Vault (Lock + Keycard) — Inside FNCS Headquarters,F5,1040,780,
+vending_machine-1,Vending Machine,Vending Machine,F5,8060,7800,Cost=200
+vending_machine-2,Vending Machine,Vending Machine,E6,-8060,-8970,Cost=200
+vending_machine-3,Vending Machine,Vending Machine,I7,-16640,40950,Cost=200
+vending_machine-4,Vending Machine,Vending Machine,C4,17160,-38870,Cost=200
+launch_pad-1,Launch Pad,Launch Pad,G2,40820,17550,Launch Strength=Normal
+launch_pad-2,Launch Pad,Launch Pad,D9,-39000,-16250,Launch Strength=Normal
+launch_pad-3,Launch Pad,Launch Pad,C6,-8710,-33930,Launch Strength=Normal
+supply_drop-1,Supply Drop Spawner,Supply Drop Spawner,E5,10270,-9750,Drop Count=1
+supply_drop-2,Supply Drop Spawner,Supply Drop Spawner,F6,-9360,10660,Drop Count=1
+supply_drop-3,Supply Drop Spawner,Supply Drop Spawner,G8,-38610,16120,Drop Count=1
+campfire-1,Campfire,Campfire,I4,16510,40300,
+campfire-2,Campfire,Campfire,C7,-15080,-38740,
+campfire-3,Campfire,Campfire,D2,41080,-15730,
+zipline-1,Zipline,Zipline,G4,24700,24570,
+zipline-2,Zipline,Zipline,D8,-26390,-24440,
+rift-1,Rift / Rift Point,Rift / Rift Point,E3,34580,-8060,
+verse_device-1,Verse Device (generated),Verse — competitive_civilization_layout_device,F6,0,0,Verse file=competitive_civilization_layout.verse
+verse_device-2,Verse Device (generated),Verse — competitive_civilization_reload_respawn_device,F6,0,0,Verse file=competitive_civilization_reload_respawn.verse
+verse_device-3,Verse Device (generated),Verse — competitive_civilization_elimination_scoring_device,F6,0,0,Verse file=competitive_civilization_elimination_scoring.verse
+verse_device-4,Verse Device (generated),Verse — competitive_civilization_hud_device,F6,0,0,Verse file=competitive_civilization_hud.verse
