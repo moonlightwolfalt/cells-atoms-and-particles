@@ -58,6 +58,11 @@
         "gb_winter_village_gallery",
         "gn_pine_tree_gallery",
         "gp_holiday_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_suburban_house",
+        "th_motel",
+        "th_diner"
       ]
     },
     {
@@ -74,6 +79,10 @@
         "gb_cabin_gallery",
         "gn_pine_tree_gallery",
         "gp_holiday_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_observatory",
+        "th_ice_castle"
       ]
     },
     {
@@ -90,6 +99,10 @@
         "gb_cabin_gallery",
         "gn_pine_tree_gallery",
         "gp_holiday_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_underwater_base",
+        "th_ice_castle"
       ]
     },
     {
@@ -106,6 +119,10 @@
         "gb_cabin_gallery",
         "gn_pine_tree_gallery",
         "gp_holiday_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_ice_castle",
+        "th_viking_longship"
       ]
     },
     {
@@ -122,6 +139,10 @@
         "gb_cabin_gallery",
         "gn_pine_tree_gallery",
         "gp_holiday_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_neon_arcade",
+        "th_apartment_block"
       ]
     },
     {
@@ -138,6 +159,11 @@
         "gb_winter_village_gallery",
         "gn_pine_tree_gallery",
         "gp_holiday_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_diner",
+        "th_motel",
+        "th_treehouse_village"
       ]
     },
     {
@@ -154,6 +180,10 @@
         "gb_cabin_gallery",
         "gn_pine_tree_gallery",
         "gp_holiday_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_ice_castle",
+        "th_viking_longship"
       ]
     }
   ],

@@ -145,7 +145,14 @@
           },
           "prefab": {
             "type": "string",
-            "description": "Prefab id from the catalog list, or \"\" to build by hand."
+            "description": "Main prefab id from the catalog list, or \"\" to build by hand."
+          },
+          "extra_prefabs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "1-3 smaller prefab ids placed around the main one (extra buildings and set pieces)."
           },
           "galleries": {
             "type": "array",
@@ -165,6 +172,7 @@
           "elevation",
           "description",
           "prefab",
+          "extra_prefabs",
           "galleries"
         ],
         "additionalProperties": false

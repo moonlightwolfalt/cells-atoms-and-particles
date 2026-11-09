@@ -71,7 +71,7 @@ Set keys as environment variables before `npm start`, or paste them in the app (
 
 | Catalog | Count | Used for |
 |---|---|---|
-| Prefabs | 128 | Battle Royale locations, themed buildings, arenas and course sections — one suggested per location |
+| Prefabs | 128 | Battle Royale locations, themed buildings, arenas and course sections — a main prefab per location plus 2–3 smaller extra prefabs around it |
 | Galleries | 100 | Building, nature and prop galleries — 1–3 suggested per location |
 | Devices | 154 (103 with Verse class names) | Device plan, Devices tab, Verse wiring |
 | Verse devices | 14 Island Forge modules + 103 Fortnite Verse device classes | Verse tab |
@@ -113,7 +113,7 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 - **Island image:** a 1920×1080 thumbnail. It can use a shot of the 3D view as its picture.
 - **Devices:** the planned UEFN devices for the island, which you can turn on or off and change settings for. The full catalog of 154 devices is there to add more.
 - **Catalog:** browse every prefab, gallery, device, Verse device, chest, item, vehicle and creature; add loot or devices to the island; import your own entries.
-- **Builds:** pick the prefab and galleries for any location in the map inspector; each location shows its chest plan.
+- **Builds:** pick the main prefab, extra prefabs (smaller buildings and set pieces around it) and galleries for any location in the map inspector; each location shows its chest plan.
 - **Verse:** the generated Verse devices for the island type, with syntax colouring, copy, download and step-by-step wiring instructions.
 - **Details and loot:** name, time of day, biome, map size, players, teams, respawns, rounds, score, building, storm, and the loot plan (starting loadout, loot pool or Gun Game ladder, chests, vehicles, creatures).
 - **Publish:** title (40 characters max), description, tags and release notes.
@@ -129,7 +129,7 @@ Each type also comes with its own rules, storm (or none), features, devices and 
 | `biome-paint.png` | Shows which landscape material goes where |
 | `Verse/*.verse` | Verse devices for the island type (see below) |
 | `devices.csv` | Every device with UEFN world coordinates and settings |
-| `builds.csv` | Prefab, galleries and chests for every location, with coordinates |
+| `builds.csv` | Main prefab, extra prefabs, galleries and chests for every location, with coordinates |
 | `publish.txt` | Title, description, tags and release notes |
 | `thumbnail.jpg` / `minimap.png` | Island image (1920×1080, under 1 MB) and top-down map |
 | `map-spec.json` | The full island, which you can re-import into any Island Forge client |

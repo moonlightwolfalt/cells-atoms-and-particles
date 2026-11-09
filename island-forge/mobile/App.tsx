@@ -193,7 +193,7 @@ export default function App() {
               <View key={i} style={st.row}>
                 <Text style={st.rowTitle}>{p.name}</Text>
                 <Text style={st.mute}>{p.kind} · {p.size} · {'★'.repeat(p.loot_tier)} · {gridRef(p.x, p.y)}</Text>
-                <Text style={st.mute}>Prefab: {p.prefab ? catalogEntry(p.prefab)?.name : 'build by hand'}{p.galleries.length ? ` · Galleries: ${p.galleries.map((g) => catalogEntry(g)?.name || g).join(', ')}` : ''}</Text>
+                <Text style={st.mute}>Prefab: {p.prefab ? catalogEntry(p.prefab)?.name : 'build by hand'}{p.extra_prefabs.length ? ` + ${p.extra_prefabs.map((x) => catalogEntry(x)?.name || x).join(', ')}` : ''}{p.galleries.length ? ` · Galleries: ${p.galleries.map((g) => catalogEntry(g)?.name || g).join(', ')}` : ''}</Text>
               </View>
             ))}
           {tab === 'devices' &&

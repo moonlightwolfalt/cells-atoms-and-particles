@@ -51,6 +51,10 @@
       "galleries": [
         "gb_resort_gallery",
         "gn_palm_tree_gallery"
+      ],
+      "extra_prefabs": [
+        "ar_pirate_plank_run",
+        "th_beach_resort"
       ]
     },
     {
@@ -66,6 +70,10 @@
       "galleries": [
         "gb_pirate_gallery",
         "gn_palm_tree_gallery"
+      ],
+      "extra_prefabs": [
+        "th_lighthouse",
+        "th_pirate_ship"
       ]
     },
     {
@@ -82,6 +90,11 @@
         "gb_lighthouse_gallery",
         "gn_palm_tree_gallery",
         "gp_sports_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_pirate_ship",
+        "th_lighthouse",
+        "ar_pirate_plank_run"
       ]
     },
     {
@@ -97,6 +110,10 @@
       "galleries": [
         "gb_resort_gallery",
         "gn_palm_tree_gallery"
+      ],
+      "extra_prefabs": [
+        "th_beach_resort",
+        "th_pirate_ship"
       ]
     },
     {
@@ -113,6 +130,10 @@
         "gb_lighthouse_gallery",
         "gn_palm_tree_gallery",
         "gp_kitchen_gallery"
+      ],
+      "extra_prefabs": [
+        "th_beach_resort",
+        "th_lighthouse"
       ]
     }
   ],

@@ -47,6 +47,7 @@ export function CatalogPanel({ spec, onCommit, onStatus }: { spec: MapSpec; onCo
     const ids = new Set<string>();
     spec.pois.forEach((p) => {
       if (p.prefab) ids.add(p.prefab);
+      p.extra_prefabs.forEach((x) => ids.add(x));
       p.galleries.forEach((g) => ids.add(g));
     });
     Object.values(spec.loot).forEach((list) => list.forEach((id) => ids.add(id)));

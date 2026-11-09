@@ -100,7 +100,7 @@ export function DetailsPanel({ spec, onCommit }: { spec: MapSpec; onCommit: (s: 
                       set({ pois });
                     }} />
                   </td>
-                  <td>{p.kind}</td><td className="text-mute">{p.prefab ? catalogEntry(p.prefab)?.name : '—'}</td><td>{p.size}</td><td>{'★'.repeat(p.loot_tier)}</td><td>{gridRef(p.x, p.y)}</td>
+                  <td>{p.kind}</td><td className="text-mute">{p.prefab ? catalogEntry(p.prefab)?.name : '—'}{p.extra_prefabs.length ? ` + ${p.extra_prefabs.map((x) => catalogEntry(x)?.name || x).join(', ')}` : ''}</td><td>{p.size}</td><td>{'★'.repeat(p.loot_tier)}</td><td>{gridRef(p.x, p.y)}</td>
                 </tr>
               ))}
             </tbody>

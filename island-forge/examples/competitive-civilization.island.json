@@ -53,11 +53,16 @@
       "loot_tier": 3,
       "elevation": 0.3,
       "description": "Central broadcast towers and team offices — the hot drop.",
-      "prefab": "br_tilted_towers",
+      "prefab": "th_agency_headquarters",
       "galleries": [
         "gb_office_gallery",
         "gb_glass_gallery",
         "gp_neon_sign_gallery"
+      ],
+      "extra_prefabs": [
+        "th_office_tower",
+        "th_radio_tower",
+        "ar_lobby_hub"
       ]
     },
     {
@@ -74,6 +79,10 @@
         "gb_arena_gallery",
         "gb_floor_and_wall_gallery",
         "gp_sports_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "ar_1v1_build_arena",
+        "ar_capture_point_plaza"
       ]
     },
     {
@@ -90,6 +99,11 @@
         "gb_castle_gallery",
         "gn_rock_gallery",
         "gp_statue_gallery"
+      ],
+      "extra_prefabs": [
+        "th_observatory",
+        "th_medieval_village",
+        "ar_finish_podium"
       ]
     },
     {
@@ -106,6 +120,10 @@
         "gb_military_gallery",
         "gn_tree_gallery",
         "gp_military_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_secret_bunker",
+        "ar_team_bases_red_and_blue"
       ]
     },
     {
@@ -117,11 +135,15 @@
       "loot_tier": 2,
       "elevation": 0.25,
       "description": "Crumbling arena ruins with scattered loot.",
-      "prefab": "th_ancient_ruins",
+      "prefab": "br_colossal_coliseum",
       "galleries": [
         "gb_ruins_gallery",
         "gb_stone_pillar_gallery",
         "gn_desert_nature_gallery"
+      ],
+      "extra_prefabs": [
+        "th_ancient_ruins",
+        "th_desert_temple"
       ]
     },
     {
@@ -138,6 +160,10 @@
         "gp_statue_gallery",
         "gb_glass_gallery",
         "gp_lighting_gallery"
+      ],
+      "extra_prefabs": [
+        "th_nightclub",
+        "th_apartment_block"
       ]
     },
     {
@@ -154,6 +180,10 @@
         "gp_neon_sign_gallery",
         "gb_suburban_gallery",
         "gn_rock_gallery"
+      ],
+      "extra_prefabs": [
+        "th_suburban_house",
+        "th_wind_farm"
       ]
     },
     {
@@ -170,6 +200,10 @@
         "gb_docks_gallery",
         "gp_container_gallery",
         "gp_barrels_and_crates_gallery"
+      ],
+      "extra_prefabs": [
+        "th_lighthouse",
+        "th_warehouse"
       ]
     },
     {
@@ -186,6 +220,10 @@
         "gb_cabin_gallery",
         "gn_pine_tree_gallery",
         "gp_furniture_gallery"
+      ],
+      "extra_prefabs": [
+        "th_treehouse_village",
+        "th_motel"
       ]
     },
     {
@@ -202,6 +240,11 @@
         "gb_stadium_gallery",
         "gp_sports_prop_gallery",
         "gp_lighting_gallery"
+      ],
+      "extra_prefabs": [
+        "th_train_station",
+        "th_burger_restaurant",
+        "ar_finish_podium"
       ]
     },
     {
@@ -213,11 +256,15 @@
       "loot_tier": 2,
       "elevation": 0.2,
       "description": "Crater labs testing tomorrow’s items.",
-      "prefab": "br_dusty_divot",
+      "prefab": "th_space_base",
       "galleries": [
         "gb_lab_gallery",
         "gb_sci_fi_gallery",
         "gp_sci_fi_prop_gallery"
+      ],
+      "extra_prefabs": [
+        "th_water_treatment_plant",
+        "th_factory"
       ]
     },
     {
@@ -234,6 +281,10 @@
         "gb_retail_gallery",
         "gp_shop_prop_gallery",
         "gp_sign_gallery"
+      ],
+      "extra_prefabs": [
+        "th_toy_store",
+        "th_diner"
       ]
     },
     {
@@ -245,11 +296,16 @@
       "loot_tier": 3,
       "elevation": 0.4,
       "description": "Coliseum where world champions are crowned.",
-      "prefab": "br_colossal_coliseum",
+      "prefab": "br_neo_tilted",
       "galleries": [
         "gb_arena_gallery",
         "gp_statue_gallery",
         "gb_stairs_and_ramps_gallery"
+      ],
+      "extra_prefabs": [
+        "ar_finish_podium",
+        "th_skate_park",
+        "th_stadium"
       ]
     }
   ],
@@ -814,7 +870,7 @@
     "score_to_win": 0,
     "starting_materials": 300,
     "build_mode": "build",
-    "loot_pool_notes": "Weapons-only competitive pool: Holo Rush SMG, OXR Rifle, Nemesis AR, Iron Pump Shotgun, Tactical Pistol, Striker AR, Stinger SMG, Wrecker Revolver, Warforged AR, Heavy Sniper Rifle, Bankshot Pistol."
+    "loot_pool_notes": "Competitive pool: Holo Rush SMG, OXR Rifle, Nemesis AR, Iron Pump Shotgun, Tactical Pistol, Striker AR, Stinger SMG, Wrecker Revolver, Warforged AR, Heavy Sniper Rifle, Bankshot Pistol, plus Shock Rocks for mobility and Guzzle Juice for healing."
   },
   "loot": {
     "starting_loadout": [],
@@ -829,7 +885,9 @@
       "it_wrecker_revolver",
       "it_warforged_ar",
       "it_heavy_sniper_rifle",
-      "it_bankshot_pistol"
+      "it_bankshot_pistol",
+      "it_shock_rocks",
+      "it_guzzle_juice"
     ],
     "chests": [
       "treasure_chest",

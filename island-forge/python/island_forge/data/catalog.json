@@ -3327,6 +3327,16 @@
       "description": ""
     },
     {
+      "id": "it_shock_rocks",
+      "name": "Shock Rocks",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
       "id": "it_bandages",
       "name": "Bandages",
       "category": "Healing & Shields",
@@ -3486,6 +3496,16 @@
       "tags": [
         "food",
         "stamina"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_guzzle_juice",
+      "name": "Guzzle Juice",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "shield"
       ],
       "description": ""
     },
