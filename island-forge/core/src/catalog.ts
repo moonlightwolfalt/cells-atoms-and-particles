@@ -240,14 +240,17 @@ export const ITEMS: CatalogEntry[] = [
   ...rows('Assault Rifles', [
     ['Assault Rifle', 'weapon ar'], ['Burst Assault Rifle', 'weapon ar'], ['Heavy Assault Rifle', 'weapon ar'], ['Scoped Assault Rifle', 'weapon ar'],
     ['Infantry Rifle', 'weapon ar'], ['Thermal Scoped Rifle', 'weapon ar'], ['Striker AR', 'weapon ar'], ['Red-Eye Assault Rifle', 'weapon ar'],
+    ['Nemesis AR', 'weapon ar'], ['Warforged AR', 'weapon ar'], ['OXR Rifle', 'weapon ar'],
   ], 'it_'),
   ...rows('Shotguns', [
     ['Pump Shotgun', 'weapon shotgun'], ['Tactical Shotgun', 'weapon shotgun'], ['Heavy Shotgun', 'weapon shotgun'], ['Combat Shotgun', 'weapon shotgun'],
     ['Lever Action Shotgun', 'weapon shotgun'], ['Charge Shotgun', 'weapon shotgun'], ['Double Barrel Shotgun', 'weapon shotgun'], ['Auto Shotgun', 'weapon shotgun'],
+    ['Iron Pump Shotgun', 'weapon shotgun'],
   ], 'it_'),
   ...rows('SMGs & Pistols', [
     ['Submachine Gun', 'weapon smg'], ['Tactical SMG', 'weapon smg'], ['Compact SMG', 'weapon smg'], ['Suppressed SMG', 'weapon smg'], ['Drum Gun', 'weapon smg'],
     ['Pistol', 'weapon pistol'], ['Revolver', 'weapon pistol'], ['Hand Cannon', 'weapon pistol'], ['Dual Pistols', 'weapon pistol'], ['Suppressed Pistol', 'weapon pistol'],
+    ['Holo Rush SMG', 'weapon smg'], ['Stinger SMG', 'weapon smg'], ['Tactical Pistol', 'weapon pistol'], ['Wrecker Revolver', 'weapon pistol'], ['Bankshot Pistol', 'weapon pistol'],
   ], 'it_'),
   ...rows('Snipers & Heavy', [
     ['Bolt-Action Sniper Rifle', 'weapon sniper'], ['Semi-Auto Sniper Rifle', 'weapon sniper'], ['Heavy Sniper Rifle', 'weapon sniper'], ['Hunting Rifle', 'weapon sniper'],
@@ -260,12 +263,13 @@ export const ITEMS: CatalogEntry[] = [
     ['Port-a-Fort', 'utility build'], ['Launch Pad Item', 'utility mobility'], ['Grappler', 'utility mobility'], ['Grapple Glove', 'utility mobility'],
     ['Shockwave Hammer', 'utility mobility melee'], ['Rift-To-Go', 'utility mobility'], ['Bush', 'utility stealth'], ['Decoy Grenade', 'utility'],
     ['Fishing Rod', 'utility'], ['Flashlight', 'utility horror'], ['Keycard', 'utility key'], ['Pickaxe', 'melee'],
+    ['Shock Rocks', 'utility mobility'],
   ], 'it_'),
   ...rows('Healing & Shields', [
     ['Bandages', 'heal'], ['Med Kit', 'heal'], ['Small Shield Potion', 'shield'], ['Shield Potion', 'shield'], ['Chug Jug', 'heal shield'],
     ['Slurp Juice', 'heal shield'], ['Chug Splash', 'heal shield'], ['Med-Mist', 'heal'], ['Cozy Campfire', 'heal'], ['Shield Keg', 'shield'],
     ['Apple', 'heal food'], ['Banana', 'heal food'], ['Mushroom', 'shield food'], ['Coconut', 'heal food'], ['Pepper', 'food speed'],
-    ['Flowberry', 'shield food'], ['Slap Juice', 'food stamina'],
+    ['Flowberry', 'shield food'], ['Slap Juice', 'food stamina'], ['Guzzle Juice', 'heal shield'],
   ], 'it_'),
   ...rows('Traps & Materials', [
     ['Damage Trap', 'trap'], ['Spike Trap', 'trap'], ['Bouncer Trap', 'trap mobility'], ['Wall Launcher', 'trap'],
@@ -393,6 +397,30 @@ export function suggestPrefab(kind: string, themeWords: string[], size: string, 
 }
 
 /** 2-3 galleries that suit a location. */
+/**
+ * Smaller pieces to place around a location's main prefab: themed buildings (and game-space
+ * pieces for arenas/courses), never whole Battle Royale towns, never the main prefab itself.
+ */
+export function suggestExtraPrefabs(kind: string, themeWords: string[], main: string, key: string, count = 2): string[] {
+  const wants = [kind, ...themeWords];
+  const gameSpace = ['arena', 'base', 'plaza', 'course'].includes(kind);
+  const pool = PREFABS.filter((p) => p.id !== main && p.category !== 'Battle Royale Locations' && (gameSpace || p.category !== 'Arenas & Game Spaces'));
+  const scored = pool
+    .map((p) => ({ p, s: score(p, wants) * 2 + (p.tags.includes(kind) ? 3 : 0) + (p.size === 'small' ? 1 : 0) }))
+    .filter((x) => x.s > 0)
+    .sort((a, b) => b.s - a.s);
+  const out: string[] = [];
+  let k = 0;
+  while (out.length < count && scored.length) {
+    const best = scored[0].s;
+    const tier = scored.filter((x) => x.s >= best - 1);
+    const pick = pickStable(tier.map((x) => x.p), `${key}|extra${k++}`);
+    out.push(pick.id);
+    scored.splice(scored.findIndex((x) => x.p.id === pick.id), 1);
+  }
+  return out;
+}
+
 export function suggestGalleries(kind: string, themeWords: string[], key: string): string[] {
   const wants = [kind, ...themeWords];
   const out: string[] = [];

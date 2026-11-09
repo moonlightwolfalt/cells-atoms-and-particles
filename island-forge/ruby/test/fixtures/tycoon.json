@@ -57,6 +57,11 @@
       "galleries": [
         "gb_resort_gallery",
         "gn_palm_tree_gallery"
+      ],
+      "extra_prefabs": [
+        "ar_pirate_plank_run",
+        "th_pirate_ship",
+        "th_beach_resort"
       ]
     }
   ],

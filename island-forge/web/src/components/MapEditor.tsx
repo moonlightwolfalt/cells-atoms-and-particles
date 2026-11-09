@@ -42,7 +42,7 @@ export function MapEditor({ spec, onCommit }: Props) {
   const onDown = (e: React.PointerEvent) => {
     const p = toMap(e);
     if (tool === 'poi') {
-      const next = { ...spec, pois: [...spec.pois, { name: `New Location ${spec.pois.length + 1}`, kind: 'town', x: p.x, y: p.y, size: 'medium' as const, loot_tier: 2, elevation: 0.2, description: '', prefab: '', galleries: [] }] };
+      const next = { ...spec, pois: [...spec.pois, { name: `New Location ${spec.pois.length + 1}`, kind: 'town', x: p.x, y: p.y, size: 'medium' as const, loot_tier: 2, elevation: 0.2, description: '', prefab: '', extra_prefabs: [], galleries: [] }] };
       onCommit(next, { replanDevices: true });
       setSelected({ kind: 'poi', index: next.pois.length - 1 });
       setTool('select');
@@ -190,6 +190,7 @@ export function MapEditor({ spec, onCommit }: Props) {
               </select>
             </label>
             {item.prefab && <p className="text-xs text-mute">{catalogEntry(item.prefab)?.description}</p>}
+            <IdPicker kind="prefabs" label="Extra prefabs (smaller pieces around the main one)" value={item.extra_prefabs} max={4} onChange={(extra_prefabs) => update({ extra_prefabs: extra_prefabs.filter((id) => id !== item.prefab) }, false)} />
             <IdPicker kind="galleries" label="Galleries" value={item.galleries} max={6} onChange={(galleries) => update({ galleries }, false)} />
             <p className="text-xs text-mute">Chests: {chestPlan(spec, item).map((c) => `${c.name} ×${c.count}`).join(', ') || 'none'}</p>
           </div>

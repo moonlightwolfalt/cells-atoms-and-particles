@@ -69,6 +69,9 @@ def validate_spec(spec: Any) -> list[str]:
         in_range(p, f"pois[{i}] ({p.get('name', '?')})")
         if p.get("prefab") and not _known(p["prefab"]):
             problems.append(f"pois[{i}]: unknown prefab {p['prefab']!r}")
+        for extra in p.get("extra_prefabs", []):
+            if not _known(extra):
+                problems.append(f"pois[{i}]: unknown extra prefab {extra!r}")
     for key, ids in (spec.get("loot") or {}).items():
         for id_ in ids:
             if not _known(id_):
@@ -141,7 +144,14 @@ def summarize(spec: dict[str, Any]) -> dict[str, Any]:
         "features": feature_counts,
         "devices": device_counts,
         "storm_phases": len(spec["storm"].get("phases", [])),
-        "builds": {p["name"]: {"prefab": _name(p.get("prefab")), "galleries": [_name(g) for g in p.get("galleries", [])]} for p in spec["pois"]},
+        "builds": {
+            p["name"]: {
+                "prefab": _name(p.get("prefab")),
+                "extra_prefabs": [_name(x) for x in p.get("extra_prefabs", [])],
+                "galleries": [_name(g) for g in p.get("galleries", [])],
+            }
+            for p in spec["pois"]
+        },
         "loot": {k: [_name(i) for i in v] for k, v in (spec.get("loot") or {}).items()},
         "verse_modules": mode.get("verse", []),
         "tags": spec["publish"].get("tags", []),

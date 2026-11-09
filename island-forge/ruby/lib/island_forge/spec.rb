@@ -123,7 +123,7 @@ module IslandForge
         storm_phases: @data['storm'].fetch('phases', []).size,
         verse_modules: mode ? mode['verse'] : [],
         tags: @data['publish']['tags'],
-        builds: @data['pois'].to_h { |p| [p['name'], { prefab: p['prefab'].to_s.empty? ? nil : Catalog.name_of(p['prefab']), galleries: Array(p['galleries']).map { |g| Catalog.name_of(g) } }] },
+        builds: @data['pois'].to_h { |p| [p['name'], { prefab: p['prefab'].to_s.empty? ? nil : Catalog.name_of(p['prefab']), extra_prefabs: Array(p['extra_prefabs']).map { |x| Catalog.name_of(x) }, galleries: Array(p['galleries']).map { |g| Catalog.name_of(g) } }] },
         loot: (@data['loot'] || {}).transform_values { |ids| ids.map { |i| Catalog.name_of(i) } }
       }
     end

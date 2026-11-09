@@ -30,12 +30,13 @@ export function devicesCsv(spec: MapSpec): string {
 
 /** What to drop at each location: prefab, galleries and chests. */
 export function buildsCsv(spec: MapSpec): string {
-  const rows = [['location', 'kind', 'grid', 'world_x_cm', 'world_y_cm', 'world_z_cm', 'prefab', 'galleries', 'chests']];
+  const rows = [['location', 'kind', 'grid', 'world_x_cm', 'world_y_cm', 'world_z_cm', 'prefab', 'extra_prefabs', 'galleries', 'chests']];
   for (const p of spec.pois) {
     const w = toWorld(spec, p.x, p.y, p.elevation);
     rows.push([
       p.name, p.kind, gridRef(p.x, p.y), String(w.X), String(w.Y), String(w.Z),
       p.prefab ? cname(p.prefab) : '(build by hand)',
+      p.extra_prefabs.map(cname).join('; '),
       p.galleries.map(cname).join('; '),
       chestPlan(spec, p).map((c) => `${c.name} x${c.count}`).join('; '),
     ]);
@@ -155,9 +156,11 @@ ${spec.pois.map((p) => (p.description ? `- **${p.name}:** ${p.description}` : ''
 
 In UEFN open the **Creative inventory → Prefabs / Galleries** (or the Content Browser) and drop these at each location's marker. Names follow Fortnite Creative; if an item has been renamed or removed this season, pick the closest match.
 
-| Location | Prefab | Galleries | Chests |
-|---|---|---|---|
-${spec.pois.map((p) => `| ${p.name} | ${p.prefab ? cname(p.prefab) : '_build by hand_'} | ${p.galleries.map(cname).join(', ') || '—'} | ${chestPlan(spec, p).map((c) => `${c.name} ×${c.count}`).join(', ') || '—'} |`).join('\n')}
+Drop the **main prefab** on the location's marker, then place the **extra prefabs** around it as smaller buildings and set pieces.
+
+| Location | Main prefab | Extra prefabs | Galleries | Chests |
+|---|---|---|---|---|
+${spec.pois.map((p) => `| ${p.name} | ${p.prefab ? cname(p.prefab) : '_build by hand_'} | ${p.extra_prefabs.map(cname).join(', ') || '—'} | ${p.galleries.map(cname).join(', ') || '—'} | ${chestPlan(spec, p).map((c) => `${c.name} ×${c.count}`).join(', ') || '—'} |`).join('\n')}
 
 ## Loot
 

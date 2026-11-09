@@ -5,7 +5,7 @@ import { timingSafeEqual, createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
-import { MAP_SCHEMA, MODES, normalizeSpec, generateProcedural, buildSystemPrompt, buildUserPrompt, schemaInstructions, type MapSpec } from '../core/src/index.ts';
+import { MAP_SCHEMA, MODES, normalizeSpec, generateProcedural, buildSystemPrompt, buildUserPrompt, schemaInstructions, compactSchemaInstructions, type MapSpec } from '../core/src/index.ts';
 
 export interface ProviderInfo {
   id: string;
@@ -18,6 +18,10 @@ export interface ProviderInfo {
   baseUrl?: string;
   /** The app can load this provider's full, live model list with the user's key. */
   liveModels?: boolean;
+  /** Set when the provider can be used without paying: how to get started for free. */
+  free?: string;
+  /** Where to get a key. */
+  keyUrl?: string;
 }
 
 export const PROVIDERS: ProviderInfo[] = [
@@ -62,6 +66,8 @@ export const PROVIDERS: ProviderInfo[] = [
     keyHint: 'AIza...',
     baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
     liveModels: true,
+    free: 'Free tier: get a key from Google AI Studio with a Google account, no card needed. Flash and Flash-Lite models are free within daily limits.',
+    keyUrl: 'https://aistudio.google.com/apikey',
   },
   {
     id: 'deepseek',
@@ -133,8 +139,34 @@ export const PROVIDERS: ProviderInfo[] = [
     keyHint: 'API key if the service needs one',
     baseUrl: 'https://openrouter.ai/api/v1',
   },
-  { id: 'ollama', label: 'Ollama (local models)', defaultModel: 'llama3.1', models: [], needsKey: false, baseUrl: 'http://localhost:11434' },
-  { id: 'offline', label: 'Offline generator (no AI, instant)', defaultModel: 'procedural', models: [], needsKey: false },
+  {
+    id: 'groq',
+    label: 'Groq (free tier)',
+    defaultModel: 'llama-3.3-70b-versatile',
+    models: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3-32b', 'meta-llama/llama-4-maverick-17b-128e-instruct', 'meta-llama/llama-4-scout-17b-16e-instruct'],
+    needsKey: true,
+    env: 'GROQ_API_KEY',
+    keyHint: 'gsk_...',
+    baseUrl: 'https://api.groq.com/openai/v1',
+    liveModels: true,
+    free: 'Free tier: sign up at Groq and create a key, no card needed. Uses a shorter prompt to fit the free per-minute limits.',
+    keyUrl: 'https://console.groq.com/keys',
+  },
+  {
+    id: 'openrouter',
+    label: 'OpenRouter (free models)',
+    defaultModel: 'openrouter/free',
+    models: ['openrouter/free', 'nvidia/nemotron-3-ultra-550b-a55b:free', 'google/gemma-4-31b-it:free', 'google/gemma-4-26b-a4b-it:free', 'nvidia/nemotron-3.5-lightning:free', 'xingchen-agi/xing4.0-29b-a4b:free'],
+    needsKey: true,
+    env: 'OPENROUTER_API_KEY',
+    keyHint: 'sk-or-...',
+    baseUrl: 'https://openrouter.ai/api/v1',
+    liveModels: true,
+    free: 'Free models: create an OpenRouter account and key, no card needed. "openrouter/free" picks an available free model for you. Free models have daily limits and change often.',
+    keyUrl: 'https://openrouter.ai/keys',
+  },
+  { id: 'ollama', label: 'Ollama (local models)', defaultModel: 'llama3.1', models: [], needsKey: false, baseUrl: 'http://localhost:11434', free: 'Free: runs AI models on your own computer (install Ollama, then e.g. "ollama pull llama3.1"). Only works when Island Forge runs on that computer.', keyUrl: 'https://ollama.com/download' },
+  { id: 'offline', label: 'Offline generator (no AI, instant)', defaultModel: 'procedural', models: [], needsKey: false, free: 'Free and instant: no AI, no account, no key. Makes a full map from your description.' },
 ];
 
 // ---------------------------------------------------------------- Access policy
@@ -460,7 +492,11 @@ async function fetchJson(url: string, init: RequestInit, label: string): Promise
   if (!res.ok) {
     const msg = data?.error?.message || data?.error || data?.detail || data?.message || text.slice(0, 300);
     const authFailed = res.status === 401 || res.status === 403 || /api key|authenticat/i.test(String(msg));
-    throw httpError(authFailed ? 401 : res.status === 429 ? 429 : 502, `${label} error (${res.status}): ${msg}`);
+    if (res.status === 413 || /request too large|tokens per minute|\bTPM\b/i.test(String(msg))) {
+      throw httpError(429, `${label}: this request is bigger than your free tier allows per minute. Wait a minute and try again, pick a smaller island type, or try a smaller model. (${String(msg).slice(0, 160)})`);
+    }
+    if (res.status === 429) throw httpError(429, `${label}: free-tier limit reached (${String(msg).slice(0, 160)}). Wait a bit, try another model, or use the free offline generator.`);
+    throw httpError(authFailed ? 401 : 502, `${label} error (${res.status}): ${msg}`);
   }
   return data;
 }
@@ -481,14 +517,16 @@ function openAICompatible(opts: {
   extraBody?: (model: string) => Record<string, unknown>;
   /** OpenAI: models that only work on /v1/responses are retried there. */
   responsesFallback?: boolean;
+  /** Free tiers with small token limits: short prompt, no catalog. */
+  compact?: boolean;
 }) {
   return async ({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> => {
     const key = apiKey || (useEnvKeys ? process.env[opts.env] : '');
     const base = (baseUrl || opts.defaultBase).replace(/\/+$/, '');
     if (!key && opts.keyRequired) throw httpError(400, `Add your ${opts.label} API key (or set ${opts.env}).`);
     if (!model) throw httpError(400, `Type a model name for ${opts.label}.`);
-    const system = `${buildSystemPrompt()}\n\n${schemaInstructions()}`;
-    const user = buildUserPrompt(idea, mode);
+    const system = opts.compact ? `${buildSystemPrompt({ compact: true })}\n\n${compactSchemaInstructions()}` : `${buildSystemPrompt()}\n\n${schemaInstructions()}`;
+    const user = buildUserPrompt(idea, mode, { compact: opts.compact });
     const headers = { 'content-type': 'application/json', ...(key ? { authorization: `Bearer ${key}` } : {}) };
     const tried = { mergeSystem: false, noJson: false, completionTokens: false, noLimit: false };
     for (let attempt = 0; attempt < 5; attempt++) {
@@ -512,6 +550,9 @@ function openAICompatible(opts: {
       try {
         data = await fetchJson(`${base}/chat/completions`, { method: 'POST', headers, body: JSON.stringify(body) }, opts.label);
       } catch (err: any) {
+        if (says(err, /model.{0,60}(not found|does not exist|decommission|no longer (available|supported)|not available|is not a valid model)|no endpoints found|invalid model/i)) {
+          throw httpError(400, `${opts.label} doesn't offer the model "${model}" (any more). Click "Load all models" to see the ones you can use.`);
+        }
         if (opts.responsesFallback && says(err, /v1\/responses|only supported in|not supported (in|with) the v1\/chat\/completions|not a chat model|use the responses api/i)) {
           return callOpenAIResponses(base, headers, model, opts.label, system, user);
         }
@@ -613,6 +654,24 @@ const callKimi = openAICompatible({
   extraBody: () => ({ response_format: { type: 'json_object' }, max_tokens: 16000 }),
 });
 
+const callGroq = openAICompatible({
+  label: 'Groq',
+  env: 'GROQ_API_KEY',
+  defaultBase: 'https://api.groq.com/openai/v1',
+  keyRequired: true,
+  compact: true,
+  extraBody: () => ({ response_format: { type: 'json_object' }, max_tokens: 6000 }),
+});
+
+const callOpenRouter = openAICompatible({
+  label: 'OpenRouter',
+  env: 'OPENROUTER_API_KEY',
+  defaultBase: 'https://openrouter.ai/api/v1',
+  keyRequired: true,
+  compact: true,
+  extraBody: () => ({ response_format: { type: 'json_object' }, max_tokens: 8000 }),
+});
+
 const callCompatible = openAICompatible({ label: 'OpenAI-compatible API', env: 'OPENAI_COMPATIBLE_API_KEY', defaultBase: 'https://openrouter.ai/api/v1', keyRequired: false });
 
 async function callGemini({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: CallArgs): Promise<unknown> {
@@ -636,6 +695,9 @@ async function callGemini({ apiKey, useEnvKeys, model, idea, mode, baseUrl }: Ca
     try {
       data = await fetchJson(`${base}/models/${encodeURIComponent(model)}:generateContent`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body) }, 'Gemini');
     } catch (err: any) {
+      if (says(err, /\(404\)|is not found for API version|not supported for generateContent/i)) {
+        throw httpError(400, `Gemini doesn't offer the model "${model}" (any more). Click "Load all models" to see the ones you can use.`);
+      }
       if (!tried.mergeSystem && says(err, /system.?instruction|developer instruction/i)) tried.mergeSystem = true;
       else if (!tried.noJson && says(err, /response.?mime.?type|json mode|mime type/i)) tried.noJson = true;
       else if (tried.limit && says(err, /max.?output.?tokens/i)) tried.limit = tried.limit > 8192 ? 8192 : null;
@@ -706,7 +768,27 @@ async function listClaudeCodeModels(base: string, key: string): Promise<ModelInf
   return [{ id: 'default', label: "Claude Code's default model" }, ...(await listClaudeModels(base, key))];
 }
 
-const LISTERS: Record<string, { list: (base: string, key: string) => Promise<ModelInfo[]>; base: string; env: string; label: string }> = {
+async function listGroqModels(base: string, key: string): Promise<ModelInfo[]> {
+  const data = await fetchJson(`${base}/models`, { headers: { authorization: `Bearer ${key}` } }, 'Groq');
+  return (data?.data || [])
+    .filter((m: any) => typeof m?.id === 'string' && m.active !== false && !/whisper|tts|guard|playai|orpheus|distil|compound/i.test(m.id))
+    .map((m: any) => ({ id: m.id }))
+    .sort((a: ModelInfo, b: ModelInfo) => a.id.localeCompare(b.id));
+}
+
+/** OpenRouter's model list is public; only the free models (price 0) are returned. */
+async function listOpenRouterFreeModels(base: string): Promise<ModelInfo[]> {
+  const data = await fetchJson(`${base}/models`, {}, 'OpenRouter');
+  const isFree = (m: any) => String(m?.id || '').endsWith(':free') || (Number(m?.pricing?.prompt) === 0 && Number(m?.pricing?.completion) === 0);
+  return (data?.data || [])
+    .filter((m: any) => typeof m?.id === 'string' && isFree(m) && !/lyria|music|audio|tts|image-gen|embed/i.test(m.id) && (!Array.isArray(m?.architecture?.output_modalities) || m.architecture.output_modalities.includes('text')))
+    .map((m: any) => ({ id: m.id, label: m.name ? `${m.name}` : undefined }))
+    .sort((a: ModelInfo, b: ModelInfo) => (a.id === 'openrouter/free' ? -1 : b.id === 'openrouter/free' ? 1 : a.id.localeCompare(b.id)));
+}
+
+const LISTERS: Record<string, { list: (base: string, key: string) => Promise<ModelInfo[]>; base: string; env: string; label: string; keyless?: boolean }> = {
+  groq: { list: listGroqModels, base: 'https://api.groq.com/openai/v1', env: 'GROQ_API_KEY', label: 'Groq' },
+  openrouter: { list: (base) => listOpenRouterFreeModels(base), base: 'https://openrouter.ai/api/v1', env: 'OPENROUTER_API_KEY', label: 'OpenRouter', keyless: true },
   anthropic: { list: listClaudeModels, base: '', env: 'ANTHROPIC_API_KEY', label: 'Claude (Anthropic)' },
   claude_code: { list: listClaudeCodeModels, base: '', env: 'ANTHROPIC_API_KEY', label: 'Claude Code' },
   openai: { list: listOpenAIModels, base: 'https://api.openai.com/v1', env: 'OPENAI_API_KEY', label: 'ChatGPT (OpenAI)' },
@@ -718,10 +800,10 @@ const modelCache = new Map<string, { at: number; models: ModelInfo[] }>();
 /** Every text model the given key can use, straight from the provider (cached 10 minutes). */
 export async function listModels(body: Record<string, any> = {}, request: { passcode?: string } = {}): Promise<{ models: ModelInfo[]; source: 'live' }> {
   const lister = LISTERS[body.provider];
-  if (!lister) throw httpError(400, 'Live model lists are available for Claude, Claude Code, ChatGPT (OpenAI) and Gemini.');
+  if (!lister) throw httpError(400, 'Live model lists are available for Claude, Claude Code, ChatGPT (OpenAI), Gemini, Groq and OpenRouter.');
   const { apiKey, baseUrl, useEnvKeys } = resolveAccess(String(body.provider), body, request);
   const key = apiKey || (useEnvKeys ? process.env[lister.env] || '' : '');
-  if (!key) throw httpError(400, `Add your ${lister.label} API key to load its models.`);
+  if (!key && !lister.keyless) throw httpError(400, `Add your ${lister.label} API key to load its models.`);
   const base = (baseUrl || lister.base).replace(/\/+$/, '');
   const cacheKey = `${body.provider}|${base}|${createHash('sha256').update(key).digest('hex')}`;
   const hit = modelCache.get(cacheKey);
@@ -755,7 +837,7 @@ async function callOllama({ model, idea, mode, baseUrl }: CallArgs): Promise<unk
 }
 
 export type Caller = (args: CallArgs) => Promise<unknown>;
-const CALLERS: Record<string, Caller> = { anthropic: callClaude, claude_code: callClaudeCode, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, qwen: callQwen, kimi: callKimi, compatible: callCompatible, ollama: callOllama };
+const CALLERS: Record<string, Caller> = { anthropic: callClaude, claude_code: callClaudeCode, openai: callOpenAI, gemini: callGemini, deepseek: callDeepSeek, grok: callGrok, mistral: callMistral, llama: callLlama, qwen: callQwen, kimi: callKimi, groq: callGroq, openrouter: callOpenRouter, compatible: callCompatible, ollama: callOllama };
 
 /** Applies the access policy: which key and base URL a request may use. */
 function resolveAccess(providerId: string, body: Record<string, any>, request: { passcode?: string }): { apiKey: string; baseUrl: string; useEnvKeys: boolean } {

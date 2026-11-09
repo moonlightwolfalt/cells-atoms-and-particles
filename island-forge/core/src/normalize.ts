@@ -2,7 +2,7 @@
 import type { MapSpec, Feature, Poi, Rules, StormPhase, Publish, PlacedDevice, Loot } from './types.ts';
 import { MODES, MODE_IDS, BIOMES, POI_KINDS, FEATURE_TYPES, TIMES_OF_DAY, BUILD_MODES } from './modes.ts';
 import { planDevices } from './devicePlan.ts';
-import { CATALOG, suggestPrefab, suggestGalleries, type CatalogKind } from './catalog.ts';
+import { CATALOG, suggestPrefab, suggestGalleries, suggestExtraPrefabs, type CatalogKind } from './catalog.ts';
 import { defaultLoot } from './loot.ts';
 
 const idsOf = (kind: CatalogKind, v: unknown, max: number): string[] => {
@@ -71,9 +71,10 @@ export function normalizeSpec(raw: unknown, modeId = 'reload', extra: { prompt?:
       // filled in below once the theme is known
       prefab: typeof p?.prefab === 'string' ? p.prefab.trim() : (undefined as unknown as string),
       galleries: Array.isArray(p?.galleries) ? p.galleries : (undefined as unknown as string[]),
+      extra_prefabs: Array.isArray(p?.extra_prefabs) ? p.extra_prefabs : (undefined as unknown as string[]),
     }));
   if (pois.length === 0) {
-    pois.push({ name: 'Center', kind: 'plaza', x: 0.5, y: 0.5, size: 'medium', loot_tier: 2, elevation: 0.2, description: 'Placeholder location.', prefab: undefined as unknown as string, galleries: undefined as unknown as string[] });
+    pois.push({ name: 'Center', kind: 'plaza', x: 0.5, y: 0.5, size: 'medium', loot_tier: 2, elevation: 0.2, description: 'Placeholder location.', prefab: undefined as unknown as string, galleries: undefined as unknown as string[], extra_prefabs: undefined as unknown as string[] });
   }
 
   const r: Raw = src.rules || {};
@@ -173,6 +174,11 @@ export function normalizeSpec(raw: unknown, modeId = 'reload', extra: { prompt?:
     if (p.prefab === undefined || (p.prefab !== '' && !prefabIds.has(p.prefab))) p.prefab = suggestPrefab(p.kind, themeWords, p.size, key, usedPrefabs);
     const gal = p.galleries === undefined ? [] : idsOf('galleries', p.galleries, 4);
     p.galleries = p.galleries === undefined || (gal.length === 0 && (p.galleries as unknown[]).length > 0) ? suggestGalleries(p.kind, themeWords, key) : gal;
+    const extras = p.extra_prefabs === undefined ? [] : idsOf('prefabs', p.extra_prefabs, 4).filter((id) => id !== p.prefab);
+    p.extra_prefabs =
+      p.extra_prefabs === undefined || (extras.length === 0 && (p.extra_prefabs as unknown[]).length > 0)
+        ? suggestExtraPrefabs(p.kind, themeWords, p.prefab, key, p.size === 'large' ? 3 : 2)
+        : extras;
   }
 
   const keptDevices: PlacedDevice[] = arr(src.devices)

@@ -22,8 +22,10 @@ export interface Poi extends Point {
   loot_tier: number;
   elevation: number;
   description: string;
-  /** Prefab id from the catalog to drop here ('' = build by hand). */
+  /** Main prefab id from the catalog ('' = build by hand). */
   prefab: string;
+  /** Smaller prefabs placed around the main one (extra buildings, props, set pieces). */
+  extra_prefabs: string[];
   /** Gallery ids to dress this location. */
   galleries: string[];
 }

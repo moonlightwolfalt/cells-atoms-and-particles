@@ -228,3 +228,33 @@ test('custom catalog entries can be registered', () => {
   const spec = normalizeSpec({ pois: [{ name: 'A', kind: 'castle', x: 0.5, y: 0.5, prefab: 'custom_season_test_prefab' }] }, 'reload');
   assert.equal(spec.pois[0].prefab, 'custom_season_test_prefab');
 });
+
+test('locations get a main prefab plus smaller extra prefabs', () => {
+  for (const mode of MODE_IDS) {
+    const spec = generateProcedural('haunted pirate castle', mode);
+    for (const p of spec.pois) {
+      assert.ok(Array.isArray(p.extra_prefabs), `${mode}: extra_prefabs is a list`);
+      assert.ok(!p.extra_prefabs.includes(p.prefab), `${mode}: extras never repeat the main prefab`);
+      for (const id of p.extra_prefabs) {
+        const e = catalogEntry(id);
+        assert.ok(e, `${mode}: unknown extra ${id}`);
+        assert.notEqual(e!.category, 'Battle Royale Locations', 'extras are smaller pieces, not whole towns');
+      }
+    }
+    assert.ok(spec.pois.some((p) => p.extra_prefabs.length > 0), `${mode}: some extras suggested`);
+  }
+  const spec = normalizeSpec({
+    pois: [
+      { name: 'A', kind: 'city', x: 0.4, y: 0.4, prefab: 'th_agency_headquarters', extra_prefabs: ['th_office_tower', 'th_agency_headquarters', 'made_up', 'th_radio_tower'] },
+      { name: 'B', kind: 'castle', x: 0.6, y: 0.6, extra_prefabs: [] },
+      { name: 'C', kind: 'town', x: 0.5, y: 0.3, extra_prefabs: ['nope'] },
+    ],
+  }, 'reload');
+  assert.deepEqual(spec.pois[0].extra_prefabs, ['th_office_tower', 'th_radio_tower'], 'valid extras kept, duplicates of the main and unknown ids dropped');
+  assert.deepEqual(spec.pois[1].extra_prefabs, [], 'an explicit empty list is kept');
+  assert.ok(spec.pois[2].extra_prefabs.length > 0, 'all-invalid extras are replaced with suggestions');
+  assert.deepEqual(normalizeSpec(spec, 'reload').pois.map((p) => p.extra_prefabs), spec.pois.map((p) => p.extra_prefabs), 'stable');
+  const readme = generateReadme(spec);
+  assert.match(readme, /\| A \| Agency Headquarters \| Office Tower, Radio Tower \|/);
+  assert.match(buildsCsv(spec).split('\n')[0], /prefab,extra_prefabs,galleries/);
+});

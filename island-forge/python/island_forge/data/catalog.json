@@ -2742,6 +2742,36 @@
       "description": ""
     },
     {
+      "id": "it_nemesis_ar",
+      "name": "Nemesis AR",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_warforged_ar",
+      "name": "Warforged AR",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_oxr_rifle",
+      "name": "OXR Rifle",
+      "category": "Assault Rifles",
+      "tags": [
+        "weapon",
+        "ar"
+      ],
+      "description": ""
+    },
+    {
       "id": "it_pump_shotgun",
       "name": "Pump Shotgun",
       "category": "Shotguns",
@@ -2814,6 +2844,16 @@
     {
       "id": "it_auto_shotgun",
       "name": "Auto Shotgun",
+      "category": "Shotguns",
+      "tags": [
+        "weapon",
+        "shotgun"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_iron_pump_shotgun",
+      "name": "Iron Pump Shotgun",
       "category": "Shotguns",
       "tags": [
         "weapon",
@@ -2914,6 +2954,56 @@
     {
       "id": "it_suppressed_pistol",
       "name": "Suppressed Pistol",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_holo_rush_smg",
+      "name": "Holo Rush SMG",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "smg"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_stinger_smg",
+      "name": "Stinger SMG",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "smg"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_tactical_pistol",
+      "name": "Tactical Pistol",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_wrecker_revolver",
+      "name": "Wrecker Revolver",
+      "category": "SMGs & Pistols",
+      "tags": [
+        "weapon",
+        "pistol"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_bankshot_pistol",
+      "name": "Bankshot Pistol",
       "category": "SMGs & Pistols",
       "tags": [
         "weapon",
@@ -3237,6 +3327,16 @@
       "description": ""
     },
     {
+      "id": "it_shock_rocks",
+      "name": "Shock Rocks",
+      "category": "Throwables & Utility",
+      "tags": [
+        "utility",
+        "mobility"
+      ],
+      "description": ""
+    },
+    {
       "id": "it_bandages",
       "name": "Bandages",
       "category": "Healing & Shields",
@@ -3396,6 +3496,16 @@
       "tags": [
         "food",
         "stamina"
+      ],
+      "description": ""
+    },
+    {
+      "id": "it_guzzle_juice",
+      "name": "Guzzle Juice",
+      "category": "Healing & Shields",
+      "tags": [
+        "heal",
+        "shield"
       ],
       "description": ""
     },
