@@ -240,14 +240,17 @@ export const ITEMS: CatalogEntry[] = [
   ...rows('Assault Rifles', [
     ['Assault Rifle', 'weapon ar'], ['Burst Assault Rifle', 'weapon ar'], ['Heavy Assault Rifle', 'weapon ar'], ['Scoped Assault Rifle', 'weapon ar'],
     ['Infantry Rifle', 'weapon ar'], ['Thermal Scoped Rifle', 'weapon ar'], ['Striker AR', 'weapon ar'], ['Red-Eye Assault Rifle', 'weapon ar'],
+    ['Nemesis AR', 'weapon ar'], ['Warforged AR', 'weapon ar'], ['OXR Rifle', 'weapon ar'],
   ], 'it_'),
   ...rows('Shotguns', [
     ['Pump Shotgun', 'weapon shotgun'], ['Tactical Shotgun', 'weapon shotgun'], ['Heavy Shotgun', 'weapon shotgun'], ['Combat Shotgun', 'weapon shotgun'],
     ['Lever Action Shotgun', 'weapon shotgun'], ['Charge Shotgun', 'weapon shotgun'], ['Double Barrel Shotgun', 'weapon shotgun'], ['Auto Shotgun', 'weapon shotgun'],
+    ['Iron Pump Shotgun', 'weapon shotgun'],
   ], 'it_'),
   ...rows('SMGs & Pistols', [
     ['Submachine Gun', 'weapon smg'], ['Tactical SMG', 'weapon smg'], ['Compact SMG', 'weapon smg'], ['Suppressed SMG', 'weapon smg'], ['Drum Gun', 'weapon smg'],
     ['Pistol', 'weapon pistol'], ['Revolver', 'weapon pistol'], ['Hand Cannon', 'weapon pistol'], ['Dual Pistols', 'weapon pistol'], ['Suppressed Pistol', 'weapon pistol'],
+    ['Holo Rush SMG', 'weapon smg'], ['Stinger SMG', 'weapon smg'], ['Tactical Pistol', 'weapon pistol'], ['Wrecker Revolver', 'weapon pistol'], ['Bankshot Pistol', 'weapon pistol'],
   ], 'it_'),
   ...rows('Snipers & Heavy', [
     ['Bolt-Action Sniper Rifle', 'weapon sniper'], ['Semi-Auto Sniper Rifle', 'weapon sniper'], ['Heavy Sniper Rifle', 'weapon sniper'], ['Hunting Rifle', 'weapon sniper'],

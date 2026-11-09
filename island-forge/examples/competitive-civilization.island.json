@@ -1,0 +1,1364 @@
+{
+  "format": "island-forge/map@3",
+  "mode": "battle_royale",
+  "seed": 20261109,
+  "prompt": "Competitive Civilization: a map based on Fortnite tournaments.",
+  "generator": "island-forge offline (hand-laid layout)",
+  "map_size_m": 1200,
+  "name": "Competitive Civilization",
+  "tagline": "Five tournament-born towns. One crown.",
+  "description": "A competitive Battle Royale island built around Fortnite tournament life — drop FNCS Headquarters, rotate through the Cup towns, win with a tight weapons-only loot pool.",
+  "theme": "competitive esports tournament city",
+  "time_of_day": "day",
+  "base_biome": "grassland",
+  "biomes": [
+    {
+      "type": "urban",
+      "x": 0.5,
+      "y": 0.5,
+      "radius": 0.17
+    },
+    {
+      "type": "mountain",
+      "x": 0.74,
+      "y": 0.27,
+      "radius": 0.16
+    },
+    {
+      "type": "desert",
+      "x": 0.28,
+      "y": 0.73,
+      "radius": 0.16
+    },
+    {
+      "type": "forest",
+      "x": 0.73,
+      "y": 0.73,
+      "radius": 0.15
+    },
+    {
+      "type": "grassland",
+      "x": 0.27,
+      "y": 0.28,
+      "radius": 0.16
+    }
+  ],
+  "pois": [
+    {
+      "name": "FNCS Headquarters",
+      "kind": "city",
+      "x": 0.5,
+      "y": 0.5,
+      "size": "large",
+      "loot_tier": 3,
+      "elevation": 0.3,
+      "description": "Central esports arena and broadcast tower — the hot drop.",
+      "prefab": "th_stadium",
+      "galleries": [
+        "gb_stadium_gallery",
+        "gb_office_gallery",
+        "gp_neon_sign_gallery"
+      ]
+    },
+    {
+      "name": "Victory Cup Practice Room",
+      "kind": "arena",
+      "x": 0.29,
+      "y": 0.3,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.2,
+      "description": "Box-fight practice halls for quick early fights.",
+      "prefab": "ar_box_fight_arena",
+      "galleries": [
+        "gb_arena_gallery",
+        "gb_floor_and_wall_gallery",
+        "gp_sports_prop_gallery"
+      ]
+    },
+    {
+      "name": "Performance Eval Palace",
+      "kind": "castle",
+      "x": 0.72,
+      "y": 0.3,
+      "size": "large",
+      "loot_tier": 3,
+      "elevation": 0.75,
+      "description": "Hilltop palace with the boss and a high-ground view.",
+      "prefab": "br_hunters_haven",
+      "galleries": [
+        "gb_castle_gallery",
+        "gn_rock_gallery",
+        "gp_statue_gallery"
+      ]
+    },
+    {
+      "name": "Cash Cup Ruins",
+      "kind": "ruins",
+      "x": 0.3,
+      "y": 0.71,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.25,
+      "description": "Crumbling arena ruins with scattered loot.",
+      "prefab": "th_ancient_ruins",
+      "galleries": [
+        "gb_ruins_gallery",
+        "gb_stone_pillar_gallery",
+        "gn_desert_nature_gallery"
+      ]
+    },
+    {
+      "name": "Ranked Cup Strategy Camp",
+      "kind": "military",
+      "x": 0.71,
+      "y": 0.7,
+      "size": "medium",
+      "loot_tier": 2,
+      "elevation": 0.35,
+      "description": "Tents and watchtowers for planning rotations.",
+      "prefab": "th_military_outpost",
+      "galleries": [
+        "gb_military_gallery",
+        "gn_tree_gallery",
+        "gp_military_prop_gallery"
+      ]
+    }
+  ],
+  "lakes": [
+    {
+      "x": 0.5,
+      "y": 0.22,
+      "radius": 0.04
+    }
+  ],
+  "rivers": [
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.25
+        },
+        {
+          "x": 0.47,
+          "y": 0.33
+        },
+        {
+          "x": 0.41,
+          "y": 0.39
+        },
+        {
+          "x": 0.36,
+          "y": 0.5
+        },
+        {
+          "x": 0.22,
+          "y": 0.55
+        },
+        {
+          "x": 0.1,
+          "y": 0.58
+        }
+      ]
+    }
+  ],
+  "roads": [
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.3984649314591661,
+          "y": 0.38644810678670183
+        },
+        {
+          "x": 0.29,
+          "y": 0.3
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.621174442700576,
+          "y": 0.3898052367381752
+        },
+        {
+          "x": 0.72,
+          "y": 0.3
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.6000426358380355,
+          "y": 0.612677573680412
+        },
+        {
+          "x": 0.71,
+          "y": 0.7
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.37695082945283503,
+          "y": 0.6145290703698992
+        },
+        {
+          "x": 0.3,
+          "y": 0.71
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.29,
+          "y": 0.3
+        },
+        {
+          "x": 0.5279583628010005,
+          "y": 0.2955761198536493
+        },
+        {
+          "x": 0.72,
+          "y": 0.3
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.72,
+          "y": 0.3
+        },
+        {
+          "x": 0.7275320951337926,
+          "y": 0.4918049098574556
+        },
+        {
+          "x": 0.71,
+          "y": 0.7
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.71,
+          "y": 0.7
+        },
+        {
+          "x": 0.48784972400870175,
+          "y": 0.6838394680828787
+        },
+        {
+          "x": 0.3,
+          "y": 0.71
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "x": 0.3,
+          "y": 0.71
+        },
+        {
+          "x": 0.274267154505942,
+          "y": 0.49232253471389414
+        },
+        {
+          "x": 0.29,
+          "y": 0.3
+        }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "type": "vault",
+      "x": 0.505,
+      "y": 0.49,
+      "note": "Inside FNCS Headquarters",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "boss",
+      "x": 0.725,
+      "y": 0.305,
+      "note": "Inside Performance Eval Palace",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "reboot_van",
+      "x": 0.5301865468872711,
+      "y": 0.3155497799674049,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "reboot_van",
+      "x": 0.6987776842992752,
+      "y": 0.48186812368687243,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "reboot_van",
+      "x": 0.4884914105106145,
+      "y": 0.6947213500505313,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "reboot_van",
+      "x": 0.3079053671471774,
+      "y": 0.529639202770777,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "reboot_van",
+      "x": 0.6153476643096656,
+      "y": 0.3998647821182385,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "vending_machine",
+      "x": 0.30919319183100014,
+      "y": 0.28715628349222244,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "vending_machine",
+      "x": 0.7341674392181449,
+      "y": 0.29524178601801393,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "vending_machine",
+      "x": 0.30645389639772475,
+      "y": 0.7063660785136744,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "vending_machine",
+      "x": 0.7117284300667234,
+      "y": 0.7115439601545221,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "launch_pad",
+      "x": 0.483094644700177,
+      "y": 0.32109370262827724,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "launch_pad",
+      "x": 0.19067376484628767,
+      "y": 0.47766497439239175,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "launch_pad",
+      "x": 0.8244354705046861,
+      "y": 0.5130956933088601,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "supply_drop",
+      "x": 0.4638754591345787,
+      "y": 0.779499888010323,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "supply_drop",
+      "x": 0.38495476434007286,
+      "y": 0.47146408304572107,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "supply_drop",
+      "x": 0.6460464259423315,
+      "y": 0.5027221389114856,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "campfire",
+      "x": 0.22219613898079843,
+      "y": 0.6088042489206419,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "campfire",
+      "x": 0.8199641532078386,
+      "y": 0.3837759575014934,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "campfire",
+      "x": 0.526014904063195,
+      "y": 0.8418364152126014,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "zipline",
+      "x": 0.621,
+      "y": 0.39,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "zipline",
+      "x": 0.39,
+      "y": 0.6154999999999999,
+      "note": "",
+      "team": 0,
+      "order": 0
+    },
+    {
+      "type": "rift",
+      "x": 0.47250708342529835,
+      "y": 0.1405477787135169,
+      "note": "",
+      "team": 0,
+      "order": 0
+    }
+  ],
+  "bus_route": {
+    "start": {
+      "x": 0.08,
+      "y": 0.18
+    },
+    "end": {
+      "x": 0.92,
+      "y": 0.86
+    }
+  },
+  "storm": {
+    "final_x": 0.46,
+    "final_y": 0.56,
+    "phases": [
+      {
+        "wait_s": 98,
+        "shrink_s": 117,
+        "end_radius_pct": 0.45,
+        "damage_per_tick": 1
+      },
+      {
+        "wait_s": 78,
+        "shrink_s": 78,
+        "end_radius_pct": 0.33,
+        "damage_per_tick": 1
+      },
+      {
+        "wait_s": 59,
+        "shrink_s": 59,
+        "end_radius_pct": 0.24,
+        "damage_per_tick": 2
+      },
+      {
+        "wait_s": 52,
+        "shrink_s": 52,
+        "end_radius_pct": 0.16,
+        "damage_per_tick": 5
+      },
+      {
+        "wait_s": 46,
+        "shrink_s": 46,
+        "end_radius_pct": 0.1,
+        "damage_per_tick": 8
+      },
+      {
+        "wait_s": 39,
+        "shrink_s": 39,
+        "end_radius_pct": 0.06,
+        "damage_per_tick": 10
+      },
+      {
+        "wait_s": 29,
+        "shrink_s": 39,
+        "end_radius_pct": 0.035,
+        "damage_per_tick": 10
+      },
+      {
+        "wait_s": 20,
+        "shrink_s": 29,
+        "end_radius_pct": 0.015,
+        "damage_per_tick": 10
+      },
+      {
+        "wait_s": 0,
+        "shrink_s": 39,
+        "end_radius_pct": 0,
+        "damage_per_tick": 10
+      }
+    ]
+  },
+  "rules": {
+    "max_players": 100,
+    "team_size": 3,
+    "team_count": 0,
+    "respawn_enabled": false,
+    "respawn_delay_s": 0,
+    "respawn_cutoff_phase": 0,
+    "rounds": 1,
+    "round_time_s": 1200,
+    "score_to_win": 0,
+    "starting_materials": 0,
+    "build_mode": "build",
+    "loot_pool_notes": "Weapons-only competitive pool: Holo Rush SMG, OXR Rifle, Nemesis AR, Iron Pump Shotgun, Tactical Pistol, Striker AR, Stinger SMG, Wrecker Revolver, Warforged AR, Heavy Sniper Rifle, Bankshot Pistol."
+  },
+  "loot": {
+    "starting_loadout": [],
+    "pool": [
+      "it_holo_rush_smg",
+      "it_oxr_rifle",
+      "it_nemesis_ar",
+      "it_iron_pump_shotgun",
+      "it_tactical_pistol",
+      "it_striker_ar",
+      "it_stinger_smg",
+      "it_wrecker_revolver",
+      "it_warforged_ar",
+      "it_heavy_sniper_rifle",
+      "it_bankshot_pistol"
+    ],
+    "chests": [
+      "treasure_chest",
+      "rare_chest",
+      "ammo_box",
+      "supply_drop",
+      "vault_chest"
+    ],
+    "vehicles": [],
+    "creatures": [
+      "boss",
+      "henchman"
+    ]
+  },
+  "publish": {
+    "title": "Competitive Civilization",
+    "description": "Tournament-themed Battle Royale: FNCS Headquarters, Victory Cup Practice Room, Performance Eval Palace, Cash Cup Ruins and Ranked Cup Strategy Camp. Trios, builds on, one life.",
+    "tags": [
+      "battle royale",
+      "competitive",
+      "tournament",
+      "trios"
+    ],
+    "release_notes": "First release."
+  },
+  "devices": [
+    {
+      "id": "island_settings-1",
+      "device": "island_settings",
+      "label": "Island Settings",
+      "x": 0.53,
+      "y": 0.5,
+      "settings": {
+        "Max Players": 100,
+        "Spawn Location": "Battle Bus",
+        "Allow Building": "All",
+        "Team Size": 3,
+        "Teams": "Squads",
+        "Respawn": "Off",
+        "Starting Materials": 0,
+        "Round Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "day_sequence-1",
+      "device": "day_sequence",
+      "label": "Day Sequence",
+      "x": 0.5229813332935693,
+      "y": 0.5192836282905962,
+      "settings": {
+        "Time Of Day": "day"
+      },
+      "enabled": true
+    },
+    {
+      "id": "skydome-1",
+      "device": "skydome",
+      "label": "Skydome",
+      "x": 0.5052094453300079,
+      "y": 0.5295442325903662,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "map_indicator-1",
+      "device": "map_indicator",
+      "label": "Map Indicator",
+      "x": 0.485,
+      "y": 0.5259807621135332,
+      "settings": {
+        "Icon": "Default"
+      },
+      "enabled": true
+    },
+    {
+      "id": "battle_bus-1",
+      "device": "battle_bus",
+      "label": "Battle Bus",
+      "x": 0.4718092213764227,
+      "y": 0.51026060429977,
+      "settings": {
+        "Bus Route": "From layout",
+        "Jump Delay": 5
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_controller-1",
+      "device": "advanced_storm_controller",
+      "label": "Advanced Storm Controller",
+      "x": 0.4718092213764227,
+      "y": 0.48973939570022995,
+      "settings": {
+        "Generate Storm On Game Start": true
+      },
+      "enabled": true
+    },
+    {
+      "id": "elimination_manager-1",
+      "device": "elimination_manager",
+      "label": "Elimination Manager",
+      "x": 0.485,
+      "y": 0.4740192378864668,
+      "settings": {
+        "Target Type": "Player"
+      },
+      "enabled": true
+    },
+    {
+      "id": "end_game-1",
+      "device": "end_game",
+      "label": "End Game",
+      "x": 0.5052094453300079,
+      "y": 0.47045576740963374,
+      "settings": {
+        "Activating Team": "Any",
+        "Ends": "Round"
+      },
+      "enabled": true
+    },
+    {
+      "id": "map_controller-1",
+      "device": "map_controller",
+      "label": "Map Controller",
+      "x": 0.5229813332935693,
+      "y": 0.4807163717094038,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-1",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 1",
+      "x": 0.4955555555555556,
+      "y": 0.5066666666666667,
+      "settings": {
+        "Phase": 1,
+        "End Radius (m)": 540,
+        "Wait Time (s)": 98,
+        "Shrink Time (s)": 117,
+        "Damage Per Tick": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-2",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 2",
+      "x": 0.4911111111111111,
+      "y": 0.5133333333333333,
+      "settings": {
+        "Phase": 2,
+        "End Radius (m)": 396,
+        "Wait Time (s)": 78,
+        "Shrink Time (s)": 78,
+        "Damage Per Tick": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-3",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 3",
+      "x": 0.4866666666666667,
+      "y": 0.52,
+      "settings": {
+        "Phase": 3,
+        "End Radius (m)": 288,
+        "Wait Time (s)": 59,
+        "Shrink Time (s)": 59,
+        "Damage Per Tick": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-4",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 4",
+      "x": 0.4822222222222222,
+      "y": 0.5266666666666667,
+      "settings": {
+        "Phase": 4,
+        "End Radius (m)": 192,
+        "Wait Time (s)": 52,
+        "Shrink Time (s)": 52,
+        "Damage Per Tick": 5
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-5",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 5",
+      "x": 0.4777777777777778,
+      "y": 0.5333333333333333,
+      "settings": {
+        "Phase": 5,
+        "End Radius (m)": 120,
+        "Wait Time (s)": 46,
+        "Shrink Time (s)": 46,
+        "Damage Per Tick": 8
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-6",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 6",
+      "x": 0.47333333333333333,
+      "y": 0.54,
+      "settings": {
+        "Phase": 6,
+        "End Radius (m)": 72,
+        "Wait Time (s)": 39,
+        "Shrink Time (s)": 39,
+        "Damage Per Tick": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-7",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 7",
+      "x": 0.4688888888888889,
+      "y": 0.5466666666666667,
+      "settings": {
+        "Phase": 7,
+        "End Radius (m)": 42,
+        "Wait Time (s)": 29,
+        "Shrink Time (s)": 39,
+        "Damage Per Tick": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-8",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 8",
+      "x": 0.46444444444444444,
+      "y": 0.5533333333333333,
+      "settings": {
+        "Phase": 8,
+        "End Radius (m)": 18,
+        "Wait Time (s)": 20,
+        "Shrink Time (s)": 29,
+        "Damage Per Tick": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "advanced_storm_beacon-9",
+      "device": "advanced_storm_beacon",
+      "label": "Storm Beacon — Phase 9",
+      "x": 0.46,
+      "y": 0.56,
+      "settings": {
+        "Phase": 9,
+        "End Radius (m)": 0,
+        "Wait Time (s)": 0,
+        "Shrink Time (s)": 39,
+        "Damage Per Tick": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-1",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×8 — FNCS Headquarters",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 8,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-2",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×2 — FNCS Headquarters",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 2,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-3",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×4 — FNCS Headquarters",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-4",
+      "device": "chest_spawner",
+      "label": "Vault Chest ×3 — FNCS Headquarters",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Vault Chest",
+        "Count": 3,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-5",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Victory Cup Practice Room",
+      "x": 0.29,
+      "y": 0.3,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-6",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Victory Cup Practice Room",
+      "x": 0.29,
+      "y": 0.3,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-7",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Victory Cup Practice Room",
+      "x": 0.29,
+      "y": 0.3,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-8",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×8 — Performance Eval Palace",
+      "x": 0.72,
+      "y": 0.3,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 8,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-9",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×2 — Performance Eval Palace",
+      "x": 0.72,
+      "y": 0.3,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 2,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-10",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×4 — Performance Eval Palace",
+      "x": 0.72,
+      "y": 0.3,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 4,
+        "Tier": 3
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-11",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Cash Cup Ruins",
+      "x": 0.3,
+      "y": 0.71,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-12",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Cash Cup Ruins",
+      "x": 0.3,
+      "y": 0.71,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-13",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Cash Cup Ruins",
+      "x": 0.3,
+      "y": 0.71,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-14",
+      "device": "chest_spawner",
+      "label": "Treasure Chest ×5 — Ranked Cup Strategy Camp",
+      "x": 0.71,
+      "y": 0.7,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Treasure Chest",
+        "Count": 5,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-15",
+      "device": "chest_spawner",
+      "label": "Rare Chest ×1 — Ranked Cup Strategy Camp",
+      "x": 0.71,
+      "y": 0.7,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Rare Chest",
+        "Count": 1,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "chest_spawner-16",
+      "device": "chest_spawner",
+      "label": "Ammo Box ×3 — Ranked Cup Strategy Camp",
+      "x": 0.71,
+      "y": 0.7,
+      "settings": {
+        "Chest Spawn Chance": "100%",
+        "Container": "Ammo Box",
+        "Count": 3,
+        "Tier": 2
+      },
+      "enabled": true
+    },
+    {
+      "id": "water-1",
+      "device": "water",
+      "label": "Lake",
+      "x": 0.5,
+      "y": 0.22,
+      "settings": {
+        "Shape": "From layout",
+        "Radius (m)": 48
+      },
+      "enabled": true
+    },
+    {
+      "id": "vault-1",
+      "device": "vault",
+      "label": "Vault (Lock + Keycard) — Inside FNCS Headquarters",
+      "x": 0.505,
+      "y": 0.49,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "boss_spawner-1",
+      "device": "boss_spawner",
+      "label": "Boss (Guard + Item Granter) — Inside Performance Eval Palace",
+      "x": 0.725,
+      "y": 0.305,
+      "settings": {
+        "Health": 1000
+      },
+      "enabled": true
+    },
+    {
+      "id": "reboot_van-1",
+      "device": "reboot_van",
+      "label": "Reboot Van",
+      "x": 0.5301865468872711,
+      "y": 0.3155497799674049,
+      "settings": {
+        "Reboot Time": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "reboot_van-2",
+      "device": "reboot_van",
+      "label": "Reboot Van",
+      "x": 0.6987776842992752,
+      "y": 0.48186812368687243,
+      "settings": {
+        "Reboot Time": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "reboot_van-3",
+      "device": "reboot_van",
+      "label": "Reboot Van",
+      "x": 0.4884914105106145,
+      "y": 0.6947213500505313,
+      "settings": {
+        "Reboot Time": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "reboot_van-4",
+      "device": "reboot_van",
+      "label": "Reboot Van",
+      "x": 0.3079053671471774,
+      "y": 0.529639202770777,
+      "settings": {
+        "Reboot Time": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "reboot_van-5",
+      "device": "reboot_van",
+      "label": "Reboot Van",
+      "x": 0.6153476643096656,
+      "y": 0.3998647821182385,
+      "settings": {
+        "Reboot Time": 10
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-1",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.30919319183100014,
+      "y": 0.28715628349222244,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-2",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.7341674392181449,
+      "y": 0.29524178601801393,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-3",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.30645389639772475,
+      "y": 0.7063660785136744,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "vending_machine-4",
+      "device": "vending_machine",
+      "label": "Vending Machine",
+      "x": 0.7117284300667234,
+      "y": 0.7115439601545221,
+      "settings": {
+        "Cost": 200
+      },
+      "enabled": true
+    },
+    {
+      "id": "launch_pad-1",
+      "device": "launch_pad",
+      "label": "Launch Pad",
+      "x": 0.483094644700177,
+      "y": 0.32109370262827724,
+      "settings": {
+        "Launch Strength": "Normal"
+      },
+      "enabled": true
+    },
+    {
+      "id": "launch_pad-2",
+      "device": "launch_pad",
+      "label": "Launch Pad",
+      "x": 0.19067376484628767,
+      "y": 0.47766497439239175,
+      "settings": {
+        "Launch Strength": "Normal"
+      },
+      "enabled": true
+    },
+    {
+      "id": "launch_pad-3",
+      "device": "launch_pad",
+      "label": "Launch Pad",
+      "x": 0.8244354705046861,
+      "y": 0.5130956933088601,
+      "settings": {
+        "Launch Strength": "Normal"
+      },
+      "enabled": true
+    },
+    {
+      "id": "supply_drop-1",
+      "device": "supply_drop",
+      "label": "Supply Drop Spawner",
+      "x": 0.4638754591345787,
+      "y": 0.779499888010323,
+      "settings": {
+        "Drop Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "supply_drop-2",
+      "device": "supply_drop",
+      "label": "Supply Drop Spawner",
+      "x": 0.38495476434007286,
+      "y": 0.47146408304572107,
+      "settings": {
+        "Drop Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "supply_drop-3",
+      "device": "supply_drop",
+      "label": "Supply Drop Spawner",
+      "x": 0.6460464259423315,
+      "y": 0.5027221389114856,
+      "settings": {
+        "Drop Count": 1
+      },
+      "enabled": true
+    },
+    {
+      "id": "campfire-1",
+      "device": "campfire",
+      "label": "Campfire",
+      "x": 0.22219613898079843,
+      "y": 0.6088042489206419,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "campfire-2",
+      "device": "campfire",
+      "label": "Campfire",
+      "x": 0.8199641532078386,
+      "y": 0.3837759575014934,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "campfire-3",
+      "device": "campfire",
+      "label": "Campfire",
+      "x": 0.526014904063195,
+      "y": 0.8418364152126014,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "zipline-1",
+      "device": "zipline",
+      "label": "Zipline",
+      "x": 0.621,
+      "y": 0.39,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "zipline-2",
+      "device": "zipline",
+      "label": "Zipline",
+      "x": 0.39,
+      "y": 0.6154999999999999,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "rift-1",
+      "device": "rift",
+      "label": "Rift / Rift Point",
+      "x": 0.47250708342529835,
+      "y": 0.1405477787135169,
+      "settings": {},
+      "enabled": true
+    },
+    {
+      "id": "verse_device-1",
+      "device": "verse_device",
+      "label": "Verse — competitive_civilization_layout_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "competitive_civilization_layout.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-2",
+      "device": "verse_device",
+      "label": "Verse — competitive_civilization_elimination_scoring_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "competitive_civilization_elimination_scoring.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-3",
+      "device": "verse_device",
+      "label": "Verse — competitive_civilization_hud_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "competitive_civilization_hud.verse"
+      },
+      "enabled": true
+    },
+    {
+      "id": "verse_device-4",
+      "device": "verse_device",
+      "label": "Verse — competitive_civilization_stats_device",
+      "x": 0.5,
+      "y": 0.5,
+      "settings": {
+        "Verse file": "competitive_civilization_stats.verse"
+      },
+      "enabled": true
+    }
+  ]
+}
