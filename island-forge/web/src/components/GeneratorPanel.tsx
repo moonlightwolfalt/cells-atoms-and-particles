@@ -43,7 +43,7 @@ interface Props {
 }
 
 export function GeneratorPanel(p: Props) {
-  const [providerId, setProviderId] = useState(() => store.get('provider', 'anthropic'));
+  const [providerId, setProviderId] = useState(() => store.get('provider', 'offline'));
   const provider = p.providers.find((x) => x.id === providerId) || p.providers[0];
   const [model, setModel] = useState('');
   const [apiKey, setApiKey] = useState('');
@@ -67,6 +67,11 @@ export function GeneratorPanel(p: Props) {
     setModelsNote('');
   }, [provider?.id, p.providers]);
 
+  // OpenRouter's free model list needs no key: load it as soon as OpenRouter is picked.
+  useEffect(() => {
+    if (provider?.id === 'openrouter' && p.online && !store.get(`liveModels:${provider.id}`, null)) fetchModels();
+  }, [provider?.id, p.online]);
+
   const fetchModels = async () => {
     if (!provider) return;
     setModelsBusy(true);
@@ -85,6 +90,13 @@ export function GeneratorPanel(p: Props) {
   };
 
   const examples = EXAMPLES[MODES[p.mode].category] || EXAMPLES.default;
+
+  const useFreeGenerator = () => {
+    setProviderId('offline');
+    store.set('provider', 'offline');
+    p.onGenerate({ provider: 'offline', model: 'procedural', apiKey: '', baseUrl: '', passcode: '' });
+  };
+  const missingKey = p.status.kind === 'error' && /API key|passcode/i.test(p.status.text);
 
   const submit = () => {
     store.set(`model:${provider.id}`, model);
@@ -125,10 +137,31 @@ export function GeneratorPanel(p: Props) {
         <summary className="label cursor-pointer list-none">AI model <span className="group-open:hidden">▸</span><span className="hidden group-open:inline">▾</span></summary>
         <div className="space-y-2">
           <select className="input" value={provider?.id} onChange={(e) => setProviderId(e.target.value)} aria-label="AI provider">
-            {p.providers.map((x) => (
-              <option key={x.id} value={x.id} disabled={p.envKeys[x.id]?.available === false}>{x.label}{p.envKeys[x.id]?.available === false ? ' — not on this server' : ''}</option>
-            ))}
+            {([
+              ['Free — no billing', p.providers.filter((x) => x.free)],
+              ['Paid API keys', p.providers.filter((x) => !x.free)],
+            ] as const).map(([group, list]) =>
+              list.length ? (
+                <optgroup key={group} label={group}>
+                  {list.map((x) => (
+                    <option key={x.id} value={x.id} disabled={p.envKeys[x.id]?.available === false}>{x.label}{p.envKeys[x.id]?.available === false ? ' — not on this server' : ''}</option>
+                  ))}
+                </optgroup>
+              ) : null,
+            )}
           </select>
+          {provider?.free ? (
+            <p className="rounded-lg border border-ok/30 bg-ok/10 p-2 text-xs text-ok">
+              {provider.free}{' '}
+              {provider.keyUrl && (
+                <a className="font-bold underline" href={provider.keyUrl} target="_blank" rel="noreferrer">
+                  {provider.id === 'ollama' ? 'Get Ollama' : 'Get a free key'}
+                </a>
+              )}
+            </p>
+          ) : (
+            provider && <p className="text-xs text-mute">Needs a paid API key from this provider. Don't want to pay? Pick one of the free options above.</p>
+          )}
           {provider?.id !== 'offline' && (
             <>
               <div className="flex gap-2">
@@ -180,6 +213,11 @@ export function GeneratorPanel(p: Props) {
       <p role="status" aria-live="polite" className={`min-h-5 text-sm ${p.status.kind === 'error' ? 'text-bad' : p.status.kind === 'success' ? 'text-ok' : 'text-mute'}`}>
         {p.status.text}
       </p>
+      {missingKey && provider?.id !== 'offline' && (
+        <button type="button" className="btn w-full border-ok/40 bg-ok/15 text-ok" onClick={useFreeGenerator}>
+          No key? Make it with the free offline generator instead
+        </button>
+      )}
       {!p.online && <p className="text-xs text-mute">No server detected — only the offline generator is available. Run <code>npm start</code> to use AI models.</p>}
     </section>
   );

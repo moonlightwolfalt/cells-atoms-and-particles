@@ -367,7 +367,7 @@ test('all OpenAI and Gemini models: live lists are filtered, and quirky model fa
     const gemini = await listModels({ provider: 'gemini', apiKey: 'k', baseUrl: base });
     assert.deepEqual(gemini.models.map((m) => m.id), ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemma-3-27b-it'], 'both pages, text models only, Gemini before Gemma');
     assert.equal(gemini.models[0].label, 'Gemini 2.5 Pro');
-    await assert.rejects(listModels({ provider: 'deepseek', apiKey: 'k' }), /available for Claude, Claude Code, ChatGPT \(OpenAI\) and Gemini/);
+    await assert.rejects(listModels({ provider: 'deepseek', apiKey: 'k' }), /Live model lists are available for/);
     await assert.rejects(listModels({ provider: 'openai', baseUrl: base }), /Add your ChatGPT \(OpenAI\) API key/);
 
     assert.equal((await gen('openai', 'o1-pro')).name, 'Any Model Isle');
@@ -472,6 +472,63 @@ test('all Claude models: live list from the Models API, and each request fits wh
     assert.equal(messages[1].output_config?.effort, undefined);
 
     await assert.rejects(gen('claude-missing'), /Model "claude-missing" was not found/);
+  } finally {
+    fake.close();
+  }
+});
+
+test('free options: Groq and OpenRouter get the compact prompt, OpenRouter lists only free models without a key, retired models get a clear hint', async () => {
+  const http = await import('node:http');
+  const { listModels, PROVIDERS } = await import('../providers.ts');
+  const layout = JSON.stringify({ name: 'Free Isle', pois: [{ name: 'Camp', kind: 'town', x: 0.4, y: 0.5, prefab: null, galleries: null }], loot: null });
+  const seen: any[] = [];
+  const fake = http.createServer(async (req, res) => {
+    let raw = '';
+    for await (const c of req) raw += c;
+    res.setHeader('content-type', 'application/json');
+    if (req.url === '/models') {
+      return res.end(JSON.stringify({ data: [
+        { id: 'openrouter/free', pricing: { prompt: '0', completion: '0' }, architecture: { output_modalities: ['text'] } },
+        { id: 'big/paid-model', pricing: { prompt: '0.000003', completion: '0.000015' }, architecture: { output_modalities: ['text'] } },
+        { id: 'some/model:free', name: 'Some Model (free)', pricing: { prompt: '0', completion: '0' }, architecture: { output_modalities: ['text'] } },
+        { id: 'google/lyria-3-clip-preview', pricing: { prompt: '0', completion: '0' }, architecture: { output_modalities: ['audio'] } },
+      ] }));
+    }
+    const body = JSON.parse(raw);
+    seen.push({ auth: req.headers.authorization, body });
+    if (body.model === 'old-model') {
+      res.statusCode = 404;
+      return res.end(JSON.stringify({ error: { message: 'The model `old-model` has been decommissioned and is no longer supported.' } }));
+    }
+    res.end(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: layout } }] }));
+  });
+  await new Promise<void>((r) => fake.listen(0, '127.0.0.1', r));
+  const base = `http://127.0.0.1:${(fake.address() as AddressInfo).port}`;
+  try {
+    const free = PROVIDERS.filter((p) => p.free).map((p) => p.id);
+    assert.deepEqual(free.sort(), ['gemini', 'groq', 'offline', 'ollama', 'openrouter']);
+
+    const list = await listModels({ provider: 'openrouter', baseUrl: base });
+    assert.deepEqual(list.models.map((m) => m.id), ['openrouter/free', 'some/model:free'], 'free text models only, router first, no key needed');
+
+    const spec = await generateMap({ provider: 'groq', apiKey: 'gsk_test', baseUrl: base, prompt: 'x', mode: 'battle_royale' });
+    assert.equal(spec.name, 'Free Isle');
+    const req = seen.at(-1).body;
+    const promptText = req.messages.map((m: any) => m.content).join('\n');
+    assert.ok(promptText.length < 6000, `compact prompt (${promptText.length} chars)`);
+    assert.doesNotMatch(promptText, /Prefab ids:/);
+    assert.equal(req.max_tokens, 6000);
+    assert.ok(spec.pois[0].prefab, 'Island Forge picked the prefab itself');
+    assert.ok(spec.pois[0].galleries.length > 0);
+    assert.ok(spec.loot.chests.length > 0, 'default loot filled in');
+
+    await generateMap({ provider: 'openrouter', apiKey: 'sk-or-test', baseUrl: base, prompt: 'x' });
+    assert.equal(seen.at(-1).body.model, 'openrouter/free');
+
+    await assert.rejects(
+      generateMap({ provider: 'groq', model: 'old-model', apiKey: 'gsk_test', baseUrl: base, prompt: 'x' }),
+      /doesn't offer the model "old-model".*Load all models/,
+    );
   } finally {
     fake.close();
   }

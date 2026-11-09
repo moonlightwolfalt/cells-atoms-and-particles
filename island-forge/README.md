@@ -33,6 +33,20 @@ To use Claude without pasting a key into the app, set it before starting:
 ANTHROPIC_API_KEY=sk-ant-... npm start
 ```
 
+## Free options (no billing)
+
+You don't need to pay for any AI to make maps:
+
+| Option | What you need |
+|---|---|
+| **Offline generator** (the default) | Nothing — no AI, no account, no key. Makes a full map from your description instantly. |
+| **Google Gemini** free tier | A free key from [Google AI Studio](https://aistudio.google.com/apikey) (Google account, no card). Flash / Flash-Lite models are free within daily limits. |
+| **Groq** free tier | A free key from [Groq](https://console.groq.com/keys) (no card). Island Forge sends a compact prompt that fits the free per-minute limits. |
+| **OpenRouter** free models | A free key from [OpenRouter](https://openrouter.ai/keys) (no card). `openrouter/free` picks an available free model; the free list loads automatically. |
+| **Ollama** | Runs models on your own computer — only when Island Forge runs on that computer too. |
+
+If you pick a paid provider without a key, the app offers a one-click switch to the free offline generator. Free tiers have daily/per-minute limits and their terms may allow the provider to use your prompts to improve their models — check each provider's terms.
+
 ## Choosing the AI
 
 | Provider | Models offered (type any other) | Key |

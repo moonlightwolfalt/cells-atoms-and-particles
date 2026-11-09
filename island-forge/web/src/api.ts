@@ -11,6 +11,8 @@ export interface ProviderInfo {
   keyHint?: string;
   baseUrl?: string;
   liveModels?: boolean;
+  free?: string;
+  keyUrl?: string;
 }
 
 export interface Access {
@@ -21,7 +23,7 @@ export interface Access {
 export type ProviderStatus = Record<string, { envKey: boolean; available?: boolean }>;
 const LOCAL_ACCESS: Access = { public: false, serverKeys: 'open', customBaseUrls: 'any' };
 
-export const OFFLINE: ProviderInfo = { id: 'offline', label: 'Offline generator (no AI, instant)', defaultModel: 'procedural', models: [], needsKey: false };
+export const OFFLINE: ProviderInfo = { id: 'offline', label: 'Offline generator (no AI, instant)', defaultModel: 'procedural', models: [], needsKey: false, free: 'Free and instant: no AI, no account, no key. Makes a full map from your description.' };
 
 export async function loadProviders(): Promise<{ providers: ProviderInfo[]; envKeys: ProviderStatus; online: boolean; access: Access }> {
   try {
